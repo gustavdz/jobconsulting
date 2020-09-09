@@ -20,4 +20,7 @@ Auth::routes(['verify' => true]);
 
 Route::middleware(['verified'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/user', 'UserController@index')->name('user');
+    Route::post('/user/data', 'UserController@data')->name('user.data');
+    Route::post('/user', 'UserController@store')->name('user.post');
 });

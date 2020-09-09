@@ -29,15 +29,15 @@ class HomeController extends Controller
 
         //dd(Auth::user()->role);
         if (Auth::user()->role == 'admin'){
-            return view('home');
+            return view('home.index');
         }
 
         if (Auth::user()->role == 'aspirante'){
-            return view('home_aspirante');
+            return view('home_aspirante.index');
         }
 
         if (Auth::user()->role == 'empresa'){
-            return view('home_empresa');
+            return view('home_empresa.index');
         }
     }
 }
