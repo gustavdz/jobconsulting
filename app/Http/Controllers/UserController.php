@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\User;
@@ -9,7 +10,6 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 class UserController extends Controller
 {
 
-       use VerifiesEmails;
     /**
      * Display a listing of the resource.
      *
@@ -37,9 +37,13 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(array $data)
     {
-        //
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
     }
 
     /**
@@ -50,11 +54,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        return User::create([
+
+        $user = User::create([
             'name' => $request['name'],
             'email' => $request['email'],
+            'role' => 'empresa',
             'password' => Hash::make($request['password']),
         ]);
+        if (!empty($user)) {
+            event(new Registered($user));
+            return response()->json(['msg' => 'success', 'data' => 'Se ha creado correctamente el usuario' . $request['name']]);
+        }else{
+            return response()->json(['msg' => 'error', 'data' => 'No  ha creado el usuario ' . $request['name']]);
+        }
+
+
+        
     }
 
     /**
