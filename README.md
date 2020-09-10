@@ -8,7 +8,7 @@
 </p>
 
 ## Template for Admin
-- [UI Architect]-(https://demo.dashboardpack.com/architectui-html-pro/index.html).
+- [UI Architect](https://demo.dashboardpack.com/architectui-html-pro/index.html).
 
 ## About Laravel
 
