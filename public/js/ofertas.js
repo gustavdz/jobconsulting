@@ -15,7 +15,7 @@ $(document).ready(function () {
         $('#myModal').modal('toggle');
         $.ajax({
             type: 'POST',
-            url: '/user',
+            url: '/ofertas',
             data: data,
             beforeSend: function () {
                 Swal.fire({
@@ -55,7 +55,7 @@ $(document).ready(function () {
         $('#EditModal').modal('toggle');
         $.ajax({
             type: 'POST',
-            url: '/register',
+            url: '/ofertas',
             data: data,
             beforeSend: function () {
                 Swal.fire({
@@ -187,7 +187,7 @@ function view_table() {
 
     $.ajax({
         type: 'POST',
-        url: '/user/data',
+        url: '/ofertas/data',
         data: {
             "_token": $('meta[name="csrf-token"]').attr('content')
         },
@@ -203,7 +203,7 @@ function view_table() {
         },
         success: function (data) {
             $('#div_table').html(data);
-            $('#tbl_usuarios').DataTable({
+            $('#tbl_ofertas').DataTable({
                 "language": {
                     "sProcessing": "Procesando...",
                     "sLengthMenu": "Mostrar _MENU_ registros",

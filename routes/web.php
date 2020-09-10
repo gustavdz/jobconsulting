@@ -24,8 +24,10 @@ Route::middleware(['verified'])->group(function () {
     #user - empresas
     Route::get('/user', 'UserController@index')->name('user');
     Route::post('/user/data', 'UserController@data')->name('user.data');
-    Route::post('/user', 'UserController@store')->name('user.post');
+    Route::post('/user', 'UserController@store')->name('user.store');
 
     #ofertas
     Route::get('/ofertas', 'OfertasController@index')->name('ofertas');
+    Route::post('/ofertas/data', 'OfertasController@data')->name('ofertas.data');
+    Route::post('/ofertas', 'OfertasController@store')->name('ofertas.store');
 });

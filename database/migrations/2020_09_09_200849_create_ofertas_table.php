@@ -17,7 +17,7 @@ class CreateOfertasTable extends Migration
             $table->id();
             $table->bigInteger('empresa_id');
             $table->string('titulo');
-            $table->longText('descripción')->nullable();
+            $table->longText('descripcion')->nullable();
             $table->double('salario', 10, 4)->nullable();
             $table->dateTime('validez');
             $table->char('estado',1)->default('A');

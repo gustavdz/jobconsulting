@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Ofertas;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class OfertasController extends Controller
 {
     
@@ -20,8 +20,14 @@ class OfertasController extends Controller
 
     public function data()
     {
-        return Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->get();
-       //return view('ofertas.index');
+        $results = [];
+        if (Auth::user()->role == 'admin'){
+            $results = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->get();  
+        }
+        if (Auth::user()->role == 'empresa'){
+            $results = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.id',Auth::user()->id)->get();  
+        }
+        return view('ofertas.table',compact('results'));
     }
 
 
