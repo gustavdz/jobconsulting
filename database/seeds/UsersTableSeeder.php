@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use App\Habilidades;
+use App\Categorias;
 use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
@@ -21,5 +23,35 @@ class UsersTableSeeder extends Seeder
         foreach($users as $user){
             User::create($user);
         }
+
+        $habilidades = [
+            ['nombre'=>'Java'],
+            ['nombre'=>'C#'],
+            ['nombre'=>'Spring'],
+            ['nombre'=>'Laravel'],
+            ['nombre'=>'Excel'],
+            ['nombre'=>'CRM'],
+            ['nombre'=>'Ofimatica'],
+            ['nombre'=>'Project'],
+            ['nombre'=>'Base de datos']
+        ];
+
+        foreach($habilidades as $habilidad){
+            Habilidades::create($habilidad);
+        }
+
+        $categorias = [
+            ['nombre'=>'Comercial, ventas y Negocios'],
+            ['nombre'=>'Administración'],
+            ['nombre'=>'Sistemas'],
+            ['nombre'=>'Desarrollador'],
+            ['nombre'=>'Marketing y Publicidad'],
+            ['nombre'=>'Tecnología']
+        ];
+
+        foreach($categorias as $categoria){
+            Categorias::create($categoria);
+        }
+
     }
 }

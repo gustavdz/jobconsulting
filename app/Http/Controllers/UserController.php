@@ -6,6 +6,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use App\Ofertas;
 use Illuminate\Foundation\Auth\RegistersUsers;
 class UserController extends Controller
 {
@@ -28,7 +29,7 @@ class UserController extends Controller
 
     public function data()
     {
-        $results = User::all();
+        $results = User::where('role','empresa')->get();
         return view('user.table',compact('results'));
     }
 

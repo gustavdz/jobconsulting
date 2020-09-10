@@ -5,7 +5,7 @@
 @stop
 
 @section('js')
-    <script src="{{ asset('../js/usuarios.js') }}"></script>
+    <script src="{{ asset('../js/ofertas.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="../../vendor/datatables/js/jquery.dataTables.js"></script>
     <script src="../../vendor/datatables/js/dataTables.bootstrap4.js"></script>
@@ -17,7 +17,7 @@
             <i class="pe-7s-id icon-gradient bg-strong-bliss">
             </i>
         </div>
-        <div>Empresa
+        <div>Ofertas
             <div class="page-title-subheading">Listado
             </div>
 
@@ -26,7 +26,7 @@
     <div class="page-title-actions">
         <button title="Guardar" data-placement="bottom" data-toggle="modal" data-target=".modal-example" id="agregar"
                 class="btn-shadow mr-3 btn btn-success " onclick="limpiar()">
-            <i class="fa fa-plus"></i> Agregar Empresa
+            <i class="fa fa-plus"></i> Agregar Oferta
         </button>
     </div>
 @endsection

@@ -162,15 +162,23 @@
                         <li >
                             <a href="{{ route('home')}}" class="{{ Route::is('home') ? 'active' : '' }}">
                                 <i class="metismenu-icon pe-7s-display2"></i>
-                                Personas
+                                Dashboard
                             </a>
                         </li>
                         <li >
-                               <a href="{{ route('user')}}" class="{{ Route::is('user') ? 'active' : '' }}">
+                            <a href="{{ route('ofertas')}}" class="{{ Route::is('ofertas') ? 'active' : '' }}">
                                 <i class="metismenu-icon pe-7s-display2"></i>
-                                Usuarios
+                                Ofertas
                             </a>
                         </li>
+                        @if(Auth::user()->role=="admin")
+                        <li>
+                               <a href="{{ route('user')}}" class="{{ Route::is('user') ? 'active' : '' }}">
+                                <i class="metismenu-icon pe-7s-display2"></i>
+                                Empresas
+                            </a>
+                        </li>
+                        @endif
 
 
 
