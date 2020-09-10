@@ -7,6 +7,16 @@ $(document).ready(function () {
 
     view_table();
 
+     $('#habilidades').select2({
+        placeholder: "Seleccione",
+        allowClear: true
+     });
+
+     $('#categorias').select2({
+        placeholder: "Seleccione",
+        allowClear: true
+     });
+
     $("#btn_guardar").click(function () {
         if (!$("#formulario").valid()) {
             return false;
@@ -89,13 +99,51 @@ $(document).ready(function () {
         });
     });
 
+    //Función para guardar o editar
+    $.validator.addMethod('monto_minimo', function(value, element, param) {
+        var max=parseFloat(param);
+        var val=parseFloat(value);
+        if(val>=max){
+            return true;
+        }else{
+            return false;
+        }
+    }, "El valor debe ser igual o mayor a $"+1);
+
+    $.validator.addMethod('monto_maximo', function(value, element, param) {
+        var max=parseFloat(param);
+        var val=parseFloat(value);
+        if(val<=max){
+            return true;
+        }else{
+            return false;
+        }
+    }, "El valor debe ser menor o igual a $2000");
+
+     $.validator.addMethod('required_monto', function(value, element, param) {
+        if( $("#terminos").is(':checked') ){
+                // Hacer algo si el checkbox ha sido seleccionado
+                return true;
+            } else {
+                // Hacer algo si el checkbox ha sido deseleccionado
+                return false;
+            }
+        }, "Debe aceptar los términos y condicones");
+
+     $.validator.addMethod('dollarsscents', function(value, element) {
+        return this.optional(element) || /^\d{0,4}(\.\d{0,2})?$/i.test(value);
+    }, "El valor debe incluir dos decimales");
+
     $("#formulario").validate({ 
         ignore: [],
         rules: {
-          'name'          : {required: true},
-          'confirm'            : {required: true, equalTo: "#password"},
-          'password'          : {required: true,minlength:8},
-          'email'          : {required: true,email:true}
+          'titulo'          : {required: true},
+          'descripcion'            : {required: true},
+          'categorias'          : {required: true,},
+          'validez'          : {required: true,},
+          'habilidades'          : {required: true},
+          'empresa'          : {required: true},
+          'salario'       : {required: true,number:true,monto_minimo:0,monto_maximo:50000,dollarsscents:true},
 
         },
         messages:{
@@ -126,7 +174,12 @@ $(document).ready(function () {
           }
       });
 
-
+    $('#validez').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            minYear: 1901,
+            maxYear: parseInt(moment().format('YYYY'),10)
+        });
 
 });
 

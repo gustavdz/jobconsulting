@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Ofertas;
+use App\Categorias;
+use App\Habilidades;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 class OfertasController extends Controller
@@ -15,7 +18,10 @@ class OfertasController extends Controller
 
     public function index()
     {
-       return view('ofertas.index');
+        $categorias = Categorias::where('estado','A')->get();
+        $habilidades = Habilidades::where('estado','A')->get();
+        $empresas = User::where('role','empresa')->get();
+        return view('ofertas.index',compact('categorias','habilidades','empresas'));
     }
 
     public function data()
@@ -50,7 +56,14 @@ class OfertasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $request;
+        $ofertas = new Ofertas;
+        $ofertas->titulo = $request->titulo;
+        $ofertas->descripcion = $request->descripcion;
+        $ofertas->validez = $request->validez;
+        $ofertas->salario = $request->salario;
+        $ofertas->empresa_id = $request->empresa;
+        $ofertas->save();
     }
 
     /**
