@@ -21,6 +21,26 @@ $(document).ready(function () {
         if (!$("#formulario").valid()) {
             return false;
         }
+        if ($("#habilidades").val().length==0) {
+            $("#habilidades-error").html('Seleccione al menos un item');
+            $("#habilidades-error").show();
+            $("#habilidades").parent().find(".select2-container").addClass("error");
+            return false;
+        }else{
+            $("#habilidades-error").html('');
+            $("#habilidades-error").hide();
+            $("#habilidades").parent().find(".select2-container").removeClass("error");
+        }
+        if ($("#categorias").val().length==0) {
+            $("#categorias-error").html('Seleccione al menos un item');
+            $("#categorias-error").show();
+            $("#categorias").parent().find(".select2-container").addClass("error");
+            return false;
+        }else{
+            $("#categorias-error").html('');
+            $("#categorias-error").hide();
+            $("#categorias").parent().find(".select2-container").removeClass("error");
+        }
         var data = new $('#formulario').serialize();
         $('#myModal').modal('toggle');
         $.ajax({
@@ -154,7 +174,7 @@ $(document).ready(function () {
         },
           errorPlacement: function (error, element) {
             var er=error[0].innerHTML;
-            var nombre = element[0].id;
+            var nombre = element[0].id;            
             if(element[0].type=="select-one"){
                 $("#" + nombre).parent().find(".select2-container").addClass("error");
             }else{
@@ -178,20 +198,70 @@ $(document).ready(function () {
             singleDatePicker: true,
             showDropdowns: true,
             minYear: 1901,
-            maxYear: parseInt(moment().format('YYYY'),10)
+            maxYear: parseInt(moment().format('YYYY'),10),
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
         });
 
 });
 
 function limpiar(){
+    $('#categorias').val([]).trigger('change');
+    $('#habilidades').val([]).trigger('change');
     $("#formulario")[0].reset();
 }
 
-function editar(id,name,email){
-    $('#EditModal').modal('toggle');
-    $("#id").val(id);
-    $("#name_edit").val(name);
-    $("#email_edit").val(email);
+function editar(id){
+    limpiar();
+    $.ajax({
+        type: 'POST',
+        url: '/ofertas/show',
+        data: {
+            "_token": $('meta[name="csrf-token"]').attr('content'),
+            "id": id
+        },
+        beforeSend: function () {
+            Swal.fire({
+                title: '¡Espere, Por favor!',
+                html: 'Cargando informacion...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                }
+            }); 
+        },
+        success: function (data) {
+            console.log(data)
+            if (data != "") {   
+                $('#myModal').modal('toggle');
+                $("#id").val(data.id);
+                $("#empresa").val(data.empresa_id);
+                $("#titulo").val(data.titulo);
+                $("#descripcion").val(data.descripcion);
+                $("#salario").val(data.salario);
+                $("#validez").val(data.validez);
+                var categorias = [];
+                for (var i = 0; i < data.categorias_ofertas.length ; i++) {
+                    categorias.push(data.categorias_ofertas[i].categoria_id);
+                }
+                var habilidades = [];
+                for (var i = 0; i < data.habilidades_ofertas.length ; i++) {
+                    habilidades.push(data.habilidades_ofertas[i].habilidad_id);
+                }
+                $("#categorias").val(categorias).trigger('change');
+                $("#habilidades").val(habilidades).trigger('change');
+            }else{
+                toastr.warning("No se encontraron resultados");
+            }
+        },
+        error: function (xhr) {
+            toastr.error('Error: '+xhr.statusText + xhr.responseText);
+        },
+        complete: function () {
+            swal.close();
+        },
+    });
 }
 
 function eliminar(data,name){
@@ -287,7 +357,7 @@ function view_table() {
                 },
                 "paging": true,
                 "lengthChange": true,
-                "ordering": true,
+                "ordering": false,
                 "info": true,
                 "autoWidth": false,
                 "order": [[0, "desc"]]

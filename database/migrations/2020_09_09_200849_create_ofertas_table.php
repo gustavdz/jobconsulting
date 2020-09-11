@@ -19,7 +19,7 @@ class CreateOfertasTable extends Migration
             $table->string('titulo');
             $table->longText('descripcion')->nullable();
             $table->double('salario', 10, 4)->nullable();
-            $table->dateTime('validez');
+            $table->date('validez');
             $table->char('estado',1)->default('A');
             $table->timestamps();
         });

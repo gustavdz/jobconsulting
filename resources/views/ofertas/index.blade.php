@@ -11,8 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="../../vendor/datatables/js/jquery.dataTables.js"></script>
     <script src="../../vendor/datatables/js/dataTables.bootstrap4.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>-->
-    <link rel="stylesheet" href="./vendor/select2/js/select2.min.js">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script rel="stylesheet" href="./vendor/select2/js/select2.min.js"></script>
     <script src="{{ asset('../js/ofertas.js') }}"></script>
     
 @stop
@@ -68,6 +68,7 @@
                 {{ csrf_field() }}
                 <div class="modal-body">
                     <div class="row">
+                        @if(Auth::user()->role=='admin')
                         <div class="col">
                             <div class="form-group">
                               <label for="empresa" class="col-form-label">Empresa</label>
@@ -76,10 +77,11 @@
                                   @foreach($empresas as $empresa)
                                   <option value="{{$empresa->id}}">{{$empresa->name}}</option>
                                   @endforeach
-                              </select>
+                                </select>
                                 <label tipo="error" id="empresa-error"></label>
                             </div>
                         </div>
+                        @endif
                         <div class="col">
                             <div class="form-group">
                               <label for="titulo" class="col-form-label">Titulo</label>
@@ -90,11 +92,7 @@
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                      <label for="descripcion" class="col-form-label">Descripción</label>
-                        <textarea id="descripcion" name="descripcion" class="form-control"  maxlength="250" rows="5"></textarea>
-                        <label tipo="error" id="descripcion-error"></label>
-                    </div>
+                    
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
@@ -137,7 +135,11 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <div class="form-group">
+                      <label for="descripcion" class="col-form-label">Descripción</label>
+                        <textarea id="descripcion" name="descripcion" class="form-control"  maxlength="250" rows="5"></textarea>
+                        <label tipo="error" id="descripcion-error"></label>
+                    </div>
                         
                 </div>
                 <div class="modal-footer">

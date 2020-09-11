@@ -48,6 +48,10 @@
     font-size: 12px;
     color: #fe0000;
 }
+.error{
+    border: 1px solid red !important;
+}
+
     </style>
 <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
     <div class="app-header header-shadow">

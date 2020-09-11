@@ -15,7 +15,12 @@
                 <b>Titulo: </b>{{$rst->titulo}}<br>
                 <b>Detalle: </b>{{$rst->descripcion}}<br>
                 <b>Salario: </b>${{$rst->salario ? number_format($rst->salario, 2, '.', ',') : '0.00'}}<br>
-                <b>Validez: </b>{{\Carbon\Carbon::parse($rst->validez)->format('j F, Y')}}
+                <b>Validez: </b>{{\Carbon\Carbon::parse($rst->validez)->format('j F, Y')}}<br>
+                @if($rst->validez >= date('Y-m-d'))
+                    <span class="badge badge-primary">ACTIVA</span>
+                @else
+                    <span class="badge badge-danger">EXPIRADA</span>
+                @endif
 
             </td>
             <td>
@@ -33,7 +38,7 @@
                 </ul>
             </td>
             <td>
-                <button onclick="editar({{ $rst->id }},'{{ $rst->titulo }}','{{ $rst->titulo }}')" title="Editar" type="button" class="btn btn-success btn_show"><i class="fas fa-edit"></i> Editar</button>
+                <button onclick="editar({{ $rst->id }})" title="Editar" type="button" class="btn btn-success btn_show"><i class="fas fa-edit"></i> Editar</button>
                 <button onclick="eliminar({{$rst->id}},'{{ $rst->titulo }}')" data-id="{{$rst->id}}" data-name="{{$rst->nombre}}" type="button" class="btn btn-danger btn_delete"><i class="fas fa-trash"></i> Eliminar</button>
             </td>
         </tr>

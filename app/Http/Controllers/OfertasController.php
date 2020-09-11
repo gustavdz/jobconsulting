@@ -6,8 +6,13 @@ use App\User;
 use App\Ofertas;
 use App\Categorias;
 use App\Habilidades;
+use App\CategoriasOfertas;
+use App\HabilidadesOfertas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
 class OfertasController extends Controller
 {
     
@@ -28,10 +33,10 @@ class OfertasController extends Controller
     {
         $results = [];
         if (Auth::user()->role == 'admin'){
-            $results = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->get();  
+            $results = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->orderBy('ofertas.validez', 'DESC')->get();  
         }
         if (Auth::user()->role == 'empresa'){
-            $results = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.id',Auth::user()->id)->get();  
+            $results = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.empresa_id',Auth::user()->id)->orderBy('ofertas.validez', 'DESC')->get();  
         }
         return view('ofertas.table',compact('results'));
     }
@@ -56,14 +61,80 @@ class OfertasController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
-        $ofertas = new Ofertas;
-        $ofertas->titulo = $request->titulo;
-        $ofertas->descripcion = $request->descripcion;
-        $ofertas->validez = $request->validez;
-        $ofertas->salario = $request->salario;
-        $ofertas->empresa_id = $request->empresa;
-        $ofertas->save();
+      try {
+            DB::beginTransaction();
+            if (empty($request->id)) { # Id oferta es vacio se crea
+                
+                $ofertas = new Ofertas;
+                $ofertas->titulo = $request->titulo;
+                $ofertas->descripcion = $request->descripcion;
+                $ofertas->validez =  $request->validez;
+                $ofertas->salario = $request->salario;
+                $ofertas->empresa_id = Auth::user()->role=='admin' ? $request->empresa : Auth::user()->id;
+                $ofertas->save();
+
+                if (!empty($ofertas)) {
+                    foreach ($request->categorias as $key => $value) {
+                        $categoria_oferta = new CategoriasOfertas;
+                        $categoria_oferta->categoria_id = $value;
+                        $categoria_oferta->oferta_id = $ofertas->id;
+                        $categoria_oferta->save();
+                    }
+                    foreach ($request->habilidades as $key => $value) {
+                        $habilidad_oferta = new HabilidadesOfertas;
+                        $habilidad_oferta->habilidad_id = $value;
+                        $habilidad_oferta->oferta_id = $ofertas->id;
+                        $habilidad_oferta->save();
+                    }
+                }
+
+                DB::commit();
+            
+                $result = $ofertas ? ['msg' => 'success', 'data' => 'Se ha creado correctamente la Oferta ' . $request->titulo] : ['msg' => 'error', 'data' => 'Ocurrio un error al crear la Oferta ' . $request->titulo];
+
+                return response()->json($result);
+                
+            }else{ # id oferta contine valor se edita
+                $ofertas = Ofertas::find($request->id);
+                $ofertas->titulo = $request->titulo;
+                $ofertas->descripcion = $request->descripcion;
+                $ofertas->validez =  $request->validez;
+                $ofertas->salario = $request->salario;
+                $ofertas->empresa_id = Auth::user()->role=='admin' ? $request->empresa : Auth::user()->id;
+                $ofertas->save();
+
+                if (!empty($ofertas)) {
+                    CategoriasOfertas::where('oferta_id',$request->id)->delete();
+                    foreach ($request->categorias as $key => $value) {
+                        $categoria_oferta = new CategoriasOfertas;
+                        $categoria_oferta->categoria_id = $value;
+                        $categoria_oferta->oferta_id = $ofertas->id;
+                        $categoria_oferta->save();
+                    }
+                    HabilidadesOfertas::where('oferta_id',$request->id)->delete();
+                    foreach ($request->habilidades as $key => $value) {
+                        $habilidad_oferta = new HabilidadesOfertas;
+                        $habilidad_oferta->habilidad_id = $value;
+                        $habilidad_oferta->oferta_id = $ofertas->id;
+                        $habilidad_oferta->save();
+                    }
+                }
+
+                DB::commit();
+            
+                $result = $ofertas ? ['msg' => 'success', 'data' => 'Se ha editado la Oferta ' . $request->titulo] : ['msg' => 'error', 'data' => 'Ocurrio un error al editar la Oferta ' . $request->titulo];
+
+                return response()->json($result);
+            }
+
+           
+
+            
+
+      } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json(['msg' => 'error', 'data' => $e->getMessage()]);
+      }
     }
 
     /**
@@ -72,9 +143,9 @@ class OfertasController extends Controller
      * @param  \App\Ofertas  $ofertas
      * @return \Illuminate\Http\Response
      */
-    public function show(Ofertas $ofertas)
+    public function show(Request $request)
     {
-        //
+        return Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.id',$request->id)->first(); 
     }
 
     /**
