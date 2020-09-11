@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Ofertas;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
 
@@ -29,7 +30,7 @@ class UserController extends Controller
 
     public function data()
     {
-        $results = User::where('role','empresa')->get();
+        $results = User::where('role','empresa')->where('status','A')->get();
         return view('user.table',compact('results'));
     }
 
@@ -55,66 +56,52 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            DB::beginTransaction();
+            if (empty($request->id)) {
+                $user = User::create([
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                    'role' => 'empresa',
+                    'password' => Hash::make($request['password']),
+                ]);
+                DB::commit();
+                if (!empty($user)) {
+                    event(new Registered($user)); #notificacion de envio de valdiacion de correo 
+                    return response()->json(['msg' => 'success', 'data' => 'Se ha creado correctamente el usuario' . $request['name']]);
+                }else{
+                    return response()->json(['msg' => 'error', 'data' => 'No  ha creado el usuario ' . $request['name']]);
+                }
+            }else{
+                $user = User::find($request->id);
+                $user->name = $request['name_edit'];
+                $user->email =$request['email_edit'];
+                $user->save();
 
-        $user = User::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'role' => 'empresa',
-            'password' => Hash::make($request['password']),
-        ]);
-        if (!empty($user)) {
-            event(new Registered($user));
-            return response()->json(['msg' => 'success', 'data' => 'Se ha creado correctamente el usuario' . $request['name']]);
-        }else{
-            return response()->json(['msg' => 'error', 'data' => 'No  ha creado el usuario ' . $request['name']]);
+                DB::commit();
+            
+                $result = $user ? ['msg' => 'success', 'data' => 'Se ha editado correctamente el usuario ' . $user->name] : ['msg' => 'error', 'data' => 'Ocurrio un error al crear la Oferta ' . $request->name];
+
+                return response()->json($result);
+            }
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json(['msg' => 'error', 'data' => $e->getMessage()]);
         }
 
 
         
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    
+    public function delete(Request $request)
     {
-        //
-    }
+        $user = User::find($request->id);
+        $user->status = 'E'; //Eliminado
+        $user->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        $result = $user ? ['msg' => 'success', 'data' => 'Se ha eliminado la Oferta ' . $user->name] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la Oferta ' . $user->name];
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return response()->json($result);
     }
 }

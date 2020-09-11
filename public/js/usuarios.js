@@ -55,7 +55,7 @@ $(document).ready(function () {
         $('#EditModal').modal('toggle');
         $.ajax({
             type: 'POST',
-            url: '/register',
+            url: '/user',
             data: data,
             beforeSend: function () {
                 Swal.fire({
@@ -149,7 +149,7 @@ function eliminar(data,name){
                     confirm: function () {
                         $.ajax({
                             type: 'POST',
-                            url: '/delete/usuarios',
+                            url: '/user/delete',
                             data: {
                                 "_token": $('meta[name="csrf-token"]').attr('content'),
                                 "id": data

@@ -169,12 +169,14 @@
                                 Dashboard
                             </a>
                         </li>
+                         @if(Auth::user()->role!="aspirante")
                         <li >
                             <a href="{{ route('ofertas')}}" class="{{ Route::is('ofertas') ? 'active' : '' }}">
                                 <i class="metismenu-icon pe-7s-display2"></i>
                                 Ofertas
                             </a>
                         </li>
+                        @endif
                         @if(Auth::user()->role=="admin")
                         <li>
                                <a href="{{ route('user')}}" class="{{ Route::is('user') ? 'active' : '' }}">
@@ -218,7 +220,7 @@
 
                         </div>
                         <div class="app-footer-right">
-                          Desarrollado por ...... - ©Copyright 2020
+                          Desarrollado por Deckasoft Ecuador - ©Copyright 2020
                         </div>
                     </div>
                 </div>

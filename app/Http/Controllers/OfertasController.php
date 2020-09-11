@@ -23,6 +23,11 @@ class OfertasController extends Controller
 
     public function index()
     {
+        
+        if (Auth::user()->role == 'aspirante'){
+            return view('home_aspirante.index');
+        }
+        
         $categorias = Categorias::where('estado','A')->get();
         $habilidades = Habilidades::where('estado','A')->get();
         $empresas = User::where('role','empresa')->get();
@@ -33,32 +38,16 @@ class OfertasController extends Controller
     {
         $results = [];
         if (Auth::user()->role == 'admin'){
-            $results = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->orderBy('ofertas.validez', 'DESC')->get();  
+            $results = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->orderBy('ofertas.validez', 'DESC')->get();  
         }
         if (Auth::user()->role == 'empresa'){
-            $results = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.empresa_id',Auth::user()->id)->orderBy('ofertas.validez', 'DESC')->get();  
+            $results = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->where('ofertas.empresa_id',Auth::user()->id)->orderBy('ofertas.validez', 'DESC')->get();  
         }
         return view('ofertas.table',compact('results'));
     }
 
 
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
       try {
@@ -137,48 +126,22 @@ class OfertasController extends Controller
       }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Ofertas  $ofertas
-     * @return \Illuminate\Http\Response
-     */
+  
     public function show(Request $request)
     {
         return Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.id',$request->id)->first(); 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Ofertas  $ofertas
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Ofertas $ofertas)
+    public function delete(Request $request)
     {
-        //
+        $ofertas = Ofertas::find($request->id);
+        $ofertas->estado = 'E'; //Eliminado
+        $ofertas->save();
+
+        $result = $ofertas ? ['msg' => 'success', 'data' => 'Se ha eliminado la Oferta ' . $ofertas->titulo] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la Oferta ' . $ofertas->titulo];
+
+        return response()->json($result);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Ofertas  $ofertas
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Ofertas $ofertas)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Ofertas  $ofertas
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Ofertas $ofertas)
-    {
-        //
-    }
+   
 }

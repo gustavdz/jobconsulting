@@ -25,10 +25,12 @@ Route::middleware(['verified'])->group(function () {
     Route::get('/user', 'UserController@index')->name('user');
     Route::post('/user/data', 'UserController@data')->name('user.data');
     Route::post('/user', 'UserController@store')->name('user.store');
+    Route::post('/user/delete', 'UserController@delete')->name('user.delete');
 
     #ofertas
     Route::get('/ofertas', 'OfertasController@index')->name('ofertas');
     Route::post('/ofertas', 'OfertasController@store')->name('ofertas.store');
     Route::post('/ofertas/data', 'OfertasController@data')->name('ofertas.data');
     Route::post('/ofertas/show', 'OfertasController@show')->name('ofertas.show');
+    Route::post('/ofertas/delete', 'OfertasController@delete')->name('ofertas.delete');
 });

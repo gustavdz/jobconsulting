@@ -266,21 +266,26 @@ function editar(id){
 
 function eliminar(data,name){
     $.confirm({
-                title: 'Eliminar usuario!',
-                content: '¿Desea eliminar el usuario usuario '+name+'?',
+                title: '¡Eliminar!',
+                content: '¿Desea eliminar la oferta '+name+'?',
                 buttons: {
                     confirm: function () {
                         $.ajax({
                             type: 'POST',
-                            url: '/delete/usuarios',
+                            url: '/ofertas/delete',
                             data: {
                                 "_token": $('meta[name="csrf-token"]').attr('content'),
                                 "id": data
                             },
                             beforeSend: function () {
-                                $('#div_mensajes').removeClass('d-none');
-                                $('#div_mensajes').addClass('text-center');
-                                $('#mensajes').html('<img src="../images/load.gif" width="5%" height="5%" />');
+                                Swal.fire({
+                                    title: '¡Espere, Por favor!',
+                                    html: 'Cargando informacion...',
+                                    allowOutsideClick: false,
+                                    onBeforeOpen: () => {
+                                        Swal.showLoading()
+                                    }
+                                }); 
                             },
                             success: function (d) {
                                 if (d['msg'] == 'error') {
@@ -295,7 +300,7 @@ function eliminar(data,name){
                                 toastr.error('Error: '+xhr.statusText + xhr.responseText);
                             },
                             complete: function () {
-                                $('#div_mensajes').addClass('d-none');
+                                swal.close();
                             },
                         });
                     },

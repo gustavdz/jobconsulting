@@ -101,4 +101,45 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade modal-example1" tabindex="-1" id="EditModal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Usuarios</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form id="form" class="form-horizontal">
+                {{ csrf_field() }}
+                <div class="modal-body">
+                      <div class="form-group row">
+                        <label for="name_edit" class="col-sm-3 col-form-label">Nombres</label>
+                        <div class="col-sm-9">
+                            <input type="hidden" name="id" id="id">
+                            <input type="text" id="name_edit" name="name_edit" class="form-control">
+                            <label tipo="error" id="name_edit-error"></label>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="email_edit" class="col-sm-3 col-form-label">Correo</label>
+                        <div class="col-sm-9">
+                            <input type="email" id="email_edit" name="email_edit" class="form-control">
+                            <label tipo="error" id="email_edit-error"></label>
+                        </div>
+                      </div>                    
+                        
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiar()">Cerrar</button>
+                    <button type="button" class="btn btn-primary"  data-dismiss="modal" id="btn_actualizar">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
 @endsection
