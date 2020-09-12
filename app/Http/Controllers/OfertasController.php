@@ -43,9 +43,19 @@ class OfertasController extends Controller
         if (Auth::user()->role == 'empresa'){
             $results = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->where('ofertas.empresa_id',Auth::user()->id)->orderBy('ofertas.validez', 'DESC')->get();  
         }
-        return view('ofertas.table',compact('results'));
+
+        return datatables()
+        ->collection($results)
+        ->addColumn('detalle','ofertas.detalle') #detalle o llave a recibir en el JS y segundo campo la vista
+        ->addColumn('categorias','ofertas.categorias') #detalle o llave a recibir en el JS y segundo campo la vista
+        ->addColumn('habilidades','ofertas.habilidades') #detalle o llave a recibir en el JS y segundo campo la vista
+        ->addColumn('opciones','ofertas.opciones') #detalle o llave a recibir en el JS y segundo campo la vista
+        ->rawColumns(['detalle','categorias','habilidades','opciones']) #opcion para que presente el HTML
+        ->toJson();
+
     }
 
+    
 
 
     public function store(Request $request)
@@ -114,11 +124,7 @@ class OfertasController extends Controller
                 $result = $ofertas ? ['msg' => 'success', 'data' => 'Se ha editado la Oferta ' . $request->titulo] : ['msg' => 'error', 'data' => 'Ocurrio un error al editar la Oferta ' . $request->titulo];
 
                 return response()->json($result);
-            }
-
-           
-
-            
+            }            
 
       } catch (Exception $e) {
             DB::rollBack();

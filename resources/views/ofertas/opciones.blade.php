@@ -1,0 +1,2 @@
+<button onclick="editar({{ $id }})" title="Editar" type="button" class="btn btn-success btn_show"><i class="fas fa-edit"></i> Editar</button>
+<button onclick="eliminar({{$id}},'{{ $titulo }}')" type="button" class="btn btn-danger btn_delete"><i class="fas fa-trash"></i> Eliminar</button>

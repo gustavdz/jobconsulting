@@ -5,6 +5,18 @@
     <link rel="stylesheet" href="./vendor/select2/css/select2.min.css">
     <!--<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="./vendor/select2/select2-bootstrap.css">-->
+    <style type="text/css">
+div.dataTables_wrapper div.dataTables_processing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 280px;
+    margin-left: -100px;
+    margin-top: -26px;
+    text-align: center;
+    padding: 1em 0;
+}
+    </style>
 @stop
 
 @section('js')
@@ -44,7 +56,16 @@
             <div class="main-card mb-12 card">
                 <div class="card-body">
                     <div id="div_table">
-
+                        <table id="table_ofertas" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Detalle de la Oferta</th>
+                                    <th>Categorías</th>
+                                    <th>Habilidades</th>
+                                    <th>Opciónes</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>

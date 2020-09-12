@@ -30,7 +30,7 @@ Route::middleware(['verified'])->group(function () {
     #ofertas
     Route::get('/ofertas', 'OfertasController@index')->name('ofertas');
     Route::post('/ofertas', 'OfertasController@store')->name('ofertas.store');
-    Route::post('/ofertas/data', 'OfertasController@data')->name('ofertas.data');
+    Route::get('/ofertas/data', 'OfertasController@data')->name('ofertas.data');
     Route::post('/ofertas/show', 'OfertasController@show')->name('ofertas.show');
     Route::post('/ofertas/delete', 'OfertasController@delete')->name('ofertas.delete');
 });

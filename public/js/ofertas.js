@@ -5,7 +5,54 @@ $(document).ready(function () {
         }
     });
 
-    view_table();
+    //
+    //  view_table();
+    
+
+    $("#table_ofertas").DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax":"/ofertas/data",
+        "columns":[
+            {data:'detalle'},
+            {data:'categorias'},
+            {data:'habilidades'},
+            {data:'opciones'}
+        ],
+        "language": {
+                    "sProcessing": "<img src='../images/loading.gif' width='100%' height='100%' />",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla =(",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    }
+                },
+                "paging": true,
+                "lengthChange": true,
+                "ordering": false,
+                "info": true,
+                "autoWidth": false,
+    });
 
      $('#habilidades').select2({
         placeholder: "Seleccione",
@@ -65,7 +112,7 @@ $(document).ready(function () {
                     toastr.error(d['data']);
                 } else {
                     toastr.success(d['data']);
-                    view_table();
+                    $("#table_ofertas").DataTable().ajax.reload();
                     limpiar();
                 }
             },
@@ -104,8 +151,8 @@ $(document).ready(function () {
                 if (d['msg'] == 'error') {
                     toastr.error(d['data']);
                 } else {
-                    toastr.success(d['data']);
-                    view_table();
+                    toastr.success(d['data'])
+                    $("#table_ofertas").DataTable().ajax.reload();
                     limpiar();
                 }
             },
@@ -207,6 +254,7 @@ $(document).ready(function () {
 });
 
 function limpiar(){
+    $("#id").val('');
     $('#categorias').val([]).trigger('change');
     $('#habilidades').val([]).trigger('change');
     $("#formulario")[0].reset();
@@ -292,7 +340,7 @@ function eliminar(data,name){
                                     toastr.error(d['data']);
                                 } else {
                                     toastr.success(d['data']);
-                                    view_table();
+                                    $("#table_ofertas").DataTable().ajax.reload();
                                     limpiar();
                                 }
                             },
@@ -309,74 +357,6 @@ function eliminar(data,name){
                     }
                 }
             });
-}
-
-function view_table() {
-
-    $.ajax({
-        type: 'POST',
-        url: '/ofertas/data',
-        data: {
-            "_token": $('meta[name="csrf-token"]').attr('content')
-        },
-        beforeSend: function () {
-             Swal.fire({
-	                title: '¡Espere, Por favor!',
-	                html: 'Cargando informacion...',
-	                allowOutsideClick: false,
-	                onBeforeOpen: () => {
-	                    Swal.showLoading()
-	                }
-	            });  
-        },
-        success: function (data) {
-            $('#div_table').html(data);
-            $('#tbl_ofertas').DataTable({
-                "language": {
-                    "sProcessing": "Procesando...",
-                    "sLengthMenu": "Mostrar _MENU_ registros",
-                    "sZeroRecords": "No se encontraron resultados",
-                    "sEmptyTable": "Ningún dato disponible en esta tabla =(",
-                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                    "sInfoPostFix": "",
-                    "sSearch": "Buscar:",
-                    "sUrl": "",
-                    "sInfoThousands": ",",
-                    "sLoadingRecords": "Cargando...",
-                    "oPaginate": {
-                        "sFirst": "Primero",
-                        "sLast": "Último",
-                        "sNext": "Siguiente",
-                        "sPrevious": "Anterior"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                    },
-                    "buttons": {
-                        "copy": "Copiar",
-                        "colvis": "Visibilidad"
-                    }
-                },
-                "paging": true,
-                "lengthChange": true,
-                "ordering": false,
-                "info": true,
-                "autoWidth": false,
-                "order": [[0, "desc"]]
-            });
-            // acciones();
-        },
-        error: function (xhr) { // if error occured
-            toastr.error('Error: ' + xhr.statusText + xhr.responseText);
-        },
-        complete: function () {
-             	swal.close()
-        },
-        dataType: 'html'
-    });
 }
 
 
