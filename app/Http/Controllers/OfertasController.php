@@ -36,22 +36,28 @@ class OfertasController extends Controller
 
     public function data()
     {
-        $results = [];
+        ##$results = [];
         if (Auth::user()->role == 'admin'){
-            $results = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->orderBy('ofertas.validez', 'DESC')->get();  
+            return datatables()
+            ->eloquent(Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->orderBy('ofertas.validez', 'DESC'))
+            ->addColumn('detalle','ofertas.detalle') #detalle o llave a recibir en el JS y segundo campo la vista
+            ->addColumn('categorias','ofertas.categorias') #detalle o llave a recibir en el JS y segundo campo la vista
+            ->addColumn('habilidades','ofertas.habilidades') #detalle o llave a recibir en el JS y segundo campo la vista
+            ->addColumn('opciones','ofertas.opciones') #detalle o llave a recibir en el JS y segundo campo la vista
+            ->rawColumns(['detalle','categorias','habilidades','opciones']) #opcion para que presente el HTML
+            ->toJson();
         }
         if (Auth::user()->role == 'empresa'){
-            $results = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->where('ofertas.empresa_id',Auth::user()->id)->orderBy('ofertas.validez', 'DESC')->get();  
+            return datatables()
+            ->eloquent(Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->where('ofertas.empresa_id',Auth::user()->id)->orderBy('ofertas.validez', 'DESC'))
+            ->addColumn('detalle','ofertas.detalle') #detalle o llave a recibir en el JS y segundo campo la vista
+            ->addColumn('categorias','ofertas.categorias') #detalle o llave a recibir en el JS y segundo campo la vista
+            ->addColumn('habilidades','ofertas.habilidades') #detalle o llave a recibir en el JS y segundo campo la vista
+            ->addColumn('opciones','ofertas.opciones') #detalle o llave a recibir en el JS y segundo campo la vista
+            ->rawColumns(['detalle','categorias','habilidades','opciones']) #opcion para que presente el HTML
+            ->toJson();
         }
 
-        return datatables()
-        ->collection($results)
-        ->addColumn('detalle','ofertas.detalle') #detalle o llave a recibir en el JS y segundo campo la vista
-        ->addColumn('categorias','ofertas.categorias') #detalle o llave a recibir en el JS y segundo campo la vista
-        ->addColumn('habilidades','ofertas.habilidades') #detalle o llave a recibir en el JS y segundo campo la vista
-        ->addColumn('opciones','ofertas.opciones') #detalle o llave a recibir en el JS y segundo campo la vista
-        ->rawColumns(['detalle','categorias','habilidades','opciones']) #opcion para que presente el HTML
-        ->toJson();
 
     }
 
