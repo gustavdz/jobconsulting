@@ -12,9 +12,9 @@
     <meta name="keyword" content="Software, Consulting, Sistema">
 
     <!-- Scripts -->
+    <script type="text/javascript" src="{{ asset('/assets/scripts/main.js') }} "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" ></script>
-    <script type="text/javascript" src="{{ asset('/js/app.js') }} "></script>
-    <script type="text/javascript" src="{{ asset('../assets/scripts/main.js') }} "></script>
+{{--   <!-- <script type="text/javascript" src="{{ asset('/js/app.js') }} "></script> --> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="../../vendor/toastr/toastr.min.js"></script>
     <script src="{{ asset('../daterangepicker/moment.min.js') }}"></script>
@@ -56,9 +56,7 @@
 <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
     <div class="app-header header-shadow">
         <div class="app-header__logo">
-            <div >
-                CONSULTING
-            </div>
+            <div class="logo-src"></div>
             <div class="header__pane ml-auto">
                 <div>
                     <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
@@ -88,6 +86,15 @@
                 </span>
         </div>
         <div class="app-header__content">
+            <div class="app-header-left">
+                <div class="search-wrapper">
+                    <div class="input-holder">
+                        <input type="text" class="search-input" placeholder="Type to search">
+                        <button class="search-icon"><span></span></button>
+                    </div>
+                    <button class="close"></button>
+                </div>
+            </div>
             <div class="app-header-right">
                 <div class="header-btn-lg pr-0">
                     <div class="widget-content p-0">
@@ -96,8 +103,18 @@
                                 <div class="btn-group">
                                     <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
                                         <img width="42" class="rounded-circle" src="{{ asset('assets/images/avatars/1.png')}}" alt="">
-
+                                        <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                     </a>
+                                    <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                                        <h6 tabindex="-1" class="dropdown-header">Configuración</h6>
+                                        <a href="{{route('user.show')}}" tabindex="0" class="dropdown-item">Editar mi perfil</a>
+                                        <div tabindex="-1" class="dropdown-divider"></div>
+                                        <button type="button" tabindex="0" class="dropdown-item" onclick="document.getElementById('logout-form').submit();">Cerrar Sesión</button>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+
+                                    </div>
                                 </div>
                             </div>
                             <div class="widget-content-left  ml-3 header-user-info">
@@ -105,20 +122,11 @@
                                     {{ Auth::user()->name }}
                                 </div>
                                 <div class="widget-subheading">
-
+                                    {{ Auth::user()->role }}
                                 </div>
                             </div>
                             <div class="widget-content-right header-user-info ml-3">
-
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-
-                                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                   title="Salir" type="button" class="btn-shadow p-1 btn btn-primary">
-                                    <i class="fa text-white fa-chevron-circle-right pr-1 pl-1"></i>
-                                </a>
+                                &nbsp;
                             </div>
                         </div>
                     </div>
@@ -133,9 +141,9 @@
                 <div class="header__pane ml-auto">
                     <div>
                         <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
-                                    <span class="hamburger-box">
-                                        <span class="hamburger-inner"></span>
-                                    </span>
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
                         </button>
                     </div>
                 </div>
@@ -169,31 +177,20 @@
                                 Dashboard
                             </a>
                         </li>
-                         @if(Auth::user()->role!="aspirante")
                         <li >
                             <a href="{{ route('ofertas')}}" class="{{ Route::is('ofertas') ? 'active' : '' }}">
                                 <i class="metismenu-icon pe-7s-display2"></i>
                                 Ofertas
                             </a>
                         </li>
-                        @endif
                         @if(Auth::user()->role=="admin")
                         <li>
-                               <a href="{{ route('user')}}" class="{{ Route::is('user') ? 'active' : '' }}">
-                                <i class="metismenu-icon pe-7s-display2"></i>
-                                Empresas
-                            </a>
+                           <a href="{{ route('user')}}" class="{{ Route::is('user') ? 'active' : '' }}">
+                            <i class="metismenu-icon pe-7s-display2"></i>
+                            Empresas
+                           </a>
                         </li>
                         @endif
-
-
-
-                        <li>
-                            <a  href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="metismenu-icon pe-7s-back-2"></i>
-                                Cerrar Sesión
-                            </a>
-                        </li>
 
                     </ul>
                 </div>
@@ -220,7 +217,7 @@
 
                         </div>
                         <div class="app-footer-right">
-                          Desarrollado por Deckasoft Ecuador - ©Copyright 2020
+                          Desarrollado por Deckasoft Ecuador - © Copyright 2020
                         </div>
                     </div>
                 </div>

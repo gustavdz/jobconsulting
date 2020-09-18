@@ -26,6 +26,7 @@ Route::middleware(['verified'])->group(function () {
     Route::post('/user/data', 'UserController@data')->name('user.data');
     Route::post('/user', 'UserController@store')->name('user.store');
     Route::post('/user/delete', 'UserController@delete')->name('user.delete');
+    Route::get('/user/edit', 'UserController@edit')->name('user.show');
 
     #ofertas
     Route::get('/ofertas', 'OfertasController@index')->name('ofertas');

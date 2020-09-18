@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Ofertas;
@@ -24,7 +25,7 @@ class UserController extends Controller
 
     public function index()
     {
-        
+
         return view('user.index');
     }
 
@@ -67,7 +68,7 @@ class UserController extends Controller
                 ]);
                 DB::commit();
                 if (!empty($user)) {
-                    event(new Registered($user)); #notificacion de envio de valdiacion de correo 
+                    event(new Registered($user)); #notificacion de envio de valdiacion de correo
                     return response()->json(['msg' => 'success', 'data' => 'Se ha creado correctamente el usuario' . $request['name']]);
                 }else{
                     return response()->json(['msg' => 'error', 'data' => 'No  ha creado el usuario ' . $request['name']]);
@@ -79,7 +80,7 @@ class UserController extends Controller
                 $user->save();
 
                 DB::commit();
-            
+
                 $result = $user ? ['msg' => 'success', 'data' => 'Se ha editado correctamente el usuario ' . $user->name] : ['msg' => 'error', 'data' => 'Ocurrio un error al crear la Oferta ' . $request->name];
 
                 return response()->json($result);
@@ -90,10 +91,10 @@ class UserController extends Controller
         }
 
 
-        
+
     }
 
-    
+
     public function delete(Request $request)
     {
         $user = User::find($request->id);
@@ -103,5 +104,13 @@ class UserController extends Controller
         $result = $user ? ['msg' => 'success', 'data' => 'Se ha eliminado la Oferta ' . $user->name] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la Oferta ' . $user->name];
 
         return response()->json($result);
+    }
+
+    public function edit(Request $request){
+        $user = Auth::user();
+        if($user->role == 'aspirante'){
+            return view('user.edit',compact('user'));
+        }
+        return response()->json($user);
     }
 }

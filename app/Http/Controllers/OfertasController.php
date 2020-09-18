@@ -15,7 +15,7 @@ use Carbon\Carbon;
 
 class OfertasController extends Controller
 {
-    
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -23,11 +23,10 @@ class OfertasController extends Controller
 
     public function index()
     {
-        
-        if (Auth::user()->role == 'aspirante'){
-            return view('home_aspirante.index');
-        }
-        
+
+//        if (Auth::user()->role == 'aspirante'){
+//            return view('home_aspirante.index');
+//        }
         $categorias = Categorias::where('estado','A')->get();
         $habilidades = Habilidades::where('estado','A')->get();
         $empresas = User::where('role','empresa')->get();
@@ -37,9 +36,9 @@ class OfertasController extends Controller
     public function data()
     {
         ##$results = [];
-        if (Auth::user()->role == 'admin'){
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'aspirante'){
             return datatables()
-            ->eloquent(Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->orderBy('ofertas.validez', 'DESC'))
+            ->eloquent(Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC'))
             ->addColumn('detalle','ofertas.detalle') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('categorias','ofertas.categorias') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('habilidades','ofertas.habilidades') #detalle o llave a recibir en el JS y segundo campo la vista
@@ -49,7 +48,7 @@ class OfertasController extends Controller
         }
         if (Auth::user()->role == 'empresa'){
             return datatables()
-            ->eloquent(Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->where('ofertas.empresa_id',Auth::user()->id)->orderBy('ofertas.validez', 'DESC'))
+            ->eloquent(Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->where('ofertas.empresa_id',Auth::user()->id)->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC'))
             ->addColumn('detalle','ofertas.detalle') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('categorias','ofertas.categorias') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('habilidades','ofertas.habilidades') #detalle o llave a recibir en el JS y segundo campo la vista
@@ -61,7 +60,7 @@ class OfertasController extends Controller
 
     }
 
-    
+
 
 
     public function store(Request $request)
@@ -69,7 +68,7 @@ class OfertasController extends Controller
       try {
             DB::beginTransaction();
             if (empty($request->id)) { # Id oferta es vacio se crea
-                
+
                 $ofertas = new Ofertas;
                 $ofertas->titulo = $request->titulo;
                 $ofertas->descripcion = $request->descripcion;
@@ -94,11 +93,11 @@ class OfertasController extends Controller
                 }
 
                 DB::commit();
-            
+
                 $result = $ofertas ? ['msg' => 'success', 'data' => 'Se ha creado correctamente la Oferta ' . $request->titulo] : ['msg' => 'error', 'data' => 'Ocurrio un error al crear la Oferta ' . $request->titulo];
 
                 return response()->json($result);
-                
+
             }else{ # id oferta contine valor se edita
                 $ofertas = Ofertas::find($request->id);
                 $ofertas->titulo = $request->titulo;
@@ -126,11 +125,11 @@ class OfertasController extends Controller
                 }
 
                 DB::commit();
-            
+
                 $result = $ofertas ? ['msg' => 'success', 'data' => 'Se ha editado la Oferta ' . $request->titulo] : ['msg' => 'error', 'data' => 'Ocurrio un error al editar la Oferta ' . $request->titulo];
 
                 return response()->json($result);
-            }            
+            }
 
       } catch (Exception $e) {
             DB::rollBack();
@@ -138,10 +137,10 @@ class OfertasController extends Controller
       }
     }
 
-  
+
     public function show(Request $request)
     {
-        return Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.id',$request->id)->first(); 
+        return Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.id',$request->id)->first();
     }
 
     public function delete(Request $request)
@@ -155,5 +154,5 @@ class OfertasController extends Controller
         return response()->json($result);
     }
 
-   
+
 }

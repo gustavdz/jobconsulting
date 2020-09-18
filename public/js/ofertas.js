@@ -7,7 +7,7 @@ $(document).ready(function () {
 
     //
     //  view_table();
-    
+
 
     $("#table_ofertas").DataTable({
         "processing": true,
@@ -20,38 +20,38 @@ $(document).ready(function () {
             {data:'opciones'}
         ],
         "language": {
-                    "sProcessing": "<img src='../images/loading.gif' width='100%' height='100%' />",
-                    "sLengthMenu": "Mostrar _MENU_ registros",
-                    "sZeroRecords": "No se encontraron resultados",
-                    "sEmptyTable": "Ningún dato disponible en esta tabla =(",
-                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                    "sInfoPostFix": "",
-                    "sSearch": "Buscar:",
-                    "sUrl": "",
-                    "sInfoThousands": ",",
-                    "sLoadingRecords": "Cargando...",
-                    "oPaginate": {
-                        "sFirst": "Primero",
-                        "sLast": "Último",
-                        "sNext": "Siguiente",
-                        "sPrevious": "Anterior"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                    },
-                    "buttons": {
-                        "copy": "Copiar",
-                        "colvis": "Visibilidad"
-                    }
-                },
-                "paging": true,
-                "lengthChange": true,
-                "ordering": false,
-                "info": true,
-                "autoWidth": false,
+            "sProcessing": "<img src='../images/loading.gif' width='100%' height='100%' />",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "No se encontraron resultados",
+            "sEmptyTable": "Ningún dato disponible en esta tabla =(",
+            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sSearch": "Buscar:",
+            "sUrl": "",
+            "sInfoThousands": ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            },
+            "buttons": {
+                "copy": "Copiar",
+                "colvis": "Visibilidad"
+            }
+        },
+        "paging": true,
+        "lengthChange": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
     });
 
      $('#habilidades').select2({
@@ -102,7 +102,7 @@ $(document).ready(function () {
                     onBeforeOpen: () => {
                         Swal.showLoading()
                     }
-                }); 
+                });
             },
             success: function (data) {
               //  $('#formregisterdiv').html(data);
@@ -142,7 +142,7 @@ $(document).ready(function () {
                     onBeforeOpen: () => {
                         Swal.showLoading()
                     }
-                }); 
+                });
             },
             success: function (data) {
               //  $('#formregisterdiv').html(data);
@@ -201,7 +201,7 @@ $(document).ready(function () {
         return this.optional(element) || /^\d{0,4}(\.\d{0,2})?$/i.test(value);
     }, "El valor debe incluir dos decimales");
 
-    $("#formulario").validate({ 
+    $("#formulario").validate({
         ignore: [],
         rules: {
           'titulo'          : {required: true},
@@ -221,7 +221,7 @@ $(document).ready(function () {
         },
           errorPlacement: function (error, element) {
             var er=error[0].innerHTML;
-            var nombre = element[0].id;            
+            var nombre = element[0].id;
             if(element[0].type=="select-one"){
                 $("#" + nombre).parent().find(".select2-container").addClass("error");
             }else{
@@ -277,11 +277,11 @@ function editar(id){
                 onBeforeOpen: () => {
                     Swal.showLoading()
                 }
-            }); 
+            });
         },
         success: function (data) {
             console.log(data)
-            if (data != "") {   
+            if (data != "") {
                 $('#myModal').modal('toggle');
                 $("#id").val(data.id);
                 $("#empresa").val(data.empresa_id);
@@ -333,7 +333,7 @@ function eliminar(data,name){
                                     onBeforeOpen: () => {
                                         Swal.showLoading()
                                     }
-                                }); 
+                                });
                             },
                             success: function (d) {
                                 if (d['msg'] == 'error') {
