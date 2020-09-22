@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHabilidadesTable extends Migration
+class CreateAspiranteIdiomasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateHabilidadesTable extends Migration
      */
     public function up()
     {
-        Schema::create('habilidades', function (Blueprint $table) {
+        Schema::create('aspirante_idiomas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->char('estado',1)->default('A');
+            $table->bigInteger('aspirante_id')->unsigned();
+            $table->string('idioma',250)->nullable();
+            $table->string('nivel',250)->nullable();
+
+            $table->foreign('aspirante_id')->references('id')->on('aspirantes');
             $table->timestamps();
         });
     }
@@ -28,8 +31,6 @@ class CreateHabilidadesTable extends Migration
      */
     public function down()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('habilidades');
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        Schema::dropIfExists('aspirante_idiomas');
     }
 }

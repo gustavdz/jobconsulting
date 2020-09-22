@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHabilidadesTable extends Migration
+class CreateEstadoOfertasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateHabilidadesTable extends Migration
      */
     public function up()
     {
-        Schema::create('habilidades', function (Blueprint $table) {
+        Schema::create('estado_ofertas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('nombre')->nullable();
             $table->char('estado',1)->default('A');
             $table->timestamps();
         });
@@ -28,8 +28,6 @@ class CreateHabilidadesTable extends Migration
      */
     public function down()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('habilidades');
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        Schema::dropIfExists('estado_ofertas');
     }
 }

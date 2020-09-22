@@ -12,9 +12,9 @@
     <meta name="keyword" content="Software, Consulting, Sistema">
 
     <!-- Scripts -->
-    <script type="text/javascript" src="{{ asset('/assets/scripts/main.js') }} "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" ></script>
-{{--   <!-- <script type="text/javascript" src="{{ asset('/js/app.js') }} "></script> --> --}}
+    <script type="text/javascript" src="{{ asset('/js/app.js') }} "></script>
+    <script type="text/javascript" src="{{ asset('/assets/scripts/main.js') }} "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="../../vendor/toastr/toastr.min.js"></script>
     <script src="{{ asset('../daterangepicker/moment.min.js') }}"></script>
@@ -127,6 +127,13 @@
                             </div>
                             <div class="widget-content-right header-user-info ml-3">
                                 &nbsp;
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                   title="Salir" type="button" class="btn-shadow p-1 btn btn-primary">
+                                    <i class="fa text-white fa-chevron-circle-right pr-1 pl-1"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -227,4 +234,5 @@
     </div>
 </div>
 @yield('modal')
+<div id='app'></div>
 </body>

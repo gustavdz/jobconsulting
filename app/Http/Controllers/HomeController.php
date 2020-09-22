@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Ofertas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,7 +34,9 @@ class HomeController extends Controller
         }
 
         if (Auth::user()->role == 'aspirante'){
-            return view('home_aspirante.index');
+            $ofertas=Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC')->paginate(9);
+            //return $ofertas;
+            return view('home_aspirante.index',compact('ofertas'));
         }
 
         if (Auth::user()->role == 'empresa'){
