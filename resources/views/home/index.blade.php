@@ -1,15 +1,23 @@
 @extends('layouts.admin')
 
-@section('title')
-    <div class="page-title-heading">
-        <div class="page-title-icon">
-            <i class="pe-7s-id icon-gradient bg-strong-bliss">
-            </i>
-        </div>
-        <div>Administración
-            <div class="page-title-subheading">Dashboard
-            </div>
 
+@section('title')
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon">
+                    <i class="pe-7s-id icon-gradient bg-strong-bliss">
+                    </i>
+                </div>
+                <div>Administración
+                    <div class="page-title-subheading">Dashboard
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div id="div_mensajes" class="d-none">
+            <p id="mensajes"></p>
         </div>
     </div>
 @endsection

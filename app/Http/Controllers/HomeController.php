@@ -6,7 +6,7 @@ use App\User;
 use App\Ofertas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -34,7 +34,7 @@ class HomeController extends Controller
         }
 
         if (Auth::user()->role == 'aspirante'){
-            $ofertas=Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC')->paginate(9);
+            $ofertas=Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->where('ofertas.validez','>',Carbon::now())->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC')->paginate(9);
             //return $ofertas;
             return view('home_aspirante.index',compact('ofertas'));
         }

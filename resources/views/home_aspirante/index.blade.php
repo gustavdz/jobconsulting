@@ -12,25 +12,58 @@
 <script src="{{ asset('../js/aspirante.js') }}"></script>
 @endsection
 
+{{--@section('title')
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading col-md-4">
+                <select class="form-control" id="categories" name="categories">
+                    <option>Seleccione</option>
+                    @foreach($allCategories as $categories)
+                    <option value="{{ $categories->id }}">{{ $categories->nombre }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="page-title-actions">
+            </div>
+            
+        </div>
+        <div id="div_mensajes" class="d-none">
+            <p id="mensajes"></p>
+        </div>
+    </div>
+@endsection --}}
+
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        @foreach ($ofertas as $oferta)
-            <div class="col-md-4 mb-3" >
-                <div class="card border-primary">
-                    <div class="card-header"><a href="#" onclick="detalle({{ $oferta->id }})">{{ $oferta->titulo }}</a></div>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row justify-content-center">
+                @foreach ($ofertas as $oferta)
+                    <div class="col-md-4 mb-3" >
+                        <div class="card border-primary">
+                            <div class="card-header"><a href="#" onclick="detalle({{ $oferta->id }})">{{ $oferta->titulo }}</a></div>
 
-                    <div class="card-body">
-                        <p class="line">{{ $oferta->descripcion }}</p>
-                        <p class="line">Salario ${{$oferta->salario ? number_format($oferta->salario, 2, '.', ',') : '0.00'}}</p>
-                       <footer class="blockquote-footer text-right">Publicado {{\Carbon\Carbon::parse($oferta->created_at)->format('j F, Y')}}</footer>
+                            <div class="card-body">
+                                <p class="line">{{ $oferta->descripcion }}</p>
+                                <p class="line">Salario ${{$oferta->salario ? number_format($oferta->salario, 2, '.', ',') : '0.00'}}</p>
+                               <footer class="blockquote-footer text-right">Publicado {{\Carbon\Carbon::parse($oferta->created_at)->format('j F, Y')}}</footer>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                @endforeach
             </div>
-        @endforeach
-    </div>
-    <div class="row justify-content-center p-4">
-        {!! $ofertas->render() !!}
+            <div class="row justify-content-center p-4">
+                {!! $ofertas->render() !!}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <li class="app-sidebar__heading" style="list-style: none;">CATEGORÍAS</li>
+            <div class="list-group">
+                @foreach($allCategories as $categories)
+                    <a href="#" class="list-group-item list-group-item-action ">{{ $categories->nombre }}</a>
+                @endforeach
+            </div>
+        </div>
     </div>
 </div>
 @endsection
@@ -60,7 +93,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiar()">Cerrar</button>
-                    <button type="button" class="btn btn-primary"  data-dismiss="modal" id="btn_guardar">Guardar</button>
+                    <button type="button" class="btn btn-primary"  data-dismiss="modal" id="btn_guardar">Aplicar</button>
                 </div>
             </form>
         </div>

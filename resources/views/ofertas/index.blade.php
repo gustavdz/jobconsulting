@@ -30,22 +30,30 @@ div.dataTables_wrapper div.dataTables_processing {
 @stop
 
 @section('title')
-    <div class="page-title-heading">
-        <div class="page-title-icon">
-            <i class="pe-7s-id icon-gradient bg-strong-bliss">
-            </i>
-        </div>
-        <div>Ofertas
-            <div class="page-title-subheading">Listado
-            </div>
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon">
+                    <i class="pe-7s-id icon-gradient bg-strong-bliss">
+                    </i>
+                </div>
+                <div>Ofertas
+                    <div class="page-title-subheading">Listado
+                    </div>
 
+                </div>
+            </div>
+            <div class="page-title-actions">
+                <button title="Guardar" data-placement="bottom" data-toggle="modal" data-target=".modal-example" id="agregar"
+                        class="btn-shadow mr-3 btn btn-success " onclick="limpiar()">
+                    <i class="fa fa-plus"></i> Agregar Oferta
+                </button>
+            </div>
+            
         </div>
-    </div>
-    <div class="page-title-actions">
-        <button title="Guardar" data-placement="bottom" data-toggle="modal" data-target=".modal-example" id="agregar"
-                class="btn-shadow mr-3 btn btn-success " onclick="limpiar()">
-            <i class="fa fa-plus"></i> Agregar Oferta
-        </button>
+        <div id="div_mensajes" class="d-none">
+            <p id="mensajes"></p>
+        </div>
     </div>
 @endsection
 

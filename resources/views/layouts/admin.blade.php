@@ -184,13 +184,22 @@
                                 Dashboard
                             </a>
                         </li>
+                        {{--<li class="app-sidebar__heading">CATEGORÍAS</li>
+                        @foreach($allCategories as $categorie)
+                            <li >
+                                <a href="{{ route('home')}}">
+                                    <i class="metismenu-icon pe-7s-display2"></i>
+                                    {{ $categorie->nombre }}
+                                </a>
+                            </li>
+                            @endforeach--}}
+                        @if(Auth::user()->role=="admin")
                         <li >
                             <a href="{{ route('ofertas')}}" class="{{ Route::is('ofertas') ? 'active' : '' }}">
                                 <i class="metismenu-icon pe-7s-display2"></i>
                                 Ofertas
                             </a>
                         </li>
-                        @if(Auth::user()->role=="admin")
                         <li>
                            <a href="{{ route('user')}}" class="{{ Route::is('user') ? 'active' : '' }}">
                             <i class="metismenu-icon pe-7s-display2"></i>
@@ -205,14 +214,8 @@
         </div>
         <div class="app-main__outer">
             <div class="app-main__inner">
-                <div class="app-page-title">
-                    <div class="page-title-wrapper">
-                        @yield('title')
-                    </div>
-                    <div id="div_mensajes" class="d-none">
-                        <p id="mensajes"></p>
-                    </div>
-                </div>
+                    @yield('title')
+                
 
                     @yield('content')
 
