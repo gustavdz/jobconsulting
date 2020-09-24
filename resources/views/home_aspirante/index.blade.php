@@ -38,7 +38,7 @@
     <div class="row">
         <div class="col-md-9">
             <div class="row justify-content-center">
-                @foreach ($ofertas as $oferta)
+                @forelse ($ofertas as $oferta)
                     <div class="col-md-4 mb-3" >
                         <div class="card border-primary">
                             <div class="card-header"><a href="#" onclick="detalle({{ $oferta->id }})">{{ $oferta->titulo }}</a></div>
@@ -50,17 +50,26 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-md-12 mb-3" >
+                        <div class="card border-primary">
+                            <div class="card-body">
+                               <p>No existe ofertas para mostrar</p>
+                            </div>
+                        </div>
+                    </div>
+                @endforelse
             </div>
             <div class="row justify-content-center p-4">
                 {!! $ofertas->render() !!}
             </div>
         </div>
         <div class="col-md-3">
-            <li class="app-sidebar__heading" style="list-style: none;">CATEGORÍAS</li>
+            <li class="app-sidebar__heading" style="list-style: none;"><a href="{{route('home')}}">CATEGORÍAS</a></li>
             <div class="list-group">
                 @foreach($allCategories as $categories)
-                    <a href="#" class="list-group-item list-group-item-action ">{{ $categories->nombre }}</a>
+                    <a href="{{ route('oferta.categoria',$categories->id)}}" class="list-group-item list-group-item-action {{  (request()->is('categoria/'.$categories->id)) ? 'active' : '' }}">{{ $categories->nombre }}</a>
+
                 @endforeach
             </div>
         </div>

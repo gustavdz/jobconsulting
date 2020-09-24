@@ -16,4 +16,9 @@ class CategoriasOfertas extends Model
     public function categoria() {
 		return $this->belongsTo(Categorias::class, 'categoria_id');
 	}
+
+	//pertnece
+    public function ofertas() {
+		return $this->belongsTo(Ofertas::class,'oferta_id');
+	}
 }
