@@ -37,4 +37,8 @@ Route::middleware(['verified'])->group(function () {
 
     #categorias
     Route::get('/categoria/{id}', 'OfertasController@ofertaCategoria')->name('oferta.categoria');
+
+    #aspirante
+    Route::get('/aspirante', 'AspirantesController@index')->name('aspirante');
+    
 });

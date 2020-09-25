@@ -184,6 +184,13 @@
                                 Dashboard
                             </a>
                         </li>
+
+                        <li >
+                            <a href="{{ route('aspirante')}}" class="{{ Route::is('aspirante') ? 'active' : '' }}">
+                                <i class="metismenu-icon pe-7s-display2"></i>
+                                Mi Currículum
+                            </a>
+                        </li>
                         {{--<li class="app-sidebar__heading">CATEGORÍAS</li>
                         @foreach($allCategories as $categorie)
                             <li >
