@@ -48,18 +48,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1" aria-selected="false">
-                    <span>Perfil Profesional</span>
+                <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-3" aria-selected="false">
+                    <span>Formación Academica</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-2" aria-selected="false">
                     <span>Experiencias Profesionales</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-3" aria-selected="false">
-                    <span>Formación Academica</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -86,22 +81,6 @@
         	</div>
         	{{-- FIN DATOS PERSONALES --}}
 
-        	{{-- PERFIL PROFESIONAL --}}
-        	<div class="tab-pane tabs-animation fade" id="tab-content-1" role="tabpanel">
-        		<div class="main-card mb-3 card">
-                    <div class="card-header"><i class="header-icon lnr-license icon-gradient bg-plum-plate"> </i>PERFIL PROFESIONAL
-                        <div class="btn-actions-pane-right">
-                            <div role="group" class="btn-group-sm nav btn-group">
-                                <button class="mb-2 mr-2 btn-icon btn-shadow btn-dashed btn btn-outline-primary"><i class="pe-7s-plus btn-icon-wrapper"> </i> Añadir</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        @include('aspirante.personales')
-                    </div>
-                </div>
-        	</div>
-        	{{-- FIN PERFIL PROFESIONAL --}}
 
         	{{-- EXPERIENCIAS PROFESIONALES --}}
         	<div class="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
@@ -114,7 +93,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        @include('aspirante.personales')
+                        @include('aspirante.experiencia')
                     </div>
                 </div>
         	</div>
@@ -131,7 +110,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        @include('aspirante.personales')
+                        @include('aspirante.academica')
                     </div>
                 </div>
         	</div>
@@ -148,7 +127,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        @include('aspirante.personales')
+                        @include('aspirante.idioma')
                     </div>
                 </div>
         	</div>
@@ -166,7 +145,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        @include('aspirante.personales')
+                        @include('aspirante.referencia')
                     </div>
                 </div>
         	</div>

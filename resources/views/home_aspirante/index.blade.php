@@ -2,36 +2,15 @@
 
 @section('css')
 <style type="text/css">
-    p.line{
-        line-height: 5px;
-    }
+    
 </style>
 @endsection
 
 @section('js')
 <script src="{{ asset('../js/aspirante.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 @endsection
 
-{{--@section('title')
-    <div class="app-page-title">
-        <div class="page-title-wrapper">
-            <div class="page-title-heading col-md-4">
-                <select class="form-control" id="categories" name="categories">
-                    <option>Seleccione</option>
-                    @foreach($allCategories as $categories)
-                    <option value="{{ $categories->id }}">{{ $categories->nombre }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="page-title-actions">
-            </div>
-            
-        </div>
-        <div id="div_mensajes" class="d-none">
-            <p id="mensajes"></p>
-        </div>
-    </div>
-@endsection --}}
 
 @section('content')
 <div class="container">
@@ -91,14 +70,17 @@
             </div>
             <form id="formulario" class="form-horizontal">
                 {{ csrf_field() }}
-                <div class="modal-body">
-                    
-                    
-                    
-                   
-                    
-                    
+                <div class="modal-body" >
+                    <div id="detalle_oferta">
                         
+                    </div>
+                        <div class="form-group row">
+                            <label for="salario" class="col-sm-4 col-form-label">Ingrese su salario pretendido</label>
+                            <div class="col-sm-8">
+                              <input type="hidden" class="form-control" id="oferta_id">
+                              <input type="text" class="form-control" id="salario">
+                            </div>
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiar()">Cerrar</button>

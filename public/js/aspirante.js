@@ -137,8 +137,8 @@ function limpiar(){
 }
 
 function detalle(id){
-	$('#detalleModal').modal('toggle');
-    /*limpiar();
+	//$('#detalleModal').modal('toggle');
+    //limpiar();
     $.ajax({
         type: 'POST',
         url: '/ofertas/show',
@@ -157,25 +157,21 @@ function detalle(id){
             });
         },
         success: function (data) {
+            $('#detalleModal').modal('toggle');
             console.log(data)
+            var html_text="";
             if (data != "") {
-                $('#myModal').modal('toggle');
-                $("#id").val(data.id);
-                $("#empresa").val(data.empresa_id);
-                $("#titulo").val(data.titulo);
-                $("#descripcion").val(data.descripcion);
-                $("#salario").val(data.salario);
-                $("#validez").val(data.validez);
-                var categorias = [];
-                for (var i = 0; i < data.categorias_ofertas.length ; i++) {
-                    categorias.push(data.categorias_ofertas[i].categoria_id);
+                console.log(data)
+                html_text+=  "<h5>"+data.titulo+" - "+data.user.name+"</h5>";
+                html_text+= "<p>"+data.descripcion+"</p><ul>";
+
+                for (var i = 0; i < data.habilidades_ofertas.length; i++) {
+                   html_text+= "<li>"+data.habilidades_ofertas[i].habilidad.nombre+"</li>";
                 }
-                var habilidades = [];
-                for (var i = 0; i < data.habilidades_ofertas.length ; i++) {
-                    habilidades.push(data.habilidades_ofertas[i].habilidad_id);
-                }
-                $("#categorias").val(categorias).trigger('change');
-                $("#habilidades").val(habilidades).trigger('change');
+                html_text+="</ul>";
+                html_text+="<p>Salario $"+data.salario+"</p>";
+                $("#detalle_oferta").html(html_text);
+                $("#oferta_id").val(data.id);
             }else{
                 toastr.warning("No se encontraron resultados");
             }
@@ -186,7 +182,7 @@ function detalle(id){
         complete: function () {
             swal.close();
         },
-    });*/
+    });
 }
 
 
