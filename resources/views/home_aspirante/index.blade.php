@@ -2,7 +2,11 @@
 
 @section('css')
 <style type="text/css">
-    
+    #formulario_postulacion label[tipo="error"]{
+    display: none;
+    font-size: 12px;
+    color: #fe0000;
+}
 </style>
 @endsection
 
@@ -68,7 +72,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form id="formulario" class="form-horizontal">
+            <form id="formulario_postulacion" class="form-horizontal">
                 {{ csrf_field() }}
                 <div class="modal-body" >
                     <div id="detalle_oferta">
@@ -77,14 +81,15 @@
                         <div class="form-group row">
                             <label for="salario" class="col-sm-4 col-form-label">Ingrese su salario pretendido</label>
                             <div class="col-sm-8">
-                              <input type="hidden" class="form-control" id="oferta_id">
-                              <input type="text" class="form-control" id="salario">
+                              <input type="hidden" class="form-control" id="oferta_id" name="oferta_id">
+                              <input type="text" class="form-control" id="salario" name="salario">
+                              <label tipo="error" id="salario-error"></label>
                             </div>
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiar()">Cerrar</button>
-                    <button type="button" class="btn btn-primary"  data-dismiss="modal" id="btn_guardar">Aplicar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiar_postulacion()">Cerrar</button>
+                    <button type="button" class="btn btn-primary"  data-dismiss="modal" id="btn_aplicar">Aplicar</button>
                 </div>
             </form>
         </div>

@@ -5,20 +5,74 @@ $(document).ready(function () {
         }
     });
 
-    //
-    //  view_table();
+    $("#guardar_perfil").click(function () {
 
+        if (!$("#formulario_personal").valid()) {
+            return false;
+        }
+        
+        var formData = new FormData();
+        formData.append('_token',$('meta[name="csrf-token"]').attr('content'));
+        formData.append('foto',$('#foto')[0].files[0]);
+        formData.append('cv',$('#cv')[0].files[0]);
+        formData.append('nombres',$('#nombres').val());
+        formData.append('correo',$('#correo').val());
+        formData.append('fecha_nacimiento',$('#fecha').val());
+        formData.append('telefono',$('#telefono').val());
+        formData.append('celular',$('#celular').val());
+        formData.append('pais',$('#pais').val());
+        formData.append('provincia',$('#provincia').val());
+        formData.append('ciudad',$('#ciudad').val());
+        formData.append('remuneracion_actual',$('#remuneracion_actual').val());
+        formData.append('espectativa_salarial',$('#espectativa_salarial').val());
 
-
-   
-
-
-    $("#btn_actualizar").click(function () {
-        var data = new $('#form').serialize();
-        $('#EditModal').modal('toggle');
         $.ajax({
             type: 'POST',
-            url: '/ofertas',
+            url: '/aspirante',
+            data: formData,
+            processData:false,
+            contentType:false,
+            beforeSend: function () {
+                Swal.fire({
+                    title: '¡Espere, Por favor!',
+                    html: 'Cargando informacion...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+            },
+            success: function (data) {
+              console.log(data)
+                var d = JSON.parse(data);
+                //$('#div_mensajes').removeClass('d-none text-center')
+                if (d['msg'] == 'error') {
+                    toastr.error(d['data']);
+                } else {
+                    var src = '/storage/perfil/'+$("#aspirante_user_id").val()+ '.jpg?'+new Date().getTime();
+                    $("#img_aspirante").prop('src',src)
+                    toastr.success(d['data'])
+                }
+            },
+            error: function (xhr) { // if error occured
+                toastr.error('Error: '+xhr.statusText + xhr.responseText);
+            },
+            complete: function () {
+               swal.close();
+            },
+            dataType: 'html'
+        });
+    });
+
+    $("#btn_aplicar").click(function () {
+        if (!$("#formulario_postulacion").valid()) {
+            return false;
+        }
+        var data = $('#formulario_postulacion').serialize();
+        $('#formacionModal').modal('toggle');
+        $.ajax({
+            type: 'POST',
+            url: '/postulacion',
             data: data,
             beforeSend: function () {
                 Swal.fire({
@@ -32,14 +86,187 @@ $(document).ready(function () {
             },
             success: function (data) {
               //  $('#formregisterdiv').html(data);
+              console.log(data)
                 var d = JSON.parse(data);
                 //$('#div_mensajes').removeClass('d-none text-center')
                 if (d['msg'] == 'error') {
                     toastr.error(d['data']);
                 } else {
+                    //aspirante_formacion();
                     toastr.success(d['data'])
-                    $("#table_ofertas").DataTable().ajax.reload();
-                    limpiar();
+                    limpiar_postulacion();
+                }
+            },
+            error: function (xhr) { // if error occured
+                toastr.error('Error: '+xhr.statusText + xhr.responseText);
+            },
+            complete: function () {
+               swal.close();
+            },
+            dataType: 'html'
+        });
+    });
+
+    $("#guardar_formacion").click(function () {
+        if (!$("#formulario_academia").valid()) {
+            return false;
+        }
+        var data = $('#formulario_academia').serialize() + "&aspirante_id="+$("#aspirante_id").val();
+        $('#formacionModal').modal('toggle');
+        $.ajax({
+            type: 'POST',
+            url: '/aspirante/formacion',
+            data: data,
+            beforeSend: function () {
+                Swal.fire({
+                    title: '¡Espere, Por favor!',
+                    html: 'Cargando informacion...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+            },
+            success: function (data) {
+              //  $('#formregisterdiv').html(data);
+              console.log(data)
+                var d = JSON.parse(data);
+                //$('#div_mensajes').removeClass('d-none text-center')
+                if (d['msg'] == 'error') {
+                    toastr.error(d['data']);
+                } else {
+                    aspirante_formacion();
+                    toastr.success(d['data'])
+                    limpiar_formacion();
+                }
+            },
+            error: function (xhr) { // if error occured
+                toastr.error('Error: '+xhr.statusText + xhr.responseText);
+            },
+            complete: function () {
+               swal.close();
+            },
+            dataType: 'html'
+        });
+    });
+
+    $("#guardar_idioma").click(function () {
+         if (!$("#formulario_idioma").valid()) {
+            return false;
+        }
+        var data = $('#formulario_idioma').serialize() + "&aspirante_id="+$("#aspirante_id").val();
+        $('#idiomaModal').modal('toggle');
+        $.ajax({
+            type: 'POST',
+            url: '/aspirante/idioma',
+            data: data,
+            beforeSend: function () {
+                Swal.fire({
+                    title: '¡Espere, Por favor!',
+                    html: 'Cargando informacion...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+            },
+            success: function (data) {
+              //  $('#formregisterdiv').html(data);
+              console.log(data)
+                var d = JSON.parse(data);
+                //$('#div_mensajes').removeClass('d-none text-center')
+                if (d['msg'] == 'error') {
+                    toastr.error(d['data']);
+                } else {
+                    aspirante_idioma();
+                    toastr.success(d['data'])
+                    limpiar_idioma();
+                }
+            },
+            error: function (xhr) { // if error occured
+                toastr.error('Error: '+xhr.statusText + xhr.responseText);
+            },
+            complete: function () {
+               swal.close();
+            },
+            dataType: 'html'
+        });
+    });
+
+    $("#guardar_referencia").click(function () {
+        if (!$("#formulario_referencia").valid()) {
+            return false;
+        }
+        var data = $('#formulario_referencia').serialize() + "&aspirante_id="+$("#aspirante_id").val();
+        $('#referenciaModal').modal('toggle');
+        $.ajax({
+            type: 'POST',
+            url: '/aspirante/referencia',
+            data: data,
+            beforeSend: function () {
+                Swal.fire({
+                    title: '¡Espere, Por favor!',
+                    html: 'Cargando informacion...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+            },
+            success: function (data) {
+              //  $('#formregisterdiv').html(data);
+              console.log(data)
+                var d = JSON.parse(data);
+                //$('#div_mensajes').removeClass('d-none text-center')
+                if (d['msg'] == 'error') {
+                    toastr.error(d['data']);
+                } else {
+                    aspirante_referencia();
+                    toastr.success(d['data'])
+                    limpiar_referencia();
+                }
+            },
+            error: function (xhr) { // if error occured
+                toastr.error('Error: '+xhr.statusText + xhr.responseText);
+            },
+            complete: function () {
+               swal.close();
+            },
+            dataType: 'html'
+        });
+    });
+
+    $("#guardar_experiencia").click(function () {
+        if (!$("#formulario_experiencia").valid()) {
+            return false;
+        }
+        var data = $('#formulario_experiencia').serialize() + "&aspirante_id="+$("#aspirante_id").val();
+        $('#experienciaModal').modal('toggle');
+        $.ajax({
+            type: 'POST',
+            url: '/aspirante/experiencia',
+            data: data,
+            beforeSend: function () {
+                Swal.fire({
+                    title: '¡Espere, Por favor!',
+                    html: 'Cargando informacion...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+            },
+            success: function (data) {
+              //  $('#formregisterdiv').html(data);
+              console.log(data)
+                var d = JSON.parse(data);
+                //$('#div_mensajes').removeClass('d-none text-center')
+                if (d['msg'] == 'error') {
+                    toastr.error(d['data']);
+                } else {
+                    aspirante_experiencia();
+                    toastr.success(d['data'])
+                    limpiar_experiencia();
                 }
             },
             error: function (xhr) { // if error occured
@@ -71,39 +298,25 @@ $(document).ready(function () {
         }else{
             return false;
         }
-    }, "El valor debe ser menor o igual a $2000");
+    }, "El valor debe ser menor o igual a $1000000");
 
-     $.validator.addMethod('required_monto', function(value, element, param) {
-        if( $("#terminos").is(':checked') ){
-                // Hacer algo si el checkbox ha sido seleccionado
-                return true;
-            } else {
-                // Hacer algo si el checkbox ha sido deseleccionado
-                return false;
-            }
-        }, "Debe aceptar los términos y condicones");
-
-     $.validator.addMethod('dollarsscents', function(value, element) {
+    $.validator.addMethod('dollarsscents', function(value, element) {
         return this.optional(element) || /^\d{0,4}(\.\d{0,2})?$/i.test(value);
     }, "El valor debe incluir dos decimales");
 
-    $("#formulario").validate({
+    $("#formulario_personal").validate({
         ignore: [],
         rules: {
-          'titulo'          : {required: true},
-          'descripcion'            : {required: true},
-          'categorias'          : {required: true,},
-          'validez'          : {required: true,},
-          'habilidades'          : {required: true},
-          'empresa'          : {required: true},
-          'salario'       : {required: true,number:true,monto_minimo:0,monto_maximo:50000,dollarsscents:true},
-
-        },
-        messages:{
-          'cedula':{
-            minlength: "Por favor, ingresa {0} caracteres",
-            maxlength: "Por favor, ingresa {0} caracteres",
-          }
+          'nombres'          : {required: true},
+          'correo'            : {required: true,email:true},
+          'fecha'          : {required: true,},
+          'telefono'          : {required: true,},
+          'celular'          : {required: true},
+          'pais'          : {required: true},
+          'provincia'          : {required: true},
+          'ciudad'          : {required: true},
+          'remuneracion_actual'          : {required: true,number:true,monto_minimo:0,monto_maximo:1000000,dollarsscents:true},
+          'espectativa_salarial'          : {required: true,number:true,monto_minimo:0,monto_maximo:1000000,dollarsscents:true},
         },
           errorPlacement: function (error, element) {
             var er=error[0].innerHTML;
@@ -127,18 +340,358 @@ $(document).ready(function () {
           }
       });
 
+    /*FORMACION ACADEMICA*/
+    $("#formulario_academia").validate({
+        ignore: [],
+        rules: {
+          'institucion'          : {required: true},
+          'titulo'            : {required: true,},
+          'inicio_formacion'          : {required: true,}
+        },
+          errorPlacement: function (error, element) {
+            var er=error[0].innerHTML;
+            var nombre = element[0].id;
+            if(element[0].type=="select-one"){
+                $("#" + nombre).parent().find(".select2-container").addClass("error");
+            }else{
+                $("#" + nombre).addClass("is-invalid");
+            }
+            $("#" + nombre + "-error").html(er);
+            $("#" + nombre + "-error").show();
+          }, unhighlight: function (element) {
+            var nombre = element.id;
+            if(element.type=="select-one"){
+                $("#" + nombre).parent().find(".select2-container").removeClass("error");
+            }else{
+                $("#" + nombre).removeClass("is-invalid");
+            }
+            $("#" + nombre + "-error").hide();
+            $("#"+nombre).removeClass("error");
+          }
+      });
+    /*FORMACION ACADEMICA*/
+
+     /*FORMACION EXPERIENCIA*/
+    $("#formulario_experiencia").validate({
+        ignore: [],
+        rules: {
+          'empresa'          : {required: true},
+          'inicio_experiencia'            : {required: true,},
+          'sector'          : {required: true,},
+          'cargo'          : {required: true,},
+          'sector'          : {required: true,},
+          'personal'          : {required: true,number:true},
+          'funciones'          : {required: true,maxlength:250}
+        },
+          errorPlacement: function (error, element) {
+            var er=error[0].innerHTML;
+            var nombre = element[0].id;
+            if(element[0].type=="select-one"){
+                $("#" + nombre).parent().find(".select2-container").addClass("error");
+            }else{
+                $("#" + nombre).addClass("is-invalid");
+            }
+            $("#" + nombre + "-error").html(er);
+            $("#" + nombre + "-error").show();
+          }, unhighlight: function (element) {
+            var nombre = element.id;
+            if(element.type=="select-one"){
+                $("#" + nombre).parent().find(".select2-container").removeClass("error");
+            }else{
+                $("#" + nombre).removeClass("is-invalid");
+            }
+            $("#" + nombre + "-error").hide();
+            $("#"+nombre).removeClass("error");
+          }
+      });
+    /*FORMACION EXPERIENCIA*/
+
+     /*FORMACION IDIOMA*/
+    $("#formulario_idioma").validate({
+        ignore: [],
+        rules: {
+          'idioma'          : {required: true},
+          'nivel'            : {required: true,},
+        },
+          errorPlacement: function (error, element) {
+            var er=error[0].innerHTML;
+            var nombre = element[0].id;
+            if(element[0].type=="select-one"){
+                $("#" + nombre).parent().find(".select2-container").addClass("error");
+            }else{
+                $("#" + nombre).addClass("is-invalid");
+            }
+            $("#" + nombre + "-error").html(er);
+            $("#" + nombre + "-error").show();
+          }, unhighlight: function (element) {
+            var nombre = element.id;
+            if(element.type=="select-one"){
+                $("#" + nombre).parent().find(".select2-container").removeClass("error");
+            }else{
+                $("#" + nombre).removeClass("is-invalid");
+            }
+            $("#" + nombre + "-error").hide();
+            $("#"+nombre).removeClass("error");
+          }
+      });
+    /*FORMACION IDIOMA*/
+
+     /*FORMACION REFERENCIA*/
+    $("#formulario_referencia").validate({
+        ignore: [],
+        rules: {
+          'nombres_referencia'          : {required: true},
+          'correo_referencia'            : {required: true,},
+          'telefono_referencia'          : {required: true,maxlength:10}
+        },
+          errorPlacement: function (error, element) {
+            var er=error[0].innerHTML;
+            var nombre = element[0].id;
+            if(element[0].type=="select-one"){
+                $("#" + nombre).parent().find(".select2-container").addClass("error");
+            }else{
+                $("#" + nombre).addClass("is-invalid");
+            }
+            $("#" + nombre + "-error").html(er);
+            $("#" + nombre + "-error").show();
+          }, unhighlight: function (element) {
+            var nombre = element.id;
+            if(element.type=="select-one"){
+                $("#" + nombre).parent().find(".select2-container").removeClass("error");
+            }else{
+                $("#" + nombre).removeClass("is-invalid");
+            }
+            $("#" + nombre + "-error").hide();
+            $("#"+nombre).removeClass("error");
+          }
+      });
+    /*FORMACION REFERENCIA*/
+
+     /*FORMACION POSTULACION*/
+    $("#formulario_postulacion").validate({
+        ignore: [],
+        rules: {
+          'salario'          : {required: true,number:true,monto_minimo:0,monto_maximo:1000000,dollarsscents:true},
+        },
+          errorPlacement: function (error, element) {
+            var er=error[0].innerHTML;
+            var nombre = element[0].id;
+            if(element[0].type=="select-one"){
+                $("#" + nombre).parent().find(".select2-container").addClass("error");
+            }else{
+                $("#" + nombre).addClass("is-invalid");
+            }
+            $("#" + nombre + "-error").html(er);
+            $("#" + nombre + "-error").show();
+          }, unhighlight: function (element) {
+            var nombre = element.id;
+            if(element.type=="select-one"){
+                $("#" + nombre).parent().find(".select2-container").removeClass("error");
+            }else{
+                $("#" + nombre).removeClass("is-invalid");
+            }
+            $("#" + nombre + "-error").hide();
+            $("#"+nombre).removeClass("error");
+          }
+      });
+    /*FORMACION POSTULACION*/
+
     
 
 });
 
-function limpiar(){
-    $("#id").val('');
-    $("#formulario")[0].reset();
+function limpiar_formacion(){
+    $("#formacion_id").val('');
+    $("#formulario_academia")[0].reset();
 }
 
+function limpiar_idioma(){
+    $("#idioma_id").val('');
+    $("#formulario_idioma")[0].reset();
+}
+
+function limpiar_referencia(){
+    $("#referencia_id").val('');
+    $("#formulario_referencia")[0].reset();
+}
+
+function limpiar_experiencia(){
+    $("#experiencia_id").val('');
+    $("#formulario_experiencia")[0].reset();
+}
+
+function limpiar_postulacion(){
+    $("#oferta_id").val('');
+    $("#formulario_postulacion")[0].reset();
+}
+
+function editar_formacion(id,institucion,titulo,inicio,fin){
+    $("#formacion_id").val(id);
+    $("#institucion").val(institucion);
+    $("#titulo").val(titulo);
+    $("#inicio_formacion").val(inicio);
+    $("#fin_formacion").val(fin);
+    $('#formacionModal').modal('toggle');
+}
+
+function editar_idioma(id,idioma,nivel){
+    $("#idioma_id").val(id);
+    $("#idioma").val(idioma);
+    $("#nivel").val(nivel);
+    $('#idiomaModal').modal('toggle');
+}
+
+function editar_referencia(id,nombres,correo,telefono){
+    $("#referencia_id").val(id);
+    $("#nombres_referencia").val(nombres);
+    $("#correo_referencia").val(correo);
+    $("#telefono_referencia").val(telefono);
+    $('#referenciaModal').modal('toggle');
+}
+
+function editar_experiencia(id,empresa,inicio,fin,sector,cargo,funciones,personal_cargo){
+    $("#experiencia_id").val(id);
+    $("#empresa").val(empresa);
+    $("#inicio_experiencia").val(inicio);
+    $("#fin_experiencia").val(fin);
+    $("#sector").val(sector);
+    $("#cargo").val(cargo);
+    $("#personal").val(personal_cargo);
+    $("#funciones").val(funciones);
+    $('#experienciaModal').modal('toggle');
+}
+
+function aspirante_formacion(){
+    $.ajax({
+        type: 'POST',
+        url: '/aspirante/view',
+        data: {
+            "_token": $('meta[name="csrf-token"]').attr('content'),
+            "aspirante_id": $("#aspirante_id").val()
+        },
+        beforeSend: function () {
+            Swal.fire({
+                title: '¡Espere, Por favor!',
+                html: 'Cargando informacion...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                }
+            });
+        },
+        success: function (data) {
+            //console.log(data)
+            $('#aspirante_formacion').html(data);
+            
+        },
+        error: function (xhr) {
+            toastr.error('Error: '+xhr.statusText + xhr.responseText);
+        },
+        complete: function () {
+            swal.close();
+        },
+    });
+}
+
+function aspirante_idioma(){
+    $.ajax({
+        type: 'POST',
+        url: '/aspirante/idioma/view',
+        data: {
+            "_token": $('meta[name="csrf-token"]').attr('content'),
+            "aspirante_id": $("#aspirante_id").val()
+        },
+        beforeSend: function () {
+            Swal.fire({
+                title: '¡Espere, Por favor!',
+                html: 'Cargando informacion...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                }
+            });
+        },
+        success: function (data) {
+            //console.log(data)
+            $('#aspirante_idioma').html(data);
+            
+        },
+        error: function (xhr) {
+            toastr.error('Error: '+xhr.statusText + xhr.responseText);
+        },
+        complete: function () {
+            swal.close();
+        },
+    });
+}
+
+function aspirante_referencia(){
+    $.ajax({
+        type: 'POST',
+        url: '/aspirante/referencia/view',
+        data: {
+            "_token": $('meta[name="csrf-token"]').attr('content'),
+            "aspirante_id": $("#aspirante_id").val()
+        },
+        beforeSend: function () {
+            Swal.fire({
+                title: '¡Espere, Por favor!',
+                html: 'Cargando informacion...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                }
+            });
+        },
+        success: function (data) {
+            //console.log(data)
+            $('#aspirante_referencia').html(data);
+            
+        },
+        error: function (xhr) {
+            toastr.error('Error: '+xhr.statusText + xhr.responseText);
+        },
+        complete: function () {
+            swal.close();
+        },
+    });
+}
+
+function aspirante_experiencia(){
+    $.ajax({
+        type: 'POST',
+        url: '/aspirante/experiencia/view',
+        data: {
+            "_token": $('meta[name="csrf-token"]').attr('content'),
+            "aspirante_id": $("#aspirante_id").val()
+        },
+        beforeSend: function () {
+            Swal.fire({
+                title: '¡Espere, Por favor!',
+                html: 'Cargando informacion...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                }
+            });
+        },
+        success: function (data) {
+            //console.log(data)
+            $('#aspirante_experiencia').html(data);
+            
+        },
+        error: function (xhr) {
+            toastr.error('Error: '+xhr.statusText + xhr.responseText);
+        },
+        complete: function () {
+            swal.close();
+        },
+    });
+}
+
+/*bsuqueda de ofertas*/
 function detalle(id){
-	//$('#detalleModal').modal('toggle');
-    //limpiar();
+    limpiar_postulacion();
     $.ajax({
         type: 'POST',
         url: '/ofertas/show',
@@ -185,9 +738,200 @@ function detalle(id){
     });
 }
 
+function eliminar_formacion(data,name){
+    $.confirm({
+                title: '¡Eliminar!',
+                content: '¿Desea eliminar la Formación Academica '+name+'?',
+                buttons: {
+                    confirm: function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/aspirante/formacion/delete',
+                            data: {
+                                "_token": $('meta[name="csrf-token"]').attr('content'),
+                                "id": data
+                            },
+                            beforeSend: function () {
+                                Swal.fire({
+                                    title: '¡Espere, Por favor!',
+                                    html: 'Cargando informacion...',
+                                    allowOutsideClick: false,
+                                    onBeforeOpen: () => {
+                                        Swal.showLoading()
+                                    }
+                                });
+                            },
+                            success: function (d) {
+                                if (d['msg'] == 'error') {
+                                    toastr.error(d['data']);
+                                } else {
+                                    toastr.success(d['data']);
+                                    aspirante_formacion();
+                                    limpiar_formacion();
+                                }
+                            },
+                            error: function (xhr) {
+                                toastr.error('Error: '+xhr.statusText + xhr.responseText);
+                            },
+                            complete: function () {
+                                swal.close();
+                            },
+                        });
+                    },
+                    cancel: function () {
+                        $.alert('Se ha cancelado la eliminación!');
+                    }
+                }
+            });
+}
+
+function eliminar_experiencia(data,name){
+    $.confirm({
+                title: '¡Eliminar!',
+                content: '¿Desea eliminar la Experiencia profesional '+name+'?',
+                buttons: {
+                    confirm: function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/aspirante/experiencia/delete',
+                            data: {
+                                "_token": $('meta[name="csrf-token"]').attr('content'),
+                                "id": data
+                            },
+                            beforeSend: function () {
+                                Swal.fire({
+                                    title: '¡Espere, Por favor!',
+                                    html: 'Cargando informacion...',
+                                    allowOutsideClick: false,
+                                    onBeforeOpen: () => {
+                                        Swal.showLoading()
+                                    }
+                                });
+                            },
+                            success: function (d) {
+                                if (d['msg'] == 'error') {
+                                    toastr.error(d['data']);
+                                } else {
+                                    toastr.success(d['data']);
+                                    aspirante_experiencia();
+                                    limpiar_experiencia();
+                                }
+                            },
+                            error: function (xhr) {
+                                toastr.error('Error: '+xhr.statusText + xhr.responseText);
+                            },
+                            complete: function () {
+                                swal.close();
+                            },
+                        });
+                    },
+                    cancel: function () {
+                        $.alert('Se ha cancelado la eliminación!');
+                    }
+                }
+            });
+}
+
+function eliminar_idioma(data,name){
+    $.confirm({
+                title: '¡Eliminar!',
+                content: '¿Desea eliminar El Idioma '+name+'?',
+                buttons: {
+                    confirm: function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/aspirante/idioma/delete',
+                            data: {
+                                "_token": $('meta[name="csrf-token"]').attr('content'),
+                                "id": data
+                            },
+                            beforeSend: function () {
+                                Swal.fire({
+                                    title: '¡Espere, Por favor!',
+                                    html: 'Cargando informacion...',
+                                    allowOutsideClick: false,
+                                    onBeforeOpen: () => {
+                                        Swal.showLoading()
+                                    }
+                                });
+                            },
+                            success: function (d) {
+                                if (d['msg'] == 'error') {
+                                    toastr.error(d['data']);
+                                } else {
+                                    toastr.success(d['data']);
+                                    aspirante_idioma();
+                                    limpiar_idioma();
+                                }
+                            },
+                            error: function (xhr) {
+                                toastr.error('Error: '+xhr.statusText + xhr.responseText);
+                            },
+                            complete: function () {
+                                swal.close();
+                            },
+                        });
+                    },
+                    cancel: function () {
+                        $.alert('Se ha cancelado la eliminación!');
+                    }
+                }
+            });
+}
 
 
+function eliminar_referencia(data,name){
+    $.confirm({
+                title: '¡Eliminar!',
+                content: '¿Desea eliminar la referencia de '+name+'?',
+                buttons: {
+                    confirm: function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/aspirante/referencia/delete',
+                            data: {
+                                "_token": $('meta[name="csrf-token"]').attr('content'),
+                                "id": data
+                            },
+                            beforeSend: function () {
+                                Swal.fire({
+                                    title: '¡Espere, Por favor!',
+                                    html: 'Cargando informacion...',
+                                    allowOutsideClick: false,
+                                    onBeforeOpen: () => {
+                                        Swal.showLoading()
+                                    }
+                                });
+                            },
+                            success: function (d) {
+                                if (d['msg'] == 'error') {
+                                    toastr.error(d['data']);
+                                } else {
+                                    toastr.success(d['data']);
+                                    aspirante_referencia();
+                                    limpiar_referencia();
+                                }
+                            },
+                            error: function (xhr) {
+                                toastr.error('Error: '+xhr.statusText + xhr.responseText);
+                            },
+                            complete: function () {
+                                swal.close();
+                            },
+                        });
+                    },
+                    cancel: function () {
+                        $.alert('Se ha cancelado la eliminación!');
+                    }
+                }
+            });
+}
 
+function imgError(image) {
+    image.onerror = "";
+    image.src = "/images/avatar.jpg";
+    return true;
+}
 
 
 

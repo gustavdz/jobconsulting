@@ -105,7 +105,7 @@
                                         <img width="42" class="rounded-circle" src="{{ asset('assets/images/avatars/1.png')}}" alt="">
                                         <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                     </a>
-                                    <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                                    {{--<div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
                                         <h6 tabindex="-1" class="dropdown-header">Configuración</h6>
                                         <a href="{{route('user.show')}}" tabindex="0" class="dropdown-item">Editar mi perfil</a>
                                         <div tabindex="-1" class="dropdown-divider"></div>
@@ -114,7 +114,7 @@
                                             {{ csrf_field() }}
                                         </form>
 
-                                    </div>
+                                    </div>--}}
                                 </div>
                             </div>
                             <div class="widget-content-left  ml-3 header-user-info">
@@ -184,13 +184,20 @@
                                 Dashboard
                             </a>
                         </li>
-
+                         @if(Auth::user()->role=="aspirante")
+                        <li >
+                            <a href="{{ route('postulaciones')}}" class="{{ Route::is('postulaciones') ? 'active' : '' }}">
+                                <i class="metismenu-icon pe-7s-display2"></i>
+                                Mis Postulaciones
+                            </a>
+                        </li>
                         <li >
                             <a href="{{ route('aspirante')}}" class="{{ Route::is('aspirante') ? 'active' : '' }}">
                                 <i class="metismenu-icon pe-7s-display2"></i>
                                 Mi Currículum
                             </a>
                         </li>
+                        @endif
                         {{--<li class="app-sidebar__heading">CATEGORÍAS</li>
                         @foreach($allCategories as $categorie)
                             <li >
@@ -200,13 +207,16 @@
                                 </a>
                             </li>
                             @endforeach--}}
-                        @if(Auth::user()->role=="admin")
+                        @if(Auth::user()->role=="admin" || Auth::user()->role=="empresa")
                         <li >
                             <a href="{{ route('ofertas')}}" class="{{ Route::is('ofertas') ? 'active' : '' }}">
                                 <i class="metismenu-icon pe-7s-display2"></i>
                                 Ofertas
                             </a>
                         </li>
+                        @endif
+                        @if(Auth::user()->role=="admin")
+                        
                         <li>
                            <a href="{{ route('user')}}" class="{{ Route::is('user') ? 'active' : '' }}">
                             <i class="metismenu-icon pe-7s-display2"></i>

@@ -1,37 +1,32 @@
-<form id="formulario" class="form-horizontal">
-     {{ csrf_field() }}
-     <div class="row">
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="nombres">Institución Educativa</label>
-			    <input type="text" class="form-control" id="nombres" name="nombres" placeholder="" value="">
-			</div>
-     	</div>
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="correo">Titulo</label>
-			    <input type="email" class="form-control" id="correo" name="correo" placeholder="" value="">
-			</div>
-     	</div>
-     </div>
-
-     <div class="row">
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="fecha">Inicio</label>
-			    <input type="text" class="form-control" id="fecha" name="fecha" placeholder="">
-			</div>
-     	</div>
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="telefono">Fin</label>
-			    <input type="text" class="form-control" id="telefono" name="telefono" placeholder="">
-			</div>
-     	</div>
-     </div>
- 	
-
-    <div class="d-block text-left card-footer">
-                <a href="javascript:void(0);" class="btn-wide btn btn-success">Guardar</a>
-    </div>  
-</form>
+@forelse($formaciones as $formacion)
+<div class="main-card mb-3 card border-info">
+    <div class="card-header">
+        {{ $formacion->institucion_educativa }} 
+        <div class="btn-actions-pane-right">
+            <div  role="group" class="btn-group-sm btn-group">
+                <button class="mb-2 mr-2 btn-icon btn-shadow btn-dashed btn btn-outline-success" onclick="editar_formacion({{ $formacion->id }},'{{ $formacion->institucion_educativa }}','{{ $formacion->titulo }}','{{ $formacion->inicio }}','{{ $formacion->fin }}')"><i class="pe-7s-pen btn-icon-wrapper" > </i> Editar</button>
+                <button class="mb-2 mr-2 btn-icon btn-shadow btn-dashed btn btn-outline-danger" onclick="eliminar_formacion({{ $formacion->id }},'{{ $formacion->institucion_educativa }} ')"><i class="pe-7s-trash btn-icon-wrapper"> </i> Eliminar</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <p>{{ $formacion->titulo }}.</p>
+        <div class="row">
+            <div class="col">
+                <p>Fecha de Inicio: {{\Carbon\Carbon::parse($formacion->inicio)->format('j F, Y')}}</p>
+            </div>
+            <div class="col">
+                <p>Fecha de Fin: {{ !empty($formacion->fin) ? \Carbon\Carbon::parse($formacion->fin)->format('j F, Y') : 'Cursando.'}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+ @empty
+    <div class="col-md-12 mb-3" >
+        <div class="card border-info">
+            <div class="card-body">
+               <p>No se encontro información para mostrar</p>
+            </div>
+        </div>
+    </div>
+@endforelse

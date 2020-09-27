@@ -34,11 +34,27 @@ Route::middleware(['verified'])->group(function () {
     Route::get('/ofertas/data', 'OfertasController@data')->name('ofertas.data');
     Route::post('/ofertas/show', 'OfertasController@show')->name('ofertas.show');
     Route::post('/ofertas/delete', 'OfertasController@delete')->name('ofertas.delete');
+    Route::post('/postulacion', 'OfertasController@postulacion')->name('postulacion.post');
 
     #categorias
     Route::get('/categoria/{id}', 'OfertasController@ofertaCategoria')->name('oferta.categoria');
 
     #aspirante
     Route::get('/aspirante', 'AspirantesController@index')->name('aspirante');
+    Route::get('/postulaciones', 'AspirantesController@postulaciones')->name('postulaciones');
+    Route::post('/aspirante', 'AspirantesController@perfil')->name('aspirante.post');
+    Route::post('/aspirante/view', 'AspirantesController@viewFormacion')->name('aspirante.formacion');
+    Route::post('/aspirante/formacion', 'AspirantesController@formacion')->name('aspirante.formacion.post');
+    Route::post('/aspirante/idioma/view', 'AspirantesController@viewIdioma')->name('aspirante.idioma');
+    Route::post('/aspirante/idioma', 'AspirantesController@idioma')->name('aspirante.idioma.post');
+    Route::post('/aspirante/referencia/view', 'AspirantesController@viewReferencia')->name('aspirante.referencia');
+    Route::post('/aspirante/referencia', 'AspirantesController@referencia')->name('aspirante.referencia.post');
+    Route::post('/aspirante/experiencia/view', 'AspirantesController@viewExperencia')->name('aspirante.experencia');
+    Route::post('/aspirante/experiencia', 'AspirantesController@experencia')->name('aspirante.experencia.post');
     
+    Route::post('/aspirante/formacion/delete', 'AspirantesController@formacion_delete')->name('aspirante.formacion.delete');
+    Route::post('/aspirante/experiencia/delete', 'AspirantesController@experiencia_delete')->name('aspirante.experiencia.delete');
+    Route::post('/aspirante/idioma/delete', 'AspirantesController@idioma_delete')->name('aspirante.idioma.delete');
+    Route::post('/aspirante/referencia/delete', 'AspirantesController@referencia_delete')->name('aspirante.referencia.delete');
+
 });

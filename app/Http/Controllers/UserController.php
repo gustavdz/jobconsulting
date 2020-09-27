@@ -25,7 +25,9 @@ class UserController extends Controller
 
     public function index()
     {
-
+        if (Auth::user()->role == 'aspirante' || Auth::user()->role == 'empresa') {
+            return redirect()->route('home');
+        }
         return view('user.index');
     }
 

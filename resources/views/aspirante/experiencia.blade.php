@@ -1,62 +1,45 @@
-<form id="formulario" class="form-horizontal">
-     {{ csrf_field() }}
-     <div class="row">
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="nombres">Empresa</label>
-			    <input type="text" class="form-control" id="nombres" name="nombres" placeholder="" value="">
-			</div>
-     	</div>
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="correo">Fecha de inicio</label>
-			    <input type="email" class="form-control" id="correo" name="correo" placeholder="" value="">
-			</div>
-     	</div>
-     </div>
-
-     <div class="row">
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="fecha">Fecha de Terminación</label>
-			    <input type="text" class="form-control" id="fecha" name="fecha" placeholder="">
-			</div>
-     	</div>
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="telefono">Sector</label>
-			    <input type="text" class="form-control" id="telefono" name="telefono" placeholder="">
-			</div>
-     	</div>
-     </div>
- 	
- 	<div class="row">
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="celular">Cargo</label>
-			    <input type="text" class="form-control" id="celular" name="celular" placeholder="">
-			</div>
-     	</div>
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="provincia">Personal a Cargo</label>
-			    <input type="text" class="form-control" id="provincia" name="provincia" placeholder="">
-			</div>
-     	</div>
-     </div>
-
-     <div class="row">
-          <div class="col">
-               <div class="form-group">
-                   <label for="funciones">Funciones</label>
-                   <textarea rows="5" id="funciones" name="funciones" class="form-control"></textarea>
-               </div>
-          </div>
-     	
- 	</div>
-
-
-    <div class="d-block text-left card-footer">
-                <a href="javascript:void(0);" class="btn-wide btn btn-success">Guardar</a>
-    </div>  
-</form>
+@forelse($experiencias as $experiencia)
+<div class="main-card mb-3 card border-info">
+    <div class="card-header">
+        {{ $experiencia->empresa }} 
+        <div class="btn-actions-pane-right">
+            <div  role="group" class="btn-group-sm btn-group">
+                <button class="mb-2 mr-2 btn-icon btn-shadow btn-dashed btn btn-outline-success" onclick="editar_experiencia({{ $experiencia->id }},'{{ $experiencia->empresa }}','{{ $experiencia->inicio }}','{{ $experiencia->fin }}','{{ $experiencia->sector }}','{{ $experiencia->cargo }}','{{ $experiencia->funciones }}','{{ $experiencia->personal_cargo }}')"><i class="pe-7s-pen btn-icon-wrapper" > </i> Editar</button>
+                <button class="mb-2 mr-2 btn-icon btn-shadow btn-dashed btn btn-outline-danger" onclick="eliminar_experiencia({{ $experiencia->id }},'{{ $experiencia->empresa }}')"><i class="pe-7s-trash btn-icon-wrapper"> </i> Eliminar</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <p>{{ $experiencia->cargo }}.</p>
+        <div class="row">
+            <div class="col">
+                <p>Fecha de Inicio: {{\Carbon\Carbon::parse($experiencia->inicio)->format('j F, Y')}}</p>
+            </div>
+            <div class="col">
+                <p>Fecha de Terminación: {{ !empty($experiencia->fin) ? \Carbon\Carbon::parse($experiencia->fin)->format('j F, Y') : 'Actualmente.'}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>Sector: {{ $experiencia->sector }}</p>
+            </div>
+            <div class="col">
+                <p>Personal a Cargo: {{ $experiencia->personal_cargo }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>Funciones: {{ $experiencia->funciones }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+ @empty
+    <div class="col-md-12 mb-3" >
+        <div class="card border-info">
+            <div class="card-body">
+               <p>No se encontro información para mostrar</p>
+            </div>
+        </div>
+    </div>
+@endforelse

@@ -6,6 +6,8 @@ use App\User;
 use App\Ofertas;
 use App\Categorias;
 use App\Habilidades;
+use App\Aspirantes;
+use App\Aplicaciones;
 use App\CategoriasOfertas;
 use App\HabilidadesOfertas;
 use Illuminate\Http\Request;
@@ -24,9 +26,9 @@ class OfertasController extends Controller
     public function index()
     {
 
-//        if (Auth::user()->role == 'aspirante'){
-//            return view('home_aspirante.index');
-//        }
+       if (Auth::user()->role == 'aspirante') {
+            return redirect()->route('home');
+        }
         $categorias = Categorias::where('estado','A')->get();
         $habilidades = Habilidades::where('estado','A')->get();
         $empresas = User::where('role','empresa')->get();
@@ -164,6 +166,30 @@ class OfertasController extends Controller
 
         //return DB::getQueryLog(); // Show results of log
         return view('home_aspirante.index',compact('ofertas'));
+    }
+
+    public function postulacion(Request $request)
+    {
+        $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
+        if (empty($aspirante)) {
+            return response()->json(['msg' => 'error', 'data' => 'Ud no se encuentra registrado como aspirante']);
+        }
+
+        $oferta = Aplicaciones::where('aspirante_id',$aspirante->id)->where('oferta_id',$request->oferta_id)->first();
+        if (empty($oferta)) {
+            $postulacion = new Aplicaciones;
+            $postulacion->oferta_id = $request->oferta_id;
+            $postulacion->aspirante_id = $aspirante->id;
+            $postulacion->estado_oferta_id = 1;
+            $postulacion->salario_aspirado = $request->salario;
+            $postulacion->save();
+
+            $result = $postulacion ? ['msg' => 'success', 'data' => 'Se ha postulado correctamente a la oferta'] : ['msg' => 'error', 'data' => 'Ocurrio un error al postular la Oferta '];
+
+            return response()->json($result);
+        }else{
+            return response()->json(['msg' => 'error', 'data' => 'Ya se encuentra una postulación registrada con sus datos']);
+        }
     }
 
 
