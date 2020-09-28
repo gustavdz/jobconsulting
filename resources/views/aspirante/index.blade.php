@@ -52,7 +52,7 @@
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
-                <img id="img_aspirante" src="/storage/perfil/{{ Auth::user()->id  }}.jpg?{{ time() }}" alt="{{ Auth::user()->name }}" class="img-thumbnail" onerror="imgError(this);" style="width: 60px;margin-right: 5px;">
+                <img id="img_aspirante" src="/storage/perfil/{{ Auth::user()->id  }}.jpg?{{ time() }}" alt="" class="img-thumbnail" onerror="imgError(this);" style="width: 60px;margin-right: 5px;">
                 <div>{{ Auth::user()->name }}
                     <div class="page-title-subheading"><a href="/storage/cv/{{ Auth::user()->id  }}.pdf" target="_blank">Descargar Currículum</a>
                     </div>
@@ -67,7 +67,7 @@
 @endsection 
 
 @section('content')
-<input type="hidden" name="aspirante_id" id="aspirante_id" value="{{ $aspirante->id }}">
+<input type="hidden" name="aspirante_id" id="aspirante_id" value="{{ $aspirante->id ?? '' }}">
 <input type="hidden" name="aspirante_user_id" id="aspirante_user_id" value="{{ Auth::user()->id }}">
 <div class="container">
     <div class="row">

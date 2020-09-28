@@ -172,7 +172,7 @@ class OfertasController extends Controller
     {
         $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
         if (empty($aspirante)) {
-            return response()->json(['msg' => 'error', 'data' => 'Ud no se encuentra registrado como aspirante']);
+            return response()->json(['msg' => 'error', 'data' => 'Debe actualizar su Currículum, para realizar la postulación']);
         }
 
         $oferta = Aplicaciones::where('aspirante_id',$aspirante->id)->where('oferta_id',$request->oferta_id)->first();

@@ -52,7 +52,6 @@
             <div class="list-group">
                 @foreach($allCategories as $categories)
                     <a href="{{ route('oferta.categoria',$categories->id)}}" class="list-group-item list-group-item-action {{  (request()->is('categoria/'.$categories->id)) ? 'active' : '' }}">{{ $categories->nombre }}</a>
-
                 @endforeach
             </div>
         </div>

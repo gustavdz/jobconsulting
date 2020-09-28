@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $categorias = Categorias::where('estado','A')->get();
-        View::share('allCategories',$categorias);
+        //$categorias = Categorias::where('estado','A')->get();
+        //View::share('allCategories',$categorias);
     }
 }

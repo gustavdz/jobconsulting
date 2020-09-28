@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Ofertas;
+use App\Categorias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -34,9 +35,10 @@ class HomeController extends Controller
         }
 
         if (Auth::user()->role == 'aspirante'){
+            $allCategories = Categorias::where('estado','A')->get();
             $ofertas=Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->where('ofertas.validez','>',Carbon::now())->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC')->paginate(9);
             //return $ofertas;
-            return view('home_aspirante.index',compact('ofertas'));
+            return view('home_aspirante.index',compact('ofertas','allCategories'));
         }
 
         if (Auth::user()->role == 'empresa'){

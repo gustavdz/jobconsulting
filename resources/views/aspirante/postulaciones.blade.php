@@ -34,16 +34,17 @@
                     <div class="col-md-12 mb-3" >
                         <div class="card border-primary">
                             <div class="card-body">
-                               <p>No existe ofertas para mostrar</p>
+                               <p>No ha realizado ninguna postulación</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 @endforelse
       
-
-    <div class="row justify-content-center p-4">
-                {!! $postulaciones->render() !!}
-    </div>
+            @if(!empty($postulaciones))
+                <div class="row justify-content-center p-4">
+                            {!! $postulaciones->render() !!}
+                </div>
+            @endif
 </div>
 @endsection

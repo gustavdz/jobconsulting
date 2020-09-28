@@ -101,17 +101,29 @@ class AspirantesController extends Controller
 
     public function viewFormacion(Request $request)
     {
-    	$formaciones = AspiranteFormacion::where('aspirante_id',$request->aspirante_id)->get();
+        $formaciones = [];
+        $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
+        if (!empty($aspirante)) {
+    	   $formaciones = AspiranteFormacion::where('aspirante_id',$aspirante->id)->get();
+        }
+
     	return view('aspirante.academica',compact('formaciones'));
     }
 
     public function formacion(Request $request)
     {
+        
+        $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
+        //return $aspirante->id;
+        if (empty($aspirante)) {
+            return response()->json(['msg' => 'error', 'data' => 'Primero debe completar sus datos personales']);
+        }
+
     	$formacion = AspiranteFormacion::find($request->formacion_id);
     	
     	if (empty($formacion)) {
     		$formacion = new AspiranteFormacion;
-    		$formacion->aspirante_id = $request->aspirante_id;
+    		$formacion->aspirante_id = $aspirante->id;
     		$formacion->institucion_educativa = $request->institucion;
     		$formacion->titulo = $request->titulo;
     		$formacion->inicio = $request->inicio_formacion;
@@ -133,18 +145,27 @@ class AspirantesController extends Controller
 
     public function viewIdioma(Request $request)
     {
-    	$idiomas = AspiranteIdioma::where('aspirante_id',$request->aspirante_id)->get();
+        $idiomas = [];
+        $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
+        if (!empty($aspirante)) {
+           $idiomas = AspiranteIdioma::where('aspirante_id',$aspirante->id)->get();
+        }
     	//return $idiomas;
     	return view('aspirante.idioma',compact('idiomas'));
     }
 
     public function idioma(Request $request)
     {
+        $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
+        if (empty($aspirante)) {
+            return response()->json(['msg' => 'error', 'data' => 'Primero debe completar sus datos personales']);
+        }
+
     	$idioma = AspiranteIdioma::find($request->idioma_id);
     	
     	if (empty($idioma)) {
     		$idioma = new AspiranteIdioma;
-    		$idioma->aspirante_id = $request->aspirante_id;
+    		$idioma->aspirante_id = $aspirante->id;
     		$idioma->idioma = $request->idioma;
     		$idioma->nivel = $request->nivel;
     		$idioma->save();
@@ -162,18 +183,28 @@ class AspirantesController extends Controller
 
     public function viewReferencia(Request $request)
     {
-    	$referencias = AspiranteReferencia::where('aspirante_id',$request->aspirante_id)->get();
+        $referencias = [];
+        $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
+        if (!empty($aspirante)) {
+           $referencias = AspiranteReferencia::where('aspirante_id',$aspirante->id)->get();
+        }
+    	
     	//return $idiomas;
     	return view('aspirante.referencia',compact('referencias'));
     }
 
     public function referencia(Request $request)
     {
+        $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
+        if (empty($aspirante)) {
+            return response()->json(['msg' => 'error', 'data' => 'Primero debe completar sus datos personales']);
+        }
+
     	$referencia = AspiranteReferencia::find($request->referencia_id);
     	
     	if (empty($referencia)) {
     		$referencia = new AspiranteReferencia;
-    		$referencia->aspirante_id = $request->aspirante_id;
+    		$referencia->aspirante_id = $aspirante->id;
     		$referencia->nombre = $request->nombres_referencia;
     		$referencia->email = $request->correo_referencia;
     		$referencia->telefono = $request->telefono_referencia;
@@ -193,18 +224,26 @@ class AspirantesController extends Controller
 
     public function viewExperencia(Request $request)
     {
-    	$experiencias = AspiranteExperiencia::where('aspirante_id',$request->aspirante_id)->get();
+        $experiencias = [];
+        $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
+        if (!empty($aspirante)) {
+          $experiencias = AspiranteExperiencia::where('aspirante_id',$aspirante->id)->get();
+        }
     	//return $idiomas;
     	return view('aspirante.experiencia',compact('experiencias'));
     }
 
     public function experencia(Request $request)
     {
+        $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
+        if (empty($aspirante)) {
+            return response()->json(['msg' => 'error', 'data' => 'Primero debe completar sus datos personales']);
+        }
     	$experiencia = AspiranteExperiencia::find($request->experiencia_id);
     	
     	if (empty($experiencia)) {
     		$experiencia = new AspiranteExperiencia;
-    		$experiencia->aspirante_id = $request->aspirante_id;
+    		$experiencia->aspirante_id = $aspirante->id;
     		$experiencia->empresa = $request->empresa;
     		$experiencia->inicio = $request->inicio_experiencia;
     		$experiencia->fin = $request->fin_experiencia;
@@ -233,7 +272,10 @@ class AspirantesController extends Controller
      public function postulaciones()
     {
         $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
-        $postulaciones = Aplicaciones::with('aspirante')->with('oferta')->with('estado_oferta')->with('oferta.user')->where('aspirante_id',$aspirante->id)->orderBy('aplicaciones.created_at', 'DESC')->paginate(5);
+        $postulaciones =[];
+        if (!empty($aspirante)) {
+            $postulaciones = Aplicaciones::with('aspirante')->with('oferta')->with('estado_oferta')->with('oferta.user')->where('aspirante_id',$aspirante->id)->orderBy('aplicaciones.created_at', 'DESC')->paginate(5);
+        }
         #return $postulaciones;
         return view('aspirante.postulaciones',compact('postulaciones'));
 
