@@ -67,6 +67,10 @@ div.dataTables_wrapper div.dataTables_processing {
                         <table id="table_ofertas" class="table table-bordered">
                             <thead>
                                 <tr>
+                                    <th>titulo</th>
+                                    <th>descripcion</th>
+                                    <th>salario</th>
+                                    <th>Empresa</th>
                                     <th>Detalle de la Oferta</th>
                                     <th>Categorías</th>
                                     <th>Habilidades</th>

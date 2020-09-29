@@ -14,10 +14,36 @@ $(document).ready(function () {
         "serverSide": true,
         "ajax":"/ofertas/data",
         "columns":[
+            {data:'titulo'},
+            {data:'descripcion'},
+            {data:'salario'},
+            {data:'user.name'},
             {data:'detalle'},
             {data:'categorias'},
             {data:'habilidades'},
             {data:'opciones'}
+        ],
+        "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "visible": false,
+                "searchable": true
+            },
+            {
+                "targets": [ 1 ],
+                "visible": false,
+                "searchable": true
+            },
+            {
+                "targets": [ 2 ],
+                "visible": false,
+                "searchable": true
+            },
+            {
+                "targets": [ 3 ],
+                "visible": false,
+                "searchable": true
+            }
         ],
         "language": {
             "sProcessing": "<img src='../images/loading.gif' width='100%' height='100%' />",
