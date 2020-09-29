@@ -159,13 +159,13 @@ class OfertasController extends Controller
     public function ofertaCategoria($id)
     {
         //DB::enableQueryLog(); // Enable query log
-        
+         $allCategories = Categorias::where('estado','A')->get();
         $ofertas=Ofertas::with('user')->whereHas('categoriasOfertas.categoria', function ($query)use(&$id) {
                             $query->where('categoria_id',$id);
                         })->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->where('ofertas.validez','>',Carbon::now())->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC')->paginate(9);
 
         //return DB::getQueryLog(); // Show results of log
-        return view('home_aspirante.index',compact('ofertas'));
+        return view('home_aspirante.index',compact('ofertas','allCategories'));
     }
 
     public function postulacion(Request $request)
