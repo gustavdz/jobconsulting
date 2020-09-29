@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use App\Aspirantes;
+use App\EstadoOferta;
 use App\Habilidades;
 use App\Categorias;
 use App\Ofertas;
@@ -23,8 +25,13 @@ class UsersTableSeeder extends Seeder
             ['name'=>'Empresa 1', 'email'=>'hola@deckasoft.com', 'password'=>Hash::make('123123'), 'email_verified_at'=>date('Y-m-d H:i:s'), 'role'=>'empresa'],
             ['name'=>'Aspirante 1', 'email'=>'gustavo@deckasoft.com', 'password'=>Hash::make('123123'), 'email_verified_at'=>date('Y-m-d H:i:s'), 'role'=>'aspirante']
         );
+        $aspirantes = array(['user_id'=>'3']);
+
         foreach($users as $user){
             User::create($user);
+        }
+        foreach($aspirantes as $aspirante){
+            Aspirantes::create($aspirante);
         }
 
         $habilidades = [
@@ -63,6 +70,19 @@ class UsersTableSeeder extends Seeder
 
         foreach($ofertas as $oferta){
             Ofertas::create($oferta);
+        }
+
+        $ofertas_estados = [
+            ['nombre'=>'Enviada','estado'=>'A'],
+            ['nombre'=>'Recibida','estado'=>'A'],
+            ['nombre'=>'Leída','estado'=>'A'],
+            ['nombre'=>'Agendando Entrevista','estado'=>'A'],
+            ['nombre'=>'Seleccionado','estado'=>'A'],
+            ['nombre'=>'Finalizada','estado'=>'A']
+        ];
+
+        foreach($ofertas_estados as $ofertas_estado){
+            EstadoOferta::create($ofertas_estado);
         }
 
         $habilidades_ofertas = [
