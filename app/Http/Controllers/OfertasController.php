@@ -32,7 +32,7 @@ class OfertasController extends Controller
             ->where('ofertas.estado','A')
             ->orderBy('ofertas.validez', 'DESC')
             ->orderBy('ofertas.id', 'DESC')
-            ->get();
+            ->paginate();
         return $ofertas;
     }
 
