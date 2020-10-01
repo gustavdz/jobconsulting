@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use PHPUnit\Util\Json;
+use function MongoDB\BSON\toJSON;
 
 class OfertasController extends Controller
 {
@@ -23,10 +25,33 @@ class OfertasController extends Controller
         $this->middleware('auth');
     }
 
+    public function indexAPI() {
+        $ofertas = Ofertas::with('user')
+            ->with('categoriasOfertas.categoria')
+            ->with('habilidadesOfertas.habilidad')
+            ->where('ofertas.estado','A')
+            ->orderBy('ofertas.validez', 'DESC')
+            ->orderBy('ofertas.id', 'DESC')
+            ->get();
+        return $ofertas;
+    }
+
+    public function showAPI(Request $request) {
+        $ofertas = Ofertas::with('user')
+            ->with('categoriasOfertas.categoria')
+            ->with('habilidadesOfertas.habilidad')
+            ->where('ofertas.estado','A')
+            ->where('ofertas.id',$request->id)
+            ->orderBy('ofertas.validez', 'DESC')
+            ->orderBy('ofertas.id', 'DESC')
+            ->get();
+        return $ofertas;
+    }
+
     public function index()
     {
 
-       if (Auth::user()->role == 'aspirante') {
+        if (Auth::user()->role == 'aspirante') {
             return redirect()->route('home');
         }
         $categorias = Categorias::where('estado','A')->get();

@@ -10,6 +10,8 @@ use App\User;
 use App\Ofertas;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
 class UserController extends Controller
 {
 
@@ -48,6 +50,7 @@ class UserController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'api_token' => Str::random(60),
         ]);
     }
 
@@ -67,6 +70,7 @@ class UserController extends Controller
                     'email' => $request['email'],
                     'role' => 'empresa',
                     'password' => Hash::make($request['password']),
+                    'api_token' => Str::random(60),
                 ]);
                 DB::commit();
                 if (!empty($user)) {
