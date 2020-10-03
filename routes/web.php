@@ -35,6 +35,10 @@ Route::middleware(['verified'])->group(function () {
     Route::post('/ofertas/show', 'OfertasController@show')->name('ofertas.show');
     Route::post('/ofertas/delete', 'OfertasController@delete')->name('ofertas.delete');
     Route::post('/postulacion', 'OfertasController@postulacion')->name('postulacion.post');
+    Route::get('/ofertas/{id}/aspirantes', 'OfertasController@ofertaDetalle')->name('ofertas.aspirantes');
+    Route::post('/ofertas/aplicaciones', 'OfertasController@aplicaciones')->name('ofertas.aplicaciones');
+    Route::post('/ofertas/aplicaciones/profile', 'OfertasController@profile')->name('ofertas.aplicaciones.profile');
+    Route::post('/ofertas/aplicaciones/estado', 'OfertasController@changeStatus')->name('ofertas.aplicaciones.profile');
 
     #categorias
     Route::get('/categoria/{id}', 'OfertasController@ofertaCategoria')->name('oferta.categoria');
@@ -56,5 +60,8 @@ Route::middleware(['verified'])->group(function () {
     Route::post('/aspirante/experiencia/delete', 'AspirantesController@experiencia_delete')->name('aspirante.experiencia.delete');
     Route::post('/aspirante/idioma/delete', 'AspirantesController@idioma_delete')->name('aspirante.idioma.delete');
     Route::post('/aspirante/referencia/delete', 'AspirantesController@referencia_delete')->name('aspirante.referencia.delete');
+
+    #search
+    Route::post('/search', 'AspirantesController@search')->name('search');
 
 });

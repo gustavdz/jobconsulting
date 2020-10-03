@@ -23,7 +23,8 @@
 	                        <div class="card-body">
 	                            <p class="line">{{ $postulacion->oferta->titulo }} - {{ $postulacion->oferta->user->name }}</p>
 	                            <p class="line">{{ $postulacion->oferta->descripcion }}</p>
-	                            <p class="line">Salario ${{$postulacion->oferta->salario ? number_format($postulacion->oferta->salario, 2, '.', ',') : '0.00'}}</p>
+                                <p class="line">Salario ${{$postulacion->oferta->salario ? number_format($postulacion->oferta->salario, 2, '.', ',') : '0.00'}}</p>
+	                            <p class="line">Estado de la postulación: {{$postulacion->estado_oferta->nombre }}</p>
 	                           <footer class="blockquote-footer text-right">Postulado {{\Carbon\Carbon::parse($postulacion->created_at)->format('j F, Y')}}</footer>
 	                        </div>
 	                    </div> 

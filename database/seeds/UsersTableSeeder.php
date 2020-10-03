@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $users = array(
+        /*$users = array(
             ['name'=>'SuperAdmin', 'email'=>'gustavdz@gmail.com', 'password'=>Hash::make('123123'), 'email_verified_at'=>date('Y-m-d H:i:s'), 'role'=>'admin'],
             ['name'=>'Empresa 1', 'email'=>'hola@deckasoft.com', 'password'=>Hash::make('123123'), 'email_verified_at'=>date('Y-m-d H:i:s'), 'role'=>'empresa'],
             ['name'=>'Aspirante 1', 'email'=>'gustavo@deckasoft.com', 'password'=>Hash::make('123123'), 'email_verified_at'=>date('Y-m-d H:i:s'), 'role'=>'aspirante']
@@ -70,7 +70,7 @@ class UsersTableSeeder extends Seeder
 
         foreach($ofertas as $oferta){
             Ofertas::create($oferta);
-        }
+        }*/
 
         $ofertas_estados = [
             ['nombre'=>'Enviada','estado'=>'A'],
@@ -85,7 +85,7 @@ class UsersTableSeeder extends Seeder
             EstadoOferta::create($ofertas_estado);
         }
 
-        $habilidades_ofertas = [
+        /*$habilidades_ofertas = [
             ['habilidad_id'=>1,'oferta_id'=>1],
             ['habilidad_id'=>2,'oferta_id'=>1],
             ['habilidad_id'=>3,'oferta_id'=>1],
@@ -110,7 +110,7 @@ class UsersTableSeeder extends Seeder
 
         foreach($categorias_ofertas as $co){
             CategoriasOfertas::create($co);
-        }
+        }*/
 
     }
 }

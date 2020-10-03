@@ -5,6 +5,7 @@ $(document).ready(function () {
         }
     });
 
+
     $("#guardar_perfil").click(function () {
 
         if (!$("#formulario_personal").valid()) {
@@ -16,6 +17,7 @@ $(document).ready(function () {
         formData.append('foto',$('#foto')[0].files[0]);
         formData.append('cv',$('#cv')[0].files[0]);
         formData.append('nombres',$('#nombres').val());
+        formData.append('cedula',$('#cedula').val());
         formData.append('correo',$('#correo').val());
         formData.append('fecha_nacimiento',$('#fecha').val());
         formData.append('telefono',$('#telefono').val());
@@ -308,6 +310,7 @@ $(document).ready(function () {
         ignore: [],
         rules: {
           'nombres'          : {required: true},
+          'cedula'          : {required: true},
           'correo'            : {required: true,email:true},
           'fecha'          : {required: true,},
           'telefono'          : {required: true,},

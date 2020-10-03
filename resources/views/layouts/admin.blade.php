@@ -86,15 +86,20 @@
                 </span>
         </div>
         <div class="app-header__content">
+            @if(Auth::user()->role =='aspirante')
             <div class="app-header-left">
                 <div class="search-wrapper">
                     <div class="input-holder">
-                        <input type="text" class="search-input" placeholder="Type to search">
+                        <form id="search-form" action="{{ route('search') }}" method="POST" >
+                                            {{ csrf_field() }}
+                                    <input type="text" class="search-input" id="search" name="search" placeholder="Type to search">
+                        </form>
                         <button class="search-icon"><span></span></button>
                     </div>
                     <button class="close"></button>
                 </div>
             </div>
+            @endif
             <div class="app-header-right">
                 <div class="header-btn-lg pr-0">
                     <div class="widget-content p-0">
@@ -102,7 +107,7 @@
                             <div class="widget-content-left">
                                 <div class="btn-group">
                                     <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
-                                        <img width="42" class="rounded-circle" src="{{ asset('assets/images/avatars/1.png')}}" alt="">
+                                        <img width="42" class="rounded-circle" onerror="imgErrora(this);" src="/storage/perfil/{{ Auth::user()->id  }}.jpg?{{ time() }}" alt="">
                                         <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                     </a>
                                     {{--<div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
@@ -209,7 +214,7 @@
                             @endforeach--}}
                         @if(Auth::user()->role=="admin" || Auth::user()->role=="empresa")
                         <li >
-                            <a href="{{ route('ofertas')}}" class="{{ Route::is('ofertas') ? 'active' : '' }}">
+                            <a href="{{ route('ofertas')}}" class="{{ Route::is('ofertas') || Route::is('ofertas.aspirantes') ? 'active' : '' }}">
                                 <i class="metismenu-icon pe-7s-display2"></i>
                                 Ofertas
                             </a>
@@ -256,3 +261,10 @@
 @yield('modal')
 <div id='app'></div>
 </body>
+<script type="text/javascript">
+    function imgErrora(image) {
+    image.onerror = "";
+    image.src = "/images/avatar.jpg";
+    return true;
+}
+</script>

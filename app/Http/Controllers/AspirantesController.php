@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Aspirantes;
+use App\Ofertas;
+use App\Categorias;
 use App\User;
 use App\AspiranteFormacion;
 use App\AspiranteIdioma;
@@ -13,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AspirantesController extends Controller
 {
@@ -67,6 +70,7 @@ class AspirantesController extends Controller
     		$aspirante = new Aspirantes;
     		$aspirante->user_id = Auth::user()->id;
     		$aspirante->fecha_nacimiento = $request->fecha_nacimiento;
+            $aspirante->cedula = $request->cedula;
     		$aspirante->telefono = $request->telefono;
     		$aspirante->celular = $request->celular;
     		$aspirante->pais = $request->pais;
@@ -78,6 +82,7 @@ class AspirantesController extends Controller
 
     	}else{
     		$aspirante->fecha_nacimiento = $request->fecha_nacimiento;
+            $aspirante->cedula = $request->cedula;
     		$aspirante->telefono = $request->telefono;
     		$aspirante->celular = $request->celular;
     		$aspirante->pais = $request->pais;
@@ -307,5 +312,22 @@ class AspirantesController extends Controller
         $referencia = AspiranteReferencia::find($request->id)->delete();
         $result = $referencia ? ['msg' => 'success', 'data' => 'Se ha elimado correctamente la información'] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la información ']; 
         return response()->json($result);
+    }
+
+    public function search(Request $request){
+        $allCategories = Categorias::where('estado','A')->get();
+        $cat = Categorias::where('nombre','like',"%$request->search%")->first();
+        $id_cate = $cat ? $cat->id : '';
+        $empresa = User::where('name','like',"%$request->search%")->where('role','empresa')->first();
+        $id_empresa = $empresa ? $empresa->id : '';
+        $ofertas=Ofertas::with('user')->whereHas('categoriasOfertas.categoria', function ($query)use(&$id_cate) {
+                            $query->where('categoria_id',$id_cate);
+                        })->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->where('ofertas.validez','>',Carbon::now())
+        ->orWhere('ofertas.empresa_id',$id_empresa)
+        ->orWhere('ofertas.salario',$request->search)
+        ->orWhere('ofertas.titulo',$request->search)
+        ->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC')->paginate(9);
+
+        return view('home_aspirante.index',compact('ofertas','allCategories'));
     }
 }

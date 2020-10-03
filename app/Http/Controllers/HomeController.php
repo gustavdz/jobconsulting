@@ -8,6 +8,7 @@ use App\Categorias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -31,7 +32,30 @@ class HomeController extends Controller
 
         //dd(Auth::user()->role);
         if (Auth::user()->role == 'admin'){
-            return view('home.index');
+            $ofertas = DB::select("SELECT count(*) as total,u.name from ofertas o join users u on o.empresa_id = u.id group by o.empresa_id  having total > 0 order by total desc limit 5");
+            $labels = [];
+            $data = [];
+            //return $ofertas;
+            foreach ($ofertas as $value) {
+                $labels[] = $value->name;
+                $data[] = $value->total;
+            }
+            $labels = json_encode($labels);
+            $data = json_encode($data);
+
+            $aplicaciones = DB::select("SELECT count(1) as total, o.titulo from aplicaciones a join ofertas o on a.oferta_id = o.id group by a.oferta_id having total > 0 order by total desc limit 5");
+            $labels_aplicaciones = [];
+            $data_aplicaciones = [];
+            //return $ofertas;
+            foreach ($aplicaciones as $value) {
+                $labels_aplicaciones[] = $value->titulo;
+                $data_aplicaciones[] = $value->total;
+            }
+            $labels_aplicaciones = json_encode($labels_aplicaciones);
+            $data_aplicaciones = json_encode($data_aplicaciones);
+
+
+            return view('home.index',compact('labels','data','labels_aplicaciones','data_aplicaciones'));
         }
 
         if (Auth::user()->role == 'aspirante'){
@@ -42,7 +66,35 @@ class HomeController extends Controller
         }
 
         if (Auth::user()->role == 'empresa'){
-            return view('home_empresa.index');
+
+            $ofertas = DB::select("SELECT count(1) as total, e.nombre from aplicaciones a join estado_ofertas e on a.estado_oferta_id = e.id join ofertas o on a.oferta_id = o.id  where o.empresa_id = '".Auth::user()->id."' group by a.estado_oferta_id having total > 0 order by total desc limit 5");
+            $labels = [];
+            $data = [];
+            //return $ofertas;
+            foreach ($ofertas as $value) {
+                $labels[] = $value->nombre;
+                $data[] = $value->total;
+            }
+            $labels = json_encode($labels);
+            $data = json_encode($data);
+
+
+            $aplicaciones = DB::select("SELECT count(1) as total, o.titulo from aplicaciones a join ofertas o on a.oferta_id = o.id where 
+                o.empresa_id = '".Auth::user()->id."' group by a.oferta_id having total > 0 order by total desc limit 5");
+
+            $labels_aplicaciones = [];
+            $data_aplicaciones = [];
+            //return $ofertas;
+            foreach ($aplicaciones as $value) {
+                $labels_aplicaciones[] = $value->titulo;
+                $data_aplicaciones[] = $value->total;
+            }
+            $labels_aplicaciones = json_encode($labels_aplicaciones);
+            $data_aplicaciones = json_encode($data_aplicaciones);
+
+
+
+            return view('home_empresa.index',compact('labels','data','labels_aplicaciones','data_aplicaciones'));
         }
     }
 }

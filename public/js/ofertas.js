@@ -4,7 +4,7 @@ $(document).ready(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
     //
     //  view_table();
 
@@ -338,10 +338,10 @@ function editar(id){
     });
 }
 
-function eliminar(data,name){
+function eliminar(data,name,op){
     $.confirm({
-                title: '¡Eliminar!',
-                content: '¿Desea eliminar la oferta '+name+'?',
+                title: '¡'+op+'!',
+                content: '¿Desea '+op+' la oferta '+name+'?',
                 buttons: {
                     confirm: function () {
                         $.ajax({
@@ -349,7 +349,8 @@ function eliminar(data,name){
                             url: '/ofertas/delete',
                             data: {
                                 "_token": $('meta[name="csrf-token"]').attr('content'),
-                                "id": data
+                                "id": data,
+                                "estado": op == 'Eliminar' ?'E':'F',
                             },
                             beforeSend: function () {
                                 Swal.fire({
@@ -379,7 +380,7 @@ function eliminar(data,name){
                         });
                     },
                     cancel: function () {
-                        $.alert('Se ha cancelado la eliminación!');
+                        $.alert('Se ha cancelado la acción!');
                     }
                 }
             });

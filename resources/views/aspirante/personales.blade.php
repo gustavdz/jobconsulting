@@ -9,15 +9,22 @@
 			</div>
      	</div>
      	<div class="col">
-     		<div class="form-group">
-			    <label for="correo">Correo</label>
-			    <input type="email" class="form-control" id="correo" name="correo" placeholder="" value="{{ Auth::user()->email }}">
-                   <label tipo="error" id="correo-error"></label>
-			</div>
-     	</div>
+            <div class="form-group">
+                <label for="cedula">Cédula</label>
+                <input type="text" class="form-control" id="cedula" name="cedula" placeholder="" value="{{ $aspirante->cedula ?? '' }}">
+                   <label tipo="error" id="cedula-error"></label>
+            </div>
+        </div>
      </div>
 
      <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="correo">Correo</label>
+                <input type="email" class="form-control" id="correo" name="correo" placeholder="" value="{{ Auth::user()->email }}">
+                   <label tipo="error" id="correo-error"></label>
+            </div>
+        </div>
      	<div class="col">
      		<div class="form-group">
 			    <label for="fecha">Fecha de Nacimiento</label>
@@ -25,16 +32,16 @@
                    <label tipo="error" id="fecha-error"></label>
 			</div>
      	</div>
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="telefono">Teléfono Convencional</label>
-			    <input type="text" class="form-control" id="telefono" name="telefono" value="{{ $aspirante->telefono ?? '' }}" placeholder="">
-                   <label tipo="error" id="telefono-error"></label>
-			</div>
-     	</div>
      </div>
  	
  	<div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="telefono">Teléfono Convencional</label>
+                <input type="text" class="form-control" id="telefono" name="telefono" value="{{ $aspirante->telefono ?? '' }}" placeholder="">
+                   <label tipo="error" id="telefono-error"></label>
+            </div>
+        </div>
      	<div class="col">
      		<div class="form-group">
 			    <label for="celular">Teléfono Celular</label>
@@ -42,16 +49,16 @@
                    <label tipo="error" id="celular-error"></label>
 			</div>
      	</div>
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="pais">País</label>
-			    <input type="text" class="form-control" id="pais" name="pais" value="{{ $aspirante->pais ?? '' }}" placeholder="">
-                   <label tipo="error" id="pais-error"></label>
-			</div>
-     	</div>
  	</div>
 
  	<div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="pais">País</label>
+                <input type="text" class="form-control" id="pais" name="pais" value="{{ $aspirante->pais ?? '' }}" placeholder="">
+                   <label tipo="error" id="pais-error"></label>
+            </div>
+        </div>
      	<div class="col">
      		<div class="form-group">
 			    <label for="provincia">Provincia</label>
@@ -59,15 +66,15 @@
                    <label tipo="error" id="provincia-error"></label>
 			</div>
      	</div>
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="ciudad">Ciudad</label>
-			    <input type="text" class="form-control" id="ciudad" name="ciudad" value="{{ $aspirante->ciudad ?? '' }}">
-                   <label tipo="error" id="ciudad-error"></label>
-			</div>
-     	</div>
  	</div>
  	<div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="ciudad">Ciudad</label>
+                <input type="text" class="form-control" id="ciudad" name="ciudad" value="{{ $aspirante->ciudad ?? '' }}">
+                   <label tipo="error" id="ciudad-error"></label>
+            </div>
+        </div>
      	<div class="col">
      		<div class="form-group">
 			    <label for="remuneracion_actual">Remuneración Actual</label>
@@ -75,14 +82,19 @@
                    <label tipo="error" id="remuneracion_actual-error"></label>
 			</div>
      	</div>
-     	<div class="col">
-     		<div class="form-group">
-			    <label for="espectativa_salarial">Expectativa Salarial</label>
-			    <input type="text" class="form-control" id="espectativa_salarial" name="espectativa_salarial" value="{{ $aspirante->espectativa_salarial ?? ''}}">
-                   <label tipo="error" id="espectativa_salarial-error"></label>
-			</div>
-     	</div>
  	</div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="espectativa_salarial">Expectativa Salarial</label>
+                <input type="text" class="form-control" id="espectativa_salarial" name="espectativa_salarial" value="{{ $aspirante->espectativa_salarial ?? ''}}">
+                   <label tipo="error" id="espectativa_salarial-error"></label>
+            </div>
+        </div>
+        <div class="col">
+            
+        </div>
+    </div>
 
  	<div class="row">
      	<div class="col">

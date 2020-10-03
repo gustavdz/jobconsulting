@@ -10,6 +10,7 @@ use App\Aspirantes;
 use App\Aplicaciones;
 use App\CategoriasOfertas;
 use App\HabilidadesOfertas;
+use App\EstadoOferta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -65,7 +66,7 @@ class OfertasController extends Controller
         ##$results = [];
         if (Auth::user()->role == 'admin' || Auth::user()->role == 'aspirante'){
             return datatables()
-            ->eloquent(Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC'))
+            ->eloquent(Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','<>','E')->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC'))
             ->addColumn('detalle','ofertas.detalle') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('categorias','ofertas.categorias') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('habilidades','ofertas.habilidades') #detalle o llave a recibir en el JS y segundo campo la vista
@@ -75,7 +76,7 @@ class OfertasController extends Controller
         }
         if (Auth::user()->role == 'empresa'){
             return datatables()
-            ->eloquent(Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','A')->where('ofertas.empresa_id',Auth::user()->id)->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC'))
+            ->eloquent(Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','<>','E')->where('ofertas.empresa_id',Auth::user()->id)->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC'))
             ->addColumn('detalle','ofertas.detalle') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('categorias','ofertas.categorias') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('habilidades','ofertas.habilidades') #detalle o llave a recibir en el JS y segundo campo la vista
@@ -173,10 +174,10 @@ class OfertasController extends Controller
     public function delete(Request $request)
     {
         $ofertas = Ofertas::find($request->id);
-        $ofertas->estado = 'E'; //Eliminado
+        $ofertas->estado = $request->estado; //Eliminado
         $ofertas->save();
 
-        $result = $ofertas ? ['msg' => 'success', 'data' => 'Se ha eliminado la Oferta ' . $ofertas->titulo] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la Oferta ' . $ofertas->titulo];
+        $result = $ofertas ? ['msg' => 'success', 'data' => 'Se ha cambiado el estado la Oferta ' . $ofertas->titulo] : ['msg' => 'error', 'data' => 'Ocurrio un error al cambiar el estado la Oferta ' . $ofertas->titulo];
 
         return response()->json($result);
     }
@@ -215,6 +216,40 @@ class OfertasController extends Controller
         }else{
             return response()->json(['msg' => 'error', 'data' => 'Ya se encuentra una postulación registrada con sus datos']);
         }
+    }
+
+    public function ofertaDetalle($id)
+    {
+        if (Auth::user()->role == 'aspirante') {
+            return redirect()->route('home');
+        }
+        $oferta = Ofertas::with('user')->where('id',$id)->first();
+        return view('aplicaciones.index',compact('oferta'));
+    }
+
+    public function aplicaciones(Request $request)
+    {
+        $aplicaciones = Aplicaciones::with('aspirante')->with('aspirante.user')->with('aspirante.aspirante_formacion')->with('oferta')->with('estado_oferta')->where('oferta_id',$request->oferta_id)->get();
+        $estados = EstadoOferta::where('estado','A')->get();
+        //return $aplicaciones;
+        return view('aplicaciones.table',compact('aplicaciones','estados'));
+    }
+
+    public function profile(Request $request)
+    {
+        $aspirante = Aspirantes::with('user')->with('aspirante_experiencia')->with('aspirante_formacion')->with('aspirante_idioma')->with('aspirante_referencia')->where('id',$request->aspirante_id)->first();
+        //return $aspirante;
+        return view('aplicaciones.profile',compact('aspirante'));
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $aplicacion = Aplicaciones::find($request->id_postulacion);
+        $aplicacion->estado_oferta_id = $request->id_estado;
+        $aplicacion->save();
+
+        $result = $aplicacion ? ['msg' => 'success', 'data' => 'Estado de la postulación actualizado correctamente'] : ['msg' => 'error', 'data' => 'Ocurrio un error al actualizar el estado de la postulación'];
+         return response()->json($result);
     }
 
 

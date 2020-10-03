@@ -8,3 +8,7 @@
 @else
     <span class="badge badge-danger">EXPIRADA</span>
 @endif
+
+@if($estado=='F')
+    <span class="badge badge-warning">FINALIZADA POR EL USUARIO</span>
+@endif
