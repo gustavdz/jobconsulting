@@ -102,6 +102,8 @@ class OfertasController extends Controller
                 $ofertas->descripcion = $request->descripcion;
                 $ofertas->validez =  $request->validez;
                 $ofertas->salario = $request->salario;
+                $ofertas->ciudad = $request->ciudad;
+                $ofertas->provincia = $request->provincia;
                 $ofertas->empresa_id = Auth::user()->role=='admin' ? $request->empresa : Auth::user()->id;
                 $ofertas->save();
 
@@ -132,6 +134,8 @@ class OfertasController extends Controller
                 $ofertas->descripcion = $request->descripcion;
                 $ofertas->validez =  $request->validez;
                 $ofertas->salario = $request->salario;
+                $ofertas->ciudad = $request->ciudad;
+                $ofertas->provincia = $request->provincia;
                 $ofertas->empresa_id = Auth::user()->role=='admin' ? $request->empresa : Auth::user()->id;
                 $ofertas->save();
 

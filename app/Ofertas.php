@@ -10,7 +10,7 @@ class Ofertas extends Model
     protected $table = "ofertas";
 
     protected $fillable = [
-        'empresa_id', 'titulo','descripcion','salario','validez','estado'
+        'empresa_id', 'titulo','descripcion','salario','validez','estado','ciudad', 'provincia'
     ];
 
 	//pertnece

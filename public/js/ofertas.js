@@ -17,6 +17,8 @@ $(document).ready(function () {
             {data:'titulo'},
             {data:'descripcion'},
             {data:'salario'},
+            {data:'ciudad'},
+            {data:'provincia'},
             {data:'user.name'},
             {data:'detalle'},
             {data:'categorias'},
@@ -41,6 +43,16 @@ $(document).ready(function () {
             },
             {
                 "targets": [ 3 ],
+                "visible": false,
+                "searchable": true
+            },
+            {
+                "targets": [ 4 ],
+                "visible": false,
+                "searchable": true
+            },
+            {
+                "targets": [ 5 ],
                 "visible": false,
                 "searchable": true
             }
@@ -236,7 +248,9 @@ $(document).ready(function () {
           'validez'          : {required: true,},
           'habilidades'          : {required: true},
           'empresa'          : {required: true},
-          'salario'       : {required: true,number:true,monto_minimo:0,monto_maximo:50000,dollarsscents:true},
+          'ciudad'          : {required: true},
+          'provincia'          : {required: true},
+          'salario'       : {required: true,number:true,monto_minimo:0,monto_maximo:99999,dollarsscents:true},
 
         },
         messages:{
@@ -314,6 +328,8 @@ function editar(id){
                 $("#titulo").val(data.titulo);
                 $("#descripcion").val(data.descripcion);
                 $("#salario").val(data.salario);
+                $("#ciudad").val(data.ciudad);
+                $("#provincia").val(data.provincia);
                 $("#validez").val(data.validez);
                 var categorias = [];
                 for (var i = 0; i < data.categorias_ofertas.length ; i++) {

@@ -26,7 +26,7 @@ div.dataTables_wrapper div.dataTables_processing {
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script rel="stylesheet" href="./vendor/select2/js/select2.min.js"></script>
     <script src="{{ asset('../js/ofertas.js') }}"></script>
-    
+
 @stop
 
 @section('title')
@@ -49,7 +49,7 @@ div.dataTables_wrapper div.dataTables_processing {
                     <i class="fa fa-plus"></i> Agregar Oferta
                 </button>
             </div>
-            
+
         </div>
         <div id="div_mensajes" class="d-none">
             <p id="mensajes"></p>
@@ -70,6 +70,8 @@ div.dataTables_wrapper div.dataTables_processing {
                                     <th>titulo</th>
                                     <th>descripcion</th>
                                     <th>salario</th>
+                                    <th>ciudad</th>
+                                    <th>provincia</th>
                                     <th>Empresa</th>
                                     <th>Detalle de la Oferta</th>
                                     <th>Categorías</th>
@@ -124,8 +126,8 @@ div.dataTables_wrapper div.dataTables_processing {
                             </div>
                         </div>
                     </div>
-                    
-                    
+
+
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
@@ -155,16 +157,32 @@ div.dataTables_wrapper div.dataTables_processing {
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                              <label for="salario" class="col-form-label">Salario</label>
+                                <label for="salario" class="col-form-label">Salario</label>
                                 <input type="text" id="salario" name="salario" class="form-control">
                                 <label tipo="error" id="salario-error"></label>
                             </div>
                         </div>
                         <div class="col">
-                          <div class="form-group">
-                              <label for="validez" class="col-form-label">Validez hasta</label>
+                            <div class="form-group">
+                                <label for="validez" class="col-form-label">Validez hasta</label>
                                 <input type="text" id="validez" name="validez" class="form-control">
                                 <label tipo="error" id="validez-error"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="ciudad" class="col-form-label">Ciudad</label>
+                                <input type="text" id="ciudad" name="ciudad" class="form-control">
+                                <label tipo="error" id="ciudad-error"></label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="provincia" class="col-form-label">Provincia</label>
+                                <input type="text" id="provincia" name="provincia" class="form-control">
+                                <label tipo="error" id="provincia-error"></label>
                             </div>
                         </div>
                     </div>
@@ -173,7 +191,7 @@ div.dataTables_wrapper div.dataTables_processing {
                         <textarea id="descripcion" name="descripcion" class="form-control"  maxlength="250" rows="5"></textarea>
                         <label tipo="error" id="descripcion-error"></label>
                     </div>
-                        
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiar()">Cerrar</button>
