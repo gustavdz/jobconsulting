@@ -145,10 +145,10 @@ div.dataTables_wrapper div.dataTables_processing {
                           <div class="form-group">
                               <label for="habilidades" class="col-form-label">Habilidades</label>
                                 <select class="form-control" id="habilidades" name="habilidades[]" multiple="multiple" style="width: 100%">
-                                  <option value="">Seleccione</option>
-                                  @foreach($habilidades as $habilidad)
-                                  <option value="{{$habilidad->id}}">{{$habilidad->nombre}}</option>
-                                  @endforeach
+                                 {{-- <option value="">Seleccione</option>
+                                    @foreach($habilidades as $habilidad)
+                                    <option value="{{$habilidad->id}}">{{$habilidad->nombre}}</option>
+                                    @endforeach --}}
                               </select>
                                 <label tipo="error" id="habilidades-error"></label>
                             </div>

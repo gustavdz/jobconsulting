@@ -115,8 +115,14 @@ class OfertasController extends Controller
                         $categoria_oferta->save();
                     }
                     foreach ($request->habilidades as $key => $value) {
+                        $habilidad = Habilidades::find($value);
+                        if (empty($habilidad)) { ##no existe lo creo
+                           $habilidad = new Habilidades;
+                           $habilidad->nombre = $value;
+                           $habilidad->save();
+                        }
                         $habilidad_oferta = new HabilidadesOfertas;
-                        $habilidad_oferta->habilidad_id = $value;
+                        $habilidad_oferta->habilidad_id = $habilidad->id;
                         $habilidad_oferta->oferta_id = $ofertas->id;
                         $habilidad_oferta->save();
                     }
@@ -256,5 +262,8 @@ class OfertasController extends Controller
          return response()->json($result);
     }
 
-
+    public function habilidad(Request $request)
+    {
+        return Habilidades::where('estado','A')->get();
+    }
 }

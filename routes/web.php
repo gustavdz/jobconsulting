@@ -39,6 +39,7 @@ Route::middleware(['verified'])->group(function () {
     Route::post('/ofertas/aplicaciones', 'OfertasController@aplicaciones')->name('ofertas.aplicaciones');
     Route::post('/ofertas/aplicaciones/profile', 'OfertasController@profile')->name('ofertas.aplicaciones.profile');
     Route::post('/ofertas/aplicaciones/estado', 'OfertasController@changeStatus')->name('ofertas.aplicaciones.profile');
+    Route::post('/ofertas/habilidad', 'OfertasController@habilidad')->name('ofertas.habilidad');
 
     #categorias
     Route::get('/categoria/{id}', 'OfertasController@ofertaCategoria')->name('oferta.categoria');
@@ -63,5 +64,18 @@ Route::middleware(['verified'])->group(function () {
 
     #search
     Route::post('/search', 'AspirantesController@search')->name('search');
+
+    #categorias
+    Route::get('/categorias', 'CategoriasController@index')->name('categorias');
+    Route::post('/categorias/data', 'CategoriasController@data')->name('categorias.data');
+    Route::post('/categorias', 'CategoriasController@post')->name('categorias.post');
+    Route::post('/categorias/delete', 'CategoriasController@delete')->name('categorias.delete');
+
+    #habilidades
+    Route::get('/habilidades', 'HabilidadesController@index')->name('habilidades');
+    Route::post('/habilidades/data', 'HabilidadesController@data')->name('habilidades.data');
+    Route::post('/habilidades', 'HabilidadesController@post')->name('habilidades.post');
+    Route::post('/habilidades/delete', 'HabilidadesController@delete')->name('habilidades.delete');
+    
 
 });

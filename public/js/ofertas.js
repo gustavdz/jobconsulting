@@ -7,7 +7,7 @@ $(document).ready(function () {
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
     //
     //  view_table();
-
+loadHabilidades();
 
     $("#table_ofertas").DataTable({
         "processing": true,
@@ -92,10 +92,11 @@ $(document).ready(function () {
         "autoWidth": false,
     });
 
-     $('#habilidades').select2({
+     /*$('#habilidades').select2({
         placeholder: "Seleccione",
-        allowClear: true
-     });
+        allowClear: true,
+        tags: true
+     });*/
 
      $('#categorias').select2({
         placeholder: "Seleccione",
@@ -150,6 +151,7 @@ $(document).ready(function () {
                     toastr.error(d['data']);
                 } else {
                     toastr.success(d['data']);
+                     loadHabilidades();
                     $("#table_ofertas").DataTable().ajax.reload();
                     limpiar();
                 }
@@ -190,6 +192,7 @@ $(document).ready(function () {
                     toastr.error(d['data']);
                 } else {
                     toastr.success(d['data'])
+                    loadHabilidades();
                     $("#table_ofertas").DataTable().ajax.reload();
                     limpiar();
                 }
@@ -403,7 +406,46 @@ function eliminar(data,name,op){
 }
 
 
-
+function loadHabilidades() {
+    $.ajax({
+        type: 'POST',
+        url: '/ofertas/habilidad',
+        data: {
+            "_token": $('meta[name="csrf-token"]').attr('content'),
+        },
+        beforeSend: function () {
+            Swal.fire({
+                title: '¡Espere, Por favor!',
+                html: 'Cargando informacion...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                }
+            });
+        },
+        success: function (d) {
+            var option = "";
+            //debugger;
+            for (var i = 0 ;  i < d.length; i++) {
+                option += "<option value='"+d[i].id+"'>"+d[i].nombre+"</option>"
+            }
+            console.log(option)
+            $("#habilidades").html('');
+            $("#habilidades").html(option);
+            $('#habilidades').select2({
+                placeholder: "Seleccione",
+                allowClear: true,
+                tags: true
+             });
+        },
+        error: function (xhr) {
+            toastr.error('Error: '+xhr.statusText + xhr.responseText);
+        },
+        complete: function () {
+            swal.close();
+        },
+    });
+}
 
 
 

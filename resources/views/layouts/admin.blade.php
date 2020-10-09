@@ -221,11 +221,26 @@
                         </li>
                         @endif
                         @if(Auth::user()->role=="admin")
-                        
                         <li>
                            <a href="{{ route('user')}}" class="{{ Route::is('user') ? 'active' : '' }}">
                             <i class="metismenu-icon pe-7s-display2"></i>
                             Empresas
+                           </a>
+                        </li>
+                        @endif
+                        @if(Auth::user()->role=="admin")
+                        <li>
+                           <a href="{{ route('categorias')}}" class="{{ Route::is('categorias') ? 'active' : '' }}">
+                            <i class="metismenu-icon pe-7s-display2"></i>
+                            Categorías
+                           </a>
+                        </li>
+                        @endif
+                        @if(Auth::user()->role=="admin") {{-- solo el admin la puede administrar --}}
+                        <li>
+                           <a href="{{ route('habilidades')}}" class="{{ Route::is('habilidades') ? 'active' : '' }}">
+                            <i class="metismenu-icon pe-7s-display2"></i>
+                            Habilidades
                            </a>
                         </li>
                         @endif
