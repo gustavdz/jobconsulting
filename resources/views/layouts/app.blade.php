@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ env('APP_NAME', 'Human Consulting') }}</title>
-
+    <link rel="icon" href="{{ asset('../images/favicon.png') }}" />
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 

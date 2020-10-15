@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="author" content="Gustavo Decker">
-    <title>{{ config('app.name') }}</title>
+    <title>{{ env('APP_NAME', 'Human Consulting') }}</title>
     <meta name="keyword" content="Software, Consulting, Sistema">
 
     <!-- Scripts -->
@@ -27,6 +27,7 @@
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="icon" href="{{ asset('../images/favicon.png') }}" />
     <link href="{{ asset('../main.css') }}" rel="stylesheet"></head>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
