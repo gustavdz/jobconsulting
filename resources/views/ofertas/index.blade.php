@@ -25,8 +25,8 @@ div.dataTables_wrapper div.dataTables_processing {
     <script src="../../vendor/datatables/js/dataTables.bootstrap4.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script rel="stylesheet" href="./vendor/select2/js/select2.min.js"></script>
+    <script src="{{ asset('../vendor/ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('../js/ofertas.js') }}"></script>
-
 @stop
 
 @section('title')

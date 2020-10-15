@@ -294,6 +294,10 @@ loadHabilidades();
             }
         });
 
+    CKEDITOR.config.width = 'auto';
+    CKEDITOR.config.language = 'es';
+    CKEDITOR.replace('descripcion');
+
 });
 
 function limpiar(){

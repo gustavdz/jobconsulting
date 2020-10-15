@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="author" content="Erick Gordillo Ayala.">
+    <meta name="author" content="Gustavo Decker">
     <title>{{ config('app.name') }}</title>
     <meta name="keyword" content="Software, Consulting, Sistema">
 
@@ -252,7 +252,7 @@
         <div class="app-main__outer">
             <div class="app-main__inner">
                     @yield('title')
-                
+
 
                     @yield('content')
 
