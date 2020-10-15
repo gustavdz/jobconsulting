@@ -67,13 +67,13 @@
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
-                        <a href="{{ route('login') }}">Login</a>
+                        <a href="{{ route('login') }}">Iniciar Sesión</a>
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ url('/home') }}">Inicio</a>
                     @else
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
+                            <a href="{{ route('register') }}">Nuevo Usuario</a>
                         @endif
                     @endauth
                 </div>
@@ -83,16 +83,9 @@
                 <div class="title m-b-md">
                     <img src="{{asset('../images/logo-01.png')}}" />
                 </div>
-
+                
                 <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    © 2020 - Human Consulting Strategy. Todos los derechos reservados | Desarrollado por <a href="https://www.deckasoft.com" target="_blank">Deckasoft</a>
                 </div>
             </div>
         </div>
