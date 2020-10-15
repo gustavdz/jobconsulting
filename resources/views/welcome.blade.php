@@ -83,9 +83,9 @@
                 <div class="title m-b-md">
                     <img src="{{asset('../images/logo-01.png')}}" />
                 </div>
-                
+
                 <div class="links">
-                    © 2020 - Human Consulting Strategy. Todos los derechos reservados | Desarrollado por <a href="https://www.deckasoft.com" target="_blank">Deckasoft</a>
+                    © 2020 - Human Consulting Strategy. Todos los derechos reservados | Desarrollado por <a href="https://www.deckasoft.com" target="_blank" style="padding: 0px;">Deckasoft</a>
                 </div>
             </div>
         </div>
