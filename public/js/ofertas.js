@@ -246,7 +246,13 @@ loadHabilidades();
         ignore: [],
         rules: {
           'titulo'          : {required: true},
-          'descripcion'            : {required: true},
+          'descripcion': {
+              required: function(textarea) {
+                      CKEDITOR.instances[textarea.id].updateElement(); // update textarea
+                      var editorcontent = textarea.value.replace(/<[^>]*>/gi, ''); // strip tags
+                      return editorcontent.length === 0;
+              }
+          },
           'categorias'          : {required: true,},
           'validez'          : {required: true,},
           'habilidades'          : {required: true},
