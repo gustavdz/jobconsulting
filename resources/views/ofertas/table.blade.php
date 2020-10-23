@@ -13,7 +13,7 @@
             <td>
                 <b>Empresa: </b>{{$rst->user->name}}<br>
                 <b>Titulo: </b>{{$rst->titulo}}<br>
-                <b>Detalle: </b>{{$rst->descripcion}}<br>
+                <b>Detalle: </b>{!! $rst->descripcion !!}<br>
                 <b>Salario: </b>${{$rst->salario ? number_format($rst->salario, 2, '.', ',') : '0.00'}}<br>
                 <b>Validez: </b>{{\Carbon\Carbon::parse($rst->validez)->format('j F, Y')}}<br>
                 @if($rst->validez >= date('Y-m-d'))

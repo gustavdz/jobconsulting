@@ -27,7 +27,7 @@
                             <div class="card-header"><a href="#" onclick="detalle({{ $oferta->id }})">{{ $oferta->titulo }}</a></div>
 
                             <div class="card-body">
-                                <p class="line">{{ $oferta->descripcion }}</p>
+                                <p class="line">{!! $oferta->descripcion !!} </p>
                                 <p class="line">Salario ${{$oferta->salario ? number_format($oferta->salario, 2, '.', ',') : '0.00'}}</p>
                                <footer class="blockquote-footer text-right">Publicado {{\Carbon\Carbon::parse($oferta->created_at)->format('j F, Y')}}</footer>
                             </div>
@@ -75,7 +75,7 @@
                 {{ csrf_field() }}
                 <div class="modal-body" >
                     <div id="detalle_oferta">
-                        
+
                     </div>
                         <div class="form-group row">
                             <label for="salario" class="col-sm-4 col-form-label">Ingrese su salario pretendido</label>
