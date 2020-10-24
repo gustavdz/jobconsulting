@@ -279,7 +279,7 @@ class AspirantesController extends Controller
         $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
         $postulaciones =[];
         if (!empty($aspirante)) {
-            $postulaciones = Aplicaciones::with('aspirante')->with('oferta')->with('estado_oferta')->with('oferta.user')->where('aspirante_id',$aspirante->id)->orderBy('aplicaciones.created_at', 'DESC')->paginate(5);
+            $postulaciones = Aplicaciones::with('aspirante')->has('oferta')->with('estado_oferta')->with('oferta.user')->where('aspirante_id',$aspirante->id)->orderBy('aplicaciones.created_at', 'DESC')->paginate(5);
         }
         #return $postulaciones;
         return view('aspirante.postulaciones',compact('postulaciones'));
