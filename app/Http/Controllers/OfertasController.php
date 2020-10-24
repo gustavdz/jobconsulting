@@ -181,6 +181,13 @@ class OfertasController extends Controller
         return Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.id',$request->id)->first();
     }
 
+    public function detalle(Request $request)
+    {
+        $datos = Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.id',$request->id)->first();
+        //dd($datos);
+        return view('aspirante.oferta', compact('datos'));
+    }
+
     public function delete(Request $request)
     {
         $ofertas = Ofertas::find($request->id);
@@ -209,6 +216,12 @@ class OfertasController extends Controller
         $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
         if (empty($aspirante)) {
             return response()->json(['msg' => 'error', 'data' => 'Debe actualizar su Currículum, para realizar la postulación']);
+        }
+
+        $verificarOferta = Ofertas::find($request->oferta_id);
+        //'2020-10-24' < '2020-10-24'
+        if ($verificarOferta->validez < date('Y-m-d')) {
+            return response()->json(['msg' => 'error', 'data' => 'La oferta se encuentra expirada']);
         }
 
         $oferta = Aplicaciones::where('aspirante_id',$aspirante->id)->where('oferta_id',$request->oferta_id)->first();

@@ -66,6 +66,50 @@ $(document).ready(function () {
         });
     });
 
+    $("#btn_aplicar_oferta").click(function () {
+        if (!$("#formulario_aplicar").valid()) {
+            return false;
+        }
+        var data = $('#formulario_aplicar').serialize();
+        $('#aplicarModal').modal('toggle');
+        $.ajax({
+            type: 'POST',
+            url: '/postulacion',
+            data: data,
+            beforeSend: function () {
+                Swal.fire({
+                    title: '¡Espere, Por favor!',
+                    html: 'Cargando informacion...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+            },
+            success: function (data) {
+                 Swal.close();
+              //  $('#formregisterdiv').html(data);
+             // console.log(data)
+                var d = JSON.parse(data);
+                //$('#div_mensajes').removeClass('d-none text-center')
+                if (d['msg'] == 'error') {
+                    toastr.error(d['data']);
+                } else {
+                    //aspirante_formacion();
+                    toastr.success(d['data'])
+                    //limpiar_postulacion();
+                }
+            },
+            error: function (xhr) { // if error occured
+                toastr.error('Error: '+xhr.statusText + xhr.responseText);
+            },
+            complete: function () {
+               Swal.close();
+            },
+            dataType: 'html'
+        });
+    });
+
     $("#btn_aplicar").click(function () {
         if (!$("#formulario_postulacion").valid()) {
             return false;
@@ -472,6 +516,35 @@ $(document).ready(function () {
 
      /*FORMACION POSTULACION*/
     $("#formulario_postulacion").validate({
+        ignore: [],
+        rules: {
+          'salario'          : {required: true,number:true,monto_minimo:0,monto_maximo:1000000,dollarsscents:true},
+        },
+          errorPlacement: function (error, element) {
+            var er=error[0].innerHTML;
+            var nombre = element[0].id;
+            if(element[0].type=="select-one"){
+                $("#" + nombre).parent().find(".select2-container").addClass("error");
+            }else{
+                $("#" + nombre).addClass("is-invalid");
+            }
+            $("#" + nombre + "-error").html(er);
+            $("#" + nombre + "-error").show();
+          }, unhighlight: function (element) {
+            var nombre = element.id;
+            if(element.type=="select-one"){
+                $("#" + nombre).parent().find(".select2-container").removeClass("error");
+            }else{
+                $("#" + nombre).removeClass("is-invalid");
+            }
+            $("#" + nombre + "-error").hide();
+            $("#"+nombre).removeClass("error");
+          }
+      });
+    /*FORMACION POSTULACION*/
+
+    /*FORMACION POSTULACION*/
+    $("#formulario_aplicar").validate({
         ignore: [],
         rules: {
           'salario'          : {required: true,number:true,monto_minimo:0,monto_maximo:1000000,dollarsscents:true},

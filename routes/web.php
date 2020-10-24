@@ -36,6 +36,7 @@ Route::middleware(['verified'])->group(function () {
     Route::post('/ofertas/delete', 'OfertasController@delete')->name('ofertas.delete');
     Route::post('/postulacion', 'OfertasController@postulacion')->name('postulacion.post');
     Route::get('/ofertas/{id}/aspirantes', 'OfertasController@ofertaDetalle')->name('ofertas.aspirantes');
+    Route::get('/ofertas/{id}/aplicar', 'OfertasController@detalle')->name('ofertas.aplicar');
     Route::post('/ofertas/aplicaciones', 'OfertasController@aplicaciones')->name('ofertas.aplicaciones');
     Route::post('/ofertas/aplicaciones/profile', 'OfertasController@profile')->name('ofertas.aplicaciones.profile');
     Route::post('/ofertas/aplicaciones/estado', 'OfertasController@changeStatus')->name('ofertas.aplicaciones.profile');
