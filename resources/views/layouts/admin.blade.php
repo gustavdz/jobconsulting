@@ -87,20 +87,20 @@
                 </span>
         </div>
         <div class="app-header__content">
-            @if(Auth::user()->role =='aspirante')
-            <div class="app-header-left">
-                <div class="search-wrapper">
-                    <div class="input-holder">
-                        <form id="search-form" action="{{ route('search') }}" method="POST" >
-                                            {{ csrf_field() }}
-                                    <input type="text" class="search-input" id="search" name="search" placeholder="Type to search">
-                        </form>
-                        <button class="search-icon"><span></span></button>
-                    </div>
-                    <button class="close"></button>
-                </div>
-            </div>
-            @endif
+           {{-- @if(Auth::user()->role =='aspirante')
+                                  <div class="app-header-left">
+                                      <div class="search-wrapper">
+                                          <div class="input-holder">
+                                              <form id="search-form" action="{{ route('search') }}" method="POST" >
+                                                                  {{ csrf_field() }}
+                                                          <input type="text" class="search-input" id="search" name="search" placeholder="Type to search">
+                                              </form>
+                                              <button class="search-icon"><span></span></button>
+                                          </div>
+                                          <button class="close"></button>
+                                      </div>
+                                  </div>
+                                  @endif--}}
             <div class="app-header-right">
                 <div class="header-btn-lg pr-0">
                     <div class="widget-content p-0">

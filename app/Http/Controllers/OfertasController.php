@@ -76,7 +76,7 @@ class OfertasController extends Controller
         }
         if (Auth::user()->role == 'empresa'){
             return datatables()
-            ->eloquent(Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','<>','E')->where('ofertas.empresa_id',Auth::user()->id)->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC'))
+            ->eloquent(Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','<>','E')->where('ofertas.empresa_id',Auth::user()->id)->orderBy('ofertas.id', 'DESC'))
             ->addColumn('detalle','ofertas.detalle') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('categorias','ofertas.categorias') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('habilidades','ofertas.habilidades') #detalle o llave a recibir en el JS y segundo campo la vista
@@ -155,8 +155,14 @@ class OfertasController extends Controller
                     }
                     HabilidadesOfertas::where('oferta_id',$request->id)->delete();
                     foreach ($request->habilidades as $key => $value) {
+                        $habilidad = Habilidades::find($value);
+                        if (empty($habilidad)) { ##no existe lo creo
+                           $habilidad = new Habilidades;
+                           $habilidad->nombre = $value;
+                           $habilidad->save();
+                        }
                         $habilidad_oferta = new HabilidadesOfertas;
-                        $habilidad_oferta->habilidad_id = $value;
+                        $habilidad_oferta->habilidad_id = $habilidad->id;
                         $habilidad_oferta->oferta_id = $ofertas->id;
                         $habilidad_oferta->save();
                     }
