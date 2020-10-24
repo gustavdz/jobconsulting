@@ -220,7 +220,7 @@ class OfertasController extends Controller
 
         $verificarOferta = Ofertas::find($request->oferta_id);
         //'2020-10-24' < '2020-10-24'
-        if ($verificarOferta->validez < date('Y-m-d')) {
+        if ($verificarOferta->validez < date('Y-m-d') || $verificarOferta->estado != 'A') {
             return response()->json(['msg' => 'error', 'data' => 'La oferta se encuentra expirada']);
         }
 
