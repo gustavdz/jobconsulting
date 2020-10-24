@@ -46,7 +46,6 @@
    	<div class="col">
    		<div class="card border-primary">
             <div class="card-header">{{ $datos->titulo ?? '' }}</div>
-
             <div class="card-body">
             	<p class="mb-2 mr-2 badge badge-primary" style="font-size: 14px">{{ $datos->user->name ?? '' }}</p>
                 <p class="line">{!! $datos->descripcion ?? '' !!}. </p>
