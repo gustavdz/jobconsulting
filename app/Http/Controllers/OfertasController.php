@@ -26,14 +26,25 @@ class OfertasController extends Controller
         $this->middleware('auth');
     }
 
-    public function indexAPI() {
+    public function indexAPI(Request $request) {
+        if($request->search){
+            $search=$request->search;
+        }else{
+            $search="";
+        }
+
         $ofertas = Ofertas::with('user')
             ->with('categoriasOfertas.categoria')
             ->with('habilidadesOfertas.habilidad')
             ->where('ofertas.estado','A')
+            ->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', '%'.$search.'%')
+                    ->orWhere('last_name', 'LIKE', '%'.$search.'%');
+            })
+            ->orderBy('ofertas.created_at', 'DESC')
             ->orderBy('ofertas.validez', 'DESC')
             ->orderBy('ofertas.id', 'DESC')
-            ->paginate();
+            ->get();
         return $ofertas;
     }
 
