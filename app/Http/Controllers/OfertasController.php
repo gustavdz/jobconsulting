@@ -38,13 +38,13 @@ class OfertasController extends Controller
             ->with('habilidadesOfertas.habilidad')
             ->where('ofertas.estado','A')
             ->where(function ($query) use ($search) {
-                $query->where('name', 'LIKE', '%'.$search.'%')
-                    ->orWhere('last_name', 'LIKE', '%'.$search.'%');
+                $query->where('titulo', 'LIKE', '%'.$search.'%');
+                    //->orWhere('content', 'LIKE', '%'.$search.'%');
             })
             ->orderBy('ofertas.created_at', 'DESC')
             ->orderBy('ofertas.validez', 'DESC')
             ->orderBy('ofertas.id', 'DESC')
-            ->get();
+            ->paginate(25);
         return $ofertas;
     }
 
