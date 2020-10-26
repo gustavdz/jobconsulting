@@ -42,8 +42,8 @@ class OfertasController extends Controller
                     //->orWhere('content', 'LIKE', '%'.$search.'%');
             })
             ->orderBy('ofertas.created_at', 'DESC')
-            //->orderBy('ofertas.validez', 'DESC')
-            //->orderBy('ofertas.id', 'DESC')
+            ->orderBy('ofertas.validez', 'DESC')
+            ->orderBy('ofertas.id', 'DESC')
             ->paginate(25);
         return $ofertas;
     }
