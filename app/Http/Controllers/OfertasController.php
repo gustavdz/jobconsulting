@@ -44,7 +44,7 @@ class OfertasController extends Controller
             ->orderBy('ofertas.created_at', 'DESC')
             ->orderBy('ofertas.validez', 'DESC')
             ->orderBy('ofertas.id', 'DESC')
-            ->paginate(25);
+            ->paginate(10);
         return $ofertas;
     }
 
