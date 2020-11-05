@@ -17,13 +17,13 @@ class CreateAspirantesTable extends Migration
             $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->date('fecha_nacimiento')->nullable();
-            $table->string('telefono',15)->nullable();
-            $table->string('celular',15)->nullable();
+            $table->string('telefono',150)->nullable();
+            $table->string('celular',150)->nullable();
             $table->string('pais',250)->nullable();
             $table->string('provincia',250)->nullable();
             $table->string('ciudad',250)->nullable();
-            $table->double('remuneracion_actual',10,4)->nullable();
-            $table->double('espectativa_salarial',10,4)->nullable();
+            $table->string('remuneracion_actual')->nullable();
+            $table->string('espectativa_salarial')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
 
