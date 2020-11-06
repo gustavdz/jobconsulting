@@ -57,7 +57,9 @@
 <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
     <div class="app-header header-shadow">
         <div class="app-header__logo">
-            <div class="logo-src"></div>
+            <div class="logo-src">
+                <img src="{{asset('../images/logo-01.png')}}">
+            </div>
             <div class="header__pane ml-auto">
                 <div>
                     <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
