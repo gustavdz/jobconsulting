@@ -11,7 +11,7 @@ $(document).ready(function () {
         if (!$("#formulario_personal").valid()) {
             return false;
         }
-        
+
         var formData = new FormData();
         formData.append('_token',$('meta[name="csrf-token"]').attr('content'));
         formData.append('foto',$('#foto')[0].files[0]);
@@ -238,7 +238,9 @@ $(document).ready(function () {
             dataType: 'html'
         });
     });
-
+    $("#chb_trabajo_actual").click(function () {
+        if($("#chb_trabajo_actual").prop('checked')){$("#fin_experiencia").hide();}else{$("#fin_experiencia").show();}
+    });
     $("#guardar_referencia").click(function () {
         if (!$("#formulario_referencia").valid()) {
             return false;
@@ -572,7 +574,7 @@ $(document).ready(function () {
       });
     /*FORMACION POSTULACION*/
 
-    
+
 
 });
 
@@ -617,21 +619,26 @@ function editar_idioma(id,idioma,nivel){
     $('#idiomaModal').modal('toggle');
 }
 
-function editar_referencia(id,nombres,correo,telefono){
+function editar_referencia(id,nombres,correo,telefono,empresa,cargo,nivel_cargo){
     $("#referencia_id").val(id);
     $("#nombres_referencia").val(nombres);
     $("#correo_referencia").val(correo);
     $("#telefono_referencia").val(telefono);
+    $("#empresa_referencia").val(empresa);
+    $("#cargo_referencia").val(cargo);
+    $("#nivel_cargo_referencia").val(nivel_cargo);
     $('#referenciaModal').modal('toggle');
 }
 
-function editar_experiencia(id,empresa,inicio,fin,sector,cargo,funciones,personal_cargo){
+function editar_experiencia(id,empresa,inicio,fin,sector,cargo,funciones,personal_cargo,area_cargo,nivel_cargo){
     $("#experiencia_id").val(id);
     $("#empresa").val(empresa);
     $("#inicio_experiencia").val(inicio);
     $("#fin_experiencia").val(fin);
     $("#sector").val(sector);
     $("#cargo").val(cargo);
+    $("#area_cargo").val(area_cargo);
+    $("#nivel_cargo").val(nivel_cargo);
     $("#personal").val(personal_cargo);
     $("#funciones").val(funciones);
     $('#experienciaModal').modal('toggle');
@@ -658,7 +665,7 @@ function aspirante_formacion(){
         success: function (data) {
             //console.log(data)
             $('#aspirante_formacion').html(data);
-            
+
         },
         error: function (xhr) {
             toastr.error('Error: '+xhr.statusText + xhr.responseText);
@@ -690,7 +697,7 @@ function aspirante_idioma(){
         success: function (data) {
             //console.log(data)
             $('#aspirante_idioma').html(data);
-            
+
         },
         error: function (xhr) {
             toastr.error('Error: '+xhr.statusText + xhr.responseText);
@@ -722,7 +729,7 @@ function aspirante_referencia(){
         success: function (data) {
             //console.log(data)
             $('#aspirante_referencia').html(data);
-            
+
         },
         error: function (xhr) {
             toastr.error('Error: '+xhr.statusText + xhr.responseText);
@@ -754,7 +761,7 @@ function aspirante_experiencia(){
         success: function (data) {
             //console.log(data)
             $('#aspirante_experiencia').html(data);
-            
+
         },
         error: function (xhr) {
             toastr.error('Error: '+xhr.statusText + xhr.responseText);
@@ -791,7 +798,7 @@ function detalle(id){
             var html_text="";
             if (data != "") {
                 console.log(data)
-                html_text+=  "<h5>"+data.titulo+" - "+data.user.name+"</h5>";
+                html_text+=  "<h5>"+data.titulo+"</h5>";
                 html_text+= "<p>"+data.descripcion+"</p><ul>";
 
                 for (var i = 0; i < data.habilidades_ofertas.length; i++) {

@@ -22,13 +22,12 @@
         <div class="col-md-9">
             <div class="row justify-content-center">
                 @forelse ($ofertas as $oferta)
-                    <div class="col-md-4 mb-3" >
+                    <div class="col-md-12 mb-3" >
                         <div class="card border-primary">
                             <div class="card-header"><a href="#" onclick="detalle({{ $oferta->id }})">{{ $oferta->titulo }}</a></div>
 
                             <div class="card-body">
                                 <p class="line">{!! $oferta->descripcion !!} </p>
-                                <p class="line">Salario ${{$oferta->salario ? number_format($oferta->salario, 2, '.', ',') : '0.00'}}</p>
                                <footer class="blockquote-footer text-right">Publicado {{\Carbon\Carbon::parse($oferta->created_at)->format('j F, Y')}}</footer>
                             </div>
                         </div>

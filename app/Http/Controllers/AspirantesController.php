@@ -35,7 +35,7 @@ class AspirantesController extends Controller
     }
 
     public function perfil(Request $request)
-    {	
+    {
 		$foto = $request->file('foto');
     	$cv = $request->file('cv');
 
@@ -101,7 +101,7 @@ class AspirantesController extends Controller
 
     	$result = $aspirante ? ['msg' => 'success', 'data' => 'Se ha actualizado la información de datos personales correctamente'] : ['msg' => 'error', 'data' => 'Ocurrio un error al actualizar información '];
 
-        return response()->json($result);	
+        return response()->json($result);
     }
 
     public function viewFormacion(Request $request)
@@ -117,7 +117,7 @@ class AspirantesController extends Controller
 
     public function formacion(Request $request)
     {
-        
+
         $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
         //return $aspirante->id;
         if (empty($aspirante)) {
@@ -125,7 +125,7 @@ class AspirantesController extends Controller
         }
 
     	$formacion = AspiranteFormacion::find($request->formacion_id);
-    	
+
     	if (empty($formacion)) {
     		$formacion = new AspiranteFormacion;
     		$formacion->aspirante_id = $aspirante->id;
@@ -167,7 +167,7 @@ class AspirantesController extends Controller
         }
 
     	$idioma = AspiranteIdioma::find($request->idioma_id);
-    	
+
     	if (empty($idioma)) {
     		$idioma = new AspiranteIdioma;
     		$idioma->aspirante_id = $aspirante->id;
@@ -193,7 +193,7 @@ class AspirantesController extends Controller
         if (!empty($aspirante)) {
            $referencias = AspiranteReferencia::where('aspirante_id',$aspirante->id)->get();
         }
-    	
+
     	//return $idiomas;
     	return view('aspirante.referencia',compact('referencias'));
     }
@@ -206,18 +206,24 @@ class AspirantesController extends Controller
         }
 
     	$referencia = AspiranteReferencia::find($request->referencia_id);
-    	
+
     	if (empty($referencia)) {
     		$referencia = new AspiranteReferencia;
     		$referencia->aspirante_id = $aspirante->id;
-    		$referencia->nombre = $request->nombres_referencia;
-    		$referencia->email = $request->correo_referencia;
-    		$referencia->telefono = $request->telefono_referencia;
+            $referencia->nombre = $request->nombres_referencia;
+            $referencia->email = $request->correo_referencia;
+            $referencia->telefono = $request->telefono_referencia;
+            $referencia->empresa = $request->empresa_referencia;
+            $referencia->cargo = $request->cargo_referencia;
+            $referencia->nivel_cargo = $request->nivel_cargo_referencia;
     		$referencia->save();
     	}else{
     		$referencia->nombre = $request->nombres_referencia;
     		$referencia->email = $request->correo_referencia;
     		$referencia->telefono = $request->telefono_referencia;
+            $referencia->empresa = $request->empresa_referencia;
+            $referencia->cargo = $request->cargo_referencia;
+            $referencia->nivel_cargo = $request->nivel_cargo_referencia;
     		$referencia->save();
     	}
 
@@ -245,7 +251,7 @@ class AspirantesController extends Controller
             return response()->json(['msg' => 'error', 'data' => 'Primero debe completar sus datos personales']);
         }
     	$experiencia = AspiranteExperiencia::find($request->experiencia_id);
-    	
+
     	if (empty($experiencia)) {
     		$experiencia = new AspiranteExperiencia;
     		$experiencia->aspirante_id = $aspirante->id;
@@ -255,7 +261,9 @@ class AspirantesController extends Controller
     		$experiencia->sector = $request->sector;
     		$experiencia->cargo = $request->cargo;
     		$experiencia->funciones = $request->funciones;
-    		$experiencia->personal_cargo = $request->personal;
+            $experiencia->personal_cargo = $request->personal;
+            $experiencia->area_cargo = $request->area_cargo;
+            $experiencia->nivel_cargo = $request->nivel_cargo;
     		$experiencia->save();
     	}else{
     		$experiencia->empresa = $request->empresa;
@@ -265,6 +273,8 @@ class AspirantesController extends Controller
     		$experiencia->cargo = $request->cargo;
     		$experiencia->funciones = $request->funciones;
     		$experiencia->personal_cargo = $request->personal;
+            $experiencia->area_cargo = $request->area_cargo;
+            $experiencia->nivel_cargo = $request->nivel_cargo;
     		$experiencia->save();
     	}
 
@@ -289,28 +299,28 @@ class AspirantesController extends Controller
     public function formacion_delete(Request $request)
     {
         $formacion = AspiranteFormacion::find($request->id)->delete();
-        $result = $formacion ? ['msg' => 'success', 'data' => 'Se ha elimado correctamente la formación academica'] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la información ']; 
+        $result = $formacion ? ['msg' => 'success', 'data' => 'Se ha elimado correctamente la formación academica'] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la información '];
         return response()->json($result);
     }
 
     public function experiencia_delete(Request $request)
     {
         $experiencia = AspiranteExperiencia::find($request->id)->delete();
-        $result = $experiencia ? ['msg' => 'success', 'data' => 'Se ha elimado correctamente la información'] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la información ']; 
+        $result = $experiencia ? ['msg' => 'success', 'data' => 'Se ha elimado correctamente la información'] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la información '];
         return response()->json($result);
     }
 
     public function idioma_delete(Request $request)
     {
         $idioma = AspiranteIdioma::find($request->id)->delete();
-        $result = $idioma ? ['msg' => 'success', 'data' => 'Se ha elimado correctamente la información'] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la información ']; 
+        $result = $idioma ? ['msg' => 'success', 'data' => 'Se ha elimado correctamente la información'] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la información '];
         return response()->json($result);
     }
 
     public function referencia_delete(Request $request)
     {
         $referencia = AspiranteReferencia::find($request->id)->delete();
-        $result = $referencia ? ['msg' => 'success', 'data' => 'Se ha elimado correctamente la información'] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la información ']; 
+        $result = $referencia ? ['msg' => 'success', 'data' => 'Se ha elimado correctamente la información'] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la información '];
         return response()->json($result);
     }
 

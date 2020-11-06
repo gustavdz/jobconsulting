@@ -19,6 +19,9 @@ class CreateAspiranteReferenciasTable extends Migration
             $table->string('nombre',250)->nullable();
             $table->string('email',250)->nullable();
             $table->string('telefono',15)->nullable();
+            $table->string('empresa',250)->nullable();
+            $table->string('cargo',250)->nullable();
+            $table->string('nivel_cargo',250)->nullable();
 
             $table->foreign('aspirante_id')->references('id')->on('aspirantes');
 

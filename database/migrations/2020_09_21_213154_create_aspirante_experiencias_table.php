@@ -23,6 +23,8 @@ class CreateAspiranteExperienciasTable extends Migration
             $table->string('cargo',250)->nullable();
             $table->text('funciones')->nullable();
             $table->text('personal_cargo')->nullable();
+            $table->text('area_cargo')->nullable();
+            $table->text('nivel_cargo')->nullable();
 
             $table->foreign('aspirante_id')->references('id')->on('aspirantes');
 

@@ -2,7 +2,7 @@
 
 @section('css')
 <style type="text/css">
-  
+
     .app-page-title {
     	padding: 30px;
     	margin: -30px -29px 0px;
@@ -37,7 +37,7 @@
             <p id="mensajes"></p>
         </div>
     </div>
-@endsection 
+@endsection
 
 @section('content')
 
@@ -45,13 +45,13 @@
    <div class="row">
    	<div class="col">
    		<div class="card border-primary">
-            <div class="card-header">{{ $datos->titulo ?? '' }} 
+            <div class="card-header">{{ $datos->titulo ?? '' }}
             	@if($datos->validez < date('Y-m-d') || $datos->estado != 'A')
             		<span class="ml-2 badge badge-danger"">Oferta Expirada</span>
             	@endif
             </div>
             <div class="card-body">
-            	<p class="mb-2 mr-2 badge badge-primary" style="font-size: 14px">{{ $datos->user->name ?? '' }}</p>
+
                 <p class="line">{!! $datos->descripcion ?? '' !!}. </p>
                 @if(!empty($datos->habilidadesOfertas))
                 <ul>
@@ -62,7 +62,7 @@
                @endif
                <div class="row">
                	<div class="col">
-                	<p class="line">Salario ${{$datos->salario ? number_format($datos->salario, 2, '.', ',') : '0.00'}}</p>
+                	&nbsp;
                	</div>
                	<div class="col">
                		<footer class="blockquote-footer text-right">Publicado {{\Carbon\Carbon::parse($datos->created_at)->format('j F, Y')}}</footer>
@@ -96,13 +96,13 @@
                 <div class="modal-body" >
                     <div class="form-group row">
                     	<div class="col">
-                    		
+
                         <label for="salario" class="col-form-label">Ingrese su salario pretendido</label>
                           <input type="hidden" class="form-control" id="oferta_id" name="oferta_id" value="{{ $datos->id }}">
                           <input type="text" class="form-control" id="salario" name="salario">
                           <label tipo="error" id="salario-error"></label>
                     	</div>
-                        
+
                     </div>
                 </div>
                 <div class="modal-footer">

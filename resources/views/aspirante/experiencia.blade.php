@@ -1,10 +1,10 @@
 @forelse($experiencias as $experiencia)
 <div class="main-card mb-3 card border-info">
     <div class="card-header">
-        {{ $experiencia->empresa }} 
+        {{ $experiencia->empresa }}
         <div class="btn-actions-pane-right">
             <div  role="group" class="btn-group-sm btn-group">
-                <button class="mb-2 mr-2 btn-icon btn-shadow btn-dashed btn btn-outline-success" onclick="editar_experiencia({{ $experiencia->id }},'{{ $experiencia->empresa }}','{{ $experiencia->inicio }}','{{ $experiencia->fin }}','{{ $experiencia->sector }}','{{ $experiencia->cargo }}','{{ $experiencia->funciones }}','{{ $experiencia->personal_cargo }}')"><i class="pe-7s-pen btn-icon-wrapper" > </i> Editar</button>
+                <button class="mb-2 mr-2 btn-icon btn-shadow btn-dashed btn btn-outline-success" onclick="editar_experiencia({{ $experiencia->id }},'{{ $experiencia->empresa }}','{{ $experiencia->inicio }}','{{ $experiencia->fin }}','{{ $experiencia->sector }}','{{ $experiencia->cargo }}','{{ $experiencia->funciones }}','{{ $experiencia->personal_cargo }}','{{ $experiencia->area_cargo }}','{{ $experiencia->nivel_cargo }}')"><i class="pe-7s-pen btn-icon-wrapper" > </i> Editar</button>
                 <button class="mb-2 mr-2 btn-icon btn-shadow btn-dashed btn btn-outline-danger" onclick="eliminar_experiencia({{ $experiencia->id }},'{{ $experiencia->empresa }}')"><i class="pe-7s-trash btn-icon-wrapper"> </i> Eliminar</button>
             </div>
         </div>
@@ -21,10 +21,18 @@
         </div>
         <div class="row">
             <div class="col">
-                <p>Sector: {{ $experiencia->sector }}</p>
+                <p>Sector de la empresa: {{ $experiencia->sector }}</p>
             </div>
             <div class="col">
                 <p>Personal a Cargo: {{ $experiencia->personal_cargo }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>Area del cargo: {{ $experiencia->area_cargo }}</p>
+            </div>
+            <div class="col">
+                <p>Nivel del Cargo: {{ $experiencia->nivel_cargo }}</p>
             </div>
         </div>
         <div class="row">

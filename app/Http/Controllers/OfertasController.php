@@ -91,7 +91,7 @@ class OfertasController extends Controller
             ->addColumn('detalle','ofertas.detalle') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('categorias','ofertas.categorias') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('habilidades','ofertas.habilidades') #detalle o llave a recibir en el JS y segundo campo la vista
-            ->addColumn('opciones','ofertas.opciones') #detalle o llave a recibir en el JS y segundo campo la vista
+            ->addColumn('opciones','ofertas.opciones_consultores') #detalle o llave a recibir en el JS y segundo campo la vista
             ->rawColumns(['detalle','categorias','habilidades','opciones']) #opcion para que presente el HTML
             ->toJson();
         }

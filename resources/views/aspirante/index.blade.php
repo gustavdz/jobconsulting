@@ -64,7 +64,7 @@
             <p id="mensajes"></p>
         </div>
     </div>
-@endsection 
+@endsection
 
 @section('content')
 <input type="hidden" name="aspirante_id" id="aspirante_id" value="{{ $aspirante->id ?? '' }}">
@@ -94,7 +94,7 @@
             </li>
             <li class="nav-item">
                 <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-5" aria-selected="false" onclick="aspirante_referencia()">
-                    <span>Referencias</span>
+                    <span>Referencias Laborales</span>
                 </a>
             </li>
         </ul>
@@ -167,7 +167,7 @@
         	{{--  REFERENCIAS --}}
         	<div class="tab-pane tabs-animation fade" id="tab-content-5" role="tabpanel">
         		<div class="main-card mb-3 card">
-                    <div class="card-header"><i class="header-icon lnr-license icon-gradient bg-plum-plate"> </i> REFERENCIAS
+                    <div class="card-header"><i class="header-icon lnr-license icon-gradient bg-plum-plate"> </i> REFERENCIAS LABORALES
                         <div class="btn-actions-pane-right">
                             <div role="group" class="btn-group-sm nav btn-group">
                                 <button class="mb-2 mr-2 btn-icon btn-shadow btn-dashed btn btn-outline-primary" onclick="limpiar_referencia()" data-toggle="modal" data-target=".modal-referenciaModal"><i class="pe-7s-plus btn-icon-wrapper"> </i> Añadir</button>
@@ -272,11 +272,16 @@
 				     	<div class="col">
 				     		<div class="form-group">
 							    <label for="nivel">Nivel</label>
-							    <input type="text" class="form-control" id="nivel" name="nivel" placeholder="" value="">
+							    <!--<input type="text" class="form-control" id="nivel" name="nivel" placeholder="" value="">-->
+                                <select class="form-control" id="nivel" name="nivel">
+                                    <option value="Bajo">Bajo</option>
+                                    <option value="Intermedio">Intermedio</option>
+                                    <option value="Avanzado">Avanzado</option>
+                                </select>
                                 <label tipo="error" id="nivel-error"></label>
 							</div>
 				     	</div>
-				     </div>			
+				     </div>
 			     </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiar_idioma()">Cerrar</button>
@@ -312,25 +317,51 @@
 				     	</div>
 				     	<div class="col">
 				     		<div class="form-group">
-							    <label for="correo_referencia">correo</label>
+							    <label for="correo_referencia">Correo electrónico</label>
 							    <input type="email" class="form-control" id="correo_referencia" name="correo_referencia">
                                 <label tipo="error" id="correo_referencia-error"></label>
 							</div>
 				     	</div>
 				     </div>
 
-				     <div class="row">
-				     	<div class="col">
-				     		<div class="form-group">
-							    <label for="telefono_referencia">Teléfono</label>
-							    <input type="text" class="form-control" id="telefono_referencia" name="telefono_referencia">
-                                <label tipo="error" id="telefono_referencia-error"></label>
-							</div>
-				     	</div>
-				     	<div class="col">
-				     		
-				     	</div>
-				     </div>		
+                     <div class="row">
+                         <div class="col">
+                             <div class="form-group">
+                                 <label for="telefono_referencia">Teléfono</label>
+                                 <input type="text" class="form-control" id="telefono_referencia" name="telefono_referencia">
+                                 <label tipo="error" id="telefono_referencia-error"></label>
+                             </div>
+                         </div>
+                         <div class="col">
+                             <div class="form-group">
+                                 <label for="empresa_referencia">Empresa</label>
+                                 <input type="text" class="form-control" id="empresa_referencia" name="empresa_referencia">
+                                 <label tipo="error" id="empresa_referencia-error"></label>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="row">
+                         <div class="col">
+                             <div class="form-group">
+                                 <label for="cargo_referencia">Cargo en la empresa</label>
+                                 <input type="text" class="form-control" id="cargo_referencia" name="cargo_referencia">
+                                 <label tipo="error" id="cargo_referencia-error"></label>
+                             </div>
+                         </div>
+                         <div class="col">
+                             <div class="form-group">
+                                 <label for="nivel_cargo_referencia">Nivel del Cargo</label>
+                                 <!-- <input type="text" class="form-control" id="nivel_cargo_referencia" name="nivel_cargo_referencia"> -->
+                                 <select class="form-control" id="nivel_cargo_referencia" name="nivel_cargo_referencia">
+                                     <option value="Jefe">Jefe</option>
+                                     <option value="Colega">Colega</option>
+                                     <option value="Recursos Humanos">Recursos Humanos</option>
+                                     <option value="Empleador">Empleador</option>
+                                 </select>
+                                 <label tipo="error" id="nivel_cargo_referencia-error"></label>
+                             </div>
+                         </div>
+                     </div>
 			     </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiar_referencia()">Cerrar</button>
@@ -375,7 +406,7 @@
 				     <div class="row">
 				     	<div class="col">
 				     		<div class="form-group">
-							    <label for="fin_experiencia">Fecha de Terminación</label>
+							    <label for="fin_experiencia">Fecha de Terminación - <span style="color: #4C566A; font-size: 12px;"> Trabajo actual </span> <input type="checkbox" id="chb_trabajo_actual" name="chb_trabajo_actual" /></label>
 							    <input type="date" class="form-control" id="fin_experiencia" name="fin_experiencia" placeholder="">
 							</div>
 				     	</div>
@@ -387,23 +418,47 @@
 							</div>
 				     	</div>
 				     </div>
-				 	
-				 	<div class="row">
-				     	<div class="col">
-				     		<div class="form-group">
-							    <label for="cargo">Cargo</label>
-							    <input type="text" class="form-control" id="cargo" name="cargo" placeholder="">
-                                <label tipo="error" id="cargo-error"></label>
-							</div>
-				     	</div>
-				     	<div class="col">
-				     		<div class="form-group">
-							    <label for="personal">Personal a Cargo</label>
-							    <input type="text" class="form-control" id="personal" name="personal">
-                                <label tipo="error" id="personal-error"></label>
-							</div>
-				     	</div>
-				     </div>
+
+                     <div class="row">
+                         <div class="col">
+                             <div class="form-group">
+                                 <label for="cargo">Cargo</label>
+                                 <input type="text" class="form-control" id="cargo" name="cargo" placeholder="">
+                                 <label tipo="error" id="cargo-error"></label>
+                             </div>
+                         </div>
+                         <div class="col">
+                             <div class="form-group">
+                                 <label for="personal">Personal a Cargo</label>
+                                 <input type="text" class="form-control" id="personal" name="personal">
+                                 <label tipo="error" id="personal-error"></label>
+                             </div>
+                         </div>
+                     </div>
+
+                     <div class="row">
+                         <div class="col">
+                             <div class="form-group">
+                                 <label for="area_cargo">Área del Cargo</label>
+                                 <input type="text" class="form-control" id="area_cargo" name="area_cargo" placeholder="">
+                                 <label tipo="error" id="area_cargo-error"></label>
+                             </div>
+                         </div>
+                         <div class="col">
+                             <div class="form-group">
+                                 <label for="nivel_cargo">Nivel del Cargo</label>
+                                 <!-- <input type="text" class="form-control" id="nivel_cargo" name="nivel_cargo">-->
+                                 <select class="form-control" id="nivel_cargo" name="nivel_cargo">
+                                     <option value="Contribuidor Individual">Contribuidor Individual</option>
+                                     <option value="Coordinación">Coordinación</option>
+                                     <option value="Jefatura">Jefatura</option>
+                                     <option value="Gerencia">Gerencia</option>
+                                     <option value="Dirección">Dirección</option>
+                                 </select>
+                                 <label tipo="error" id="nivel_cargo-error"></label>
+                             </div>
+                         </div>
+                     </div>
 
 				     <div class="row">
 				          <div class="col">
@@ -413,8 +468,8 @@
                                    <label tipo="error" id="funciones-error"></label>
 				               </div>
 				          </div>
-				     	
-				 	</div>	
+
+				 	</div>
 			     </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiar_experiencia()">Cerrar</button>
