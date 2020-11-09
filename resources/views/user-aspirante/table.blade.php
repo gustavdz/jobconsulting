@@ -25,7 +25,7 @@
                             <div class="widget-subheading opacity-7"><a href="/storage/cv/{{ $rst->user->id }}.pdf" target="_blank">Descargar Currículum</a></div>
                             
                             @if($rst->resume_old != '' || $rst->resume_old != null)
-                            <div class="widget-subheading opacity-7"><a href="{{ $rst->resume_old }}" target="_blank">Descargar Currículum (Migrado)</a></div>
+                            <div class="widget-subheading opacity-7"><a href="{!! str_replace('http://www.human.ec/wp-content/uploads','/storage/old_resumes',$rst->aspirante->resume_old) !!}" target="_blank">Descargar Currículum (Migrado)</a></div>
                             @endif
                         </div>
 	                </div>
