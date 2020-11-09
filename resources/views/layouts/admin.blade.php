@@ -111,7 +111,7 @@
                                 <div class="btn-group">
                                     <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
                                         <img width="42" class="rounded-circle" onerror="imgErrora(this);" src="/storage/perfil/{{ Auth::user()->id  }}.jpg?{{ time() }}" alt="">
-                                        <i class="fa fa-angle-down ml-2 opacity-8"></i>
+                                        <!-- <i class="fa fa-angle-down ml-2 opacity-8"></i> -->
                                     </a>
                                     {{--<div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
                                         <h6 tabindex="-1" class="dropdown-header">Configuración</h6>
@@ -140,7 +140,7 @@
                                         </form>
                                          <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                    title="Salir" type="button" class="btn-shadow p-1 btn btn-primary">
-                                    <i class="fa text-white fa-chevron-circle-right pr-1 pl-1"></i>
+                                    <i class="fa text-white fa-sign-out-alt pr-1 pl-1"></i>
                                 </a>
                             </div>
                         </div>
