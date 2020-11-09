@@ -178,8 +178,8 @@ function view_table() {
     });
 }
 
-function imgError(image, ) {
-    console.log("Imagen: "+image);
+function imgError(image, image_old) {
+    console.log("Imagen: "+image_old);
     image.onerror = "";
     image.src = "/images/avatar.jpg";
     return true;
