@@ -39,7 +39,7 @@
                 <b>Correo: </b>{{ $rst->aspirante->user->email }}<br>
             </td>
             <td>
-                <b>Salario Aspirado: </b>${{$rst->salario_aspirado ? number_format($rst->salario_aspirado, 2, '.', ',') : '0.00'}}<br>
+                <b>Salario Aspirado: </b>${{$rst->salario_aspirado ? $rst->salario_aspirado : '0.00'}}<br>
                 <b>Fecha: </b>{{\Carbon\Carbon::parse($rst->created_at)->format('j F, Y')}}<br>
                 <b>Estado: </b>{{ $rst->estado_oferta->nombre }}<br>
             </td>

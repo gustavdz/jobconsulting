@@ -269,10 +269,15 @@ class OfertasController extends Controller
 
     public function aplicaciones(Request $request)
     {
-        $aplicaciones = Aplicaciones::with('aspirante')->with('aspirante.user')->with('aspirante.aspirante_formacion')->with('oferta')->with('estado_oferta')->where('oferta_id',$request->oferta_id)->get();
-        $estados = EstadoOferta::where('estado','A')->get();
-        //return $aplicaciones;
-        return view('aplicaciones.table',compact('aplicaciones','estados'));
+        if ($request->oferta_id > 0) {
+            $aplicaciones = Aplicaciones::with('aspirante')->with('aspirante.user')->with('aspirante.aspirante_formacion')->with('oferta')->with('estado_oferta')->where('oferta_id',$request->oferta_id)->get();
+            $estados = EstadoOferta::where('estado','A')->get();
+            return view('aplicaciones.table',compact('aplicaciones','estados'));
+        } else {
+            $aspirantes = Aspirantes::with('user')->with('aspirante_experiencia')->with('aspirante_experiencia')->with('aspirante_idioma')->with('aspirante_referencia')->get();
+            return view('user-aspirante.table',compact('aspirantes'));
+        }
+        
     }
 
     public function profile(Request $request)

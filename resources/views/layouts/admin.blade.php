@@ -231,6 +231,14 @@
                            </a>
                         </li>
                         @endif
+                        @if(Auth::user()->role=="admin" || Auth::user()->role=="empresa")
+                        <li>
+                           <a href="{{ route('user.aspirante')}}" class="{{ Route::is('user.aspirante') ? 'active' : '' }}">
+                            <i class="metismenu-icon pe-7s-display2"></i>
+                            Aspirantes
+                           </a>
+                        </li>
+                        @endif
                         @if(Auth::user()->role=="admin")
                         <li>
                            <a href="{{ route('categorias')}}" class="{{ Route::is('categorias') ? 'active' : '' }}">

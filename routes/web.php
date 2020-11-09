@@ -23,6 +23,7 @@ Route::middleware(['verified'])->group(function () {
 
     #user - empresas
     Route::get('/user', 'UserController@index')->name('user');
+    Route::get('/user-aspirante', 'UserController@indexAspirante')->name('user.aspirante');
     Route::post('/user/data', 'UserController@data')->name('user.data');
     Route::post('/user', 'UserController@store')->name('user.store');
     Route::post('/user/delete', 'UserController@delete')->name('user.delete');

@@ -33,6 +33,14 @@ class UserController extends Controller
         return view('user.index');
     }
 
+    public function indexAspirante()
+    {
+        if (Auth::user()->role == 'aspirante') {
+            return redirect()->route('home');
+        }
+        return view('user-aspirante.index');
+    }
+
     public function data()
     {
         $results = User::where('role','empresa')->where('status','A')->get();
