@@ -1,4 +1,4 @@
- <b>Empresa: </b>{{$user['name']}}<br>
+ <b>Consultor: </b>{{$user['name']}}<br>
 <b>Titulo: </b>{{$titulo}}<br>
 <b>Ciudad: </b>{{$ciudad}}<br>
 <b>Provincia: </b>{{$provincia}}<br>
