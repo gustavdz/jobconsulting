@@ -180,7 +180,7 @@ function view_table() {
 
 function imgError(image, image_old) {
     console.log("Imagen: "+image_old);
-    if(image_old){
+    if(image_old.length > 0){
         image.onerror = "";
         image.src = image_old;
     } else {
