@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-3">
-			<img src="/storage/perfil/{{ $aspirante->user->id  }}.jpg?{{ time() }}" alt="" class="img-thumbnail" onerror="imgError(this);" class="img-thumbnail">
+			<img src="/storage/perfil/{{ $aspirante->user->id  }}.jpg?{{ time() }}" alt="" class="img-thumbnail" onerror="imgError(this,'{{ $aspirante->photo_old  }}');" class="img-thumbnail">
 		</div>
 		<div class="col-md-9">
 			<h3 class="border-title">Datos Personales</h3>

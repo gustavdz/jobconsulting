@@ -34,7 +34,7 @@
                             <div class="col">
                                 <div class="card border-info">
                                     <div class="card-header">
-                                        Top 5 de Empresas con más ofertas 
+                                        Top 5 de Consultores con más ofertas 
                                     </div>
                                     <div class="card-body">
                                         <canvas id="myChartOfertas" width="300" height="300"></canvas>
