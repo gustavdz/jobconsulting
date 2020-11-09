@@ -15,7 +15,7 @@
 	                <div class="widget-content-wrapper">
 	                    <div class="widget-content-left mr-3">
 	                        <div class="widget-content-left">
-	                            <img width="50" class="rounded-circle" id="img_aspirante" src="/storage/perfil/{{ $rst->aspirante->user->id  }}.jpg?{{ time() }}" alt="" class="img-thumbnail" onerror="imgError(this);">
+	                            <img width="50" class="rounded-circle" id="img_aspirante" src="/storage/perfil/{{ $rst->aspirante->user->id  }}.jpg?{{ time() }}" alt="" class="img-thumbnail" onerror="imgError(this,'{{$rst->aspirante->photo_old}}');">
 	                        </div>
 	                    </div>
 	                    <div class="widget-content-left flex2">
