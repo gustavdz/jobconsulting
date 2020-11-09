@@ -182,7 +182,7 @@ function imgError(image, image_old) {
     console.log("Imagen: "+image_old);
     if(image_old.length > 0){
         image.onerror = "";
-        image.src = image_old;
+        image.src = "/storage/old_resumes/"+image_old.replace("http://www.human.ec/wp-content/uploads/resumes/", "");
     } else {
         image.onerror = "";
         image.src = "/images/avatar.jpg";
