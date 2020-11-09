@@ -180,8 +180,14 @@ function view_table() {
 
 function imgError(image, image_old) {
     console.log("Imagen: "+image_old);
-    image.onerror = "";
-    image.src = "/images/avatar.jpg";
+    if(image_old){
+        image.onerror = "";
+        image.src = image_old;
+    } else {
+        image.onerror = "";
+        image.src = "/images/avatar.jpg";
+    }
+    
     return true;
 }
 
