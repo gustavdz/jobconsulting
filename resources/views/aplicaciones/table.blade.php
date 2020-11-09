@@ -25,6 +25,7 @@
                             @endforeach
                             <div class="widget-subheading opacity-7"><a href="#" data-toggle="modal" data-target=".modal-aspirante" onclick="viewProfile({{ $rst->aspirante->id }})">Ver Perfil</a></div>
                             <div class="widget-subheading opacity-7"><a href="/storage/cv/{{ $rst->aspirante->user->id }}.pdf" target="_blank">Descargar Currículum</a></div>
+                            <div class="widget-subheading opacity-7"><a href="{{ $rst->aspirante->resume_old }}" target="_blank">Descargar Currículum (Migrado)</a></div>
 	                    </div>
 	                </div>
 	            </div>
