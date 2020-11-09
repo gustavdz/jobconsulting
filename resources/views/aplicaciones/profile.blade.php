@@ -12,14 +12,14 @@
 					<p class="line"><b>Teléfono:</b> {{ $aspirante->telefono }}</p>
 					<p class="line"><b>País:</b> {{ $aspirante->pais }}</p>
 					<p class="line"><b>Ciudad:</b> {{ $aspirante->ciudad }}</p>
-					<p class="line"><b>Remuneración Actual:</b> ${{$aspirante->remuneracion_actual ? number_format($aspirante->remuneracion_actual, 2, '.', ',') : '0.00'}}</p>
+					<p class="line"><b>Remuneración Actual:</b> ${{$aspirante->remuneracion_actual ? $aspirante->remuneracion_actual : '0.00'}}</p>
 				</div>
 				<div class="col-md-6">
 					<p class="line"><b>Cédula: </b> {{ $aspirante->cedula }}</p>
 					<p class="line"><b>Fecha de Nacimiento: </b> {{\Carbon\Carbon::parse($aspirante->fecha_nacimiento)->format('j F, Y')}}</p>
 					<p class="line"><b>Celular:</b> {{ $aspirante->celular }}</p>
 					<p class="line"><b>Provincia:</b> {{ $aspirante->provincia }}</p>
-					<p class="line"><b>Expectativa Salarial:</b> ${{$aspirante->espectativa_salarial ? number_format($aspirante->espectativa_salarial, 2, '.', ',') : '0.00'}}</p>
+					<p class="line"><b>Expectativa Salarial:</b> ${{$aspirante->espectativa_salarial ? $aspirante->espectativa_salarial : '0.00'}}</p>
 				</div>
 			</div>
 		</div>
