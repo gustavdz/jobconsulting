@@ -179,6 +179,7 @@ function view_table() {
 }
 
 function imgError(image) {
+    console.log("Imagen: "+image);
     image.onerror = "";
     image.src = "/images/avatar.jpg";
     return true;
