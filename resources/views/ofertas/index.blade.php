@@ -188,7 +188,7 @@ div.dataTables_wrapper div.dataTables_processing {
                     </div>
                     <div class="form-group">
                       <label for="descripcion" class="col-form-label">Descripción</label>
-                        <textarea id="descripcion" name="descripcion" class="form-control"  maxlength="250" rows="5"></textarea>
+                        <textarea id="descripcion" name="descripcion" class="form-control"  maxlength="999999" rows="5"></textarea>
                         <label tipo="error" id="descripcion-error"></label>
                     </div>
 
