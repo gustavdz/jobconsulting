@@ -311,6 +311,7 @@ function limpiar(){
     $('#categorias').val([]).trigger('change');
     $('#habilidades').val([]).trigger('change');
     $("#formulario")[0].reset();
+    CKEDITOR.instances.descripcion.setData( '<p>&nbsp;</p>');
 }
 
 function editar(id){
@@ -333,7 +334,7 @@ function editar(id){
             });
         },
         success: function (data) {
-            console.log(data)
+            //console.log(data);
             if (data != "") {
                 $('#myModal').modal('toggle');
                 $("#id").val(data.id);
