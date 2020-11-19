@@ -339,7 +339,8 @@ function editar(id){
                 $("#id").val(data.id);
                 $("#empresa").val(data.empresa_id);
                 $("#titulo").val(data.titulo);
-                $("#descripcion").val(data.descripcion);
+                // $("#descripcion").val(data.descripcion);
+                CKEDITOR.instances.descripcion.setData( data.descripcion );
                 $("#salario").val(data.salario);
                 $("#ciudad").val(data.ciudad);
                 $("#provincia").val(data.provincia);
