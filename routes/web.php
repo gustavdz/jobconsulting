@@ -42,6 +42,7 @@ Route::middleware(['verified'])->group(function () {
     Route::post('/ofertas/aplicaciones/profile', 'OfertasController@profile')->name('ofertas.aplicaciones.profile');
     Route::post('/ofertas/aplicaciones/estado', 'OfertasController@changeStatus')->name('ofertas.aplicaciones.profile');
     Route::post('/ofertas/habilidad', 'OfertasController@habilidad')->name('ofertas.habilidad');
+    Route::get('/ofertas/{id}/preguntas', 'PreguntasController@index')->name('ofertas.preguntas');
 
     #categorias
     Route::get('/categoria/{id}', 'OfertasController@ofertaCategoria')->name('oferta.categoria');

@@ -8,6 +8,7 @@
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="author" content="Gustavo Decker">
+    <meta name="author" content="Erick Gordillo Ayala">
     <title>{{ env('APP_NAME', 'Human Consulting') }}</title>
     <meta name="keyword" content="Software, Consulting, Sistema">
 
