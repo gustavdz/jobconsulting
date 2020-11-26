@@ -7,6 +7,8 @@ $(document).ready(function () {
 
     view_table();
 
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
     $("#tipo").change(function(){
     	if ($(this).val()=="select") {
     		$("#nopciones").show()
@@ -36,8 +38,59 @@ $(document).ready(function () {
     	$("#cantidad").append(opcion);
     });
 
+    $("#btn_guardar").click(function () {
+        /*if (!$("#formulario").valid()) {
+            return false;
+        }*/
+        
+        var data = new $('#formulario').serialize();
+        $('#myModal').modal('toggle');
+        $.ajax({
+            type: 'POST',
+            url: '/preguntas',
+            data: data+'&oferta_id='+$("#oferta_id").val(),
+            beforeSend: function () {
+                Swal.fire({
+                    title: '¡Espere, Por favor!',
+                    html: 'Cargando informacion...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+            },
+            success: function (data) {
+                swal.close();
+              //  $('#formregisterdiv').html(data);
+                var d = JSON.parse(data);
+                //$('#div_mensajes').removeClass('d-none text-center')
+                if (d['msg'] == 'error') {
+                    toastr.error(d['data']);
+                } else {
+                    toastr.success(d['data']);
+                    view_table();
+                   // limpiar();
+                }
+            },
+            error: function (xhr) { // if error occured
+                toastr.error('Error: '+xhr.statusText + xhr.responseText);
+                swal.close();
+            },
+            complete: function () {
+               swal.close();
+            },
+            dataType: 'html'
+        });
+    });
+
 });
 
+function editar(id,texto,campo,respuestas){
+    $('#myModal').modal('toggle');
+    $("#id").val(id);
+    $("#titulo").val(texto);
+    $("#tipo").val(campo);
+}
 function view_table() {
 
     $.ajax({

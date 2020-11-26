@@ -27,7 +27,32 @@ class PreguntasController extends Controller
     }
 
     public function data(Request $request){
-    	$results = Preguntas::where('oferta_id',$request->oferta_id)->get();
-    	return view('preguntas.table',compact('results'));
+        $results = Preguntas::where('oferta_id',$request->oferta_id)->get();
+        return view('preguntas.table',compact('results'));
+    }
+
+    public function store(Request $request){
+    	//return $request;
+        $pregunta = Preguntas::find($request->id);
+        if (empty($pregunta)) {
+            $pregunta = new Preguntas;
+            $pregunta->oferta_id = $request->oferta_id;
+            $pregunta->campo = $request->tipo;
+            $pregunta->texto = $request->titulo;
+            $pregunta->respuestas = $request->opcion ? implode(",",$request->opcion) : '';
+            $pregunta->save();
+
+            $result = $pregunta ? ['msg' => 'success', 'data' => 'Se ha creado correctamente la pregunta ' . $request->titulo] : ['msg' => 'error', 'data' => 'Ocurrio un error al crear la pregunta ' . $request->titulo];
+            return response()->json($result);
+        }else{
+            $pregunta->campo = $request->tipo;
+            $pregunta->texto = $request->titulo;
+            $pregunta->respuestas = $request->opcion ? implode(",",$request->opcion) : '';
+            $pregunta->save();
+
+            $result = $pregunta ? ['msg' => 'success', 'data' => 'Se ha modificado correctamente la pregunta ' . $request->titulo] : ['msg' => 'error', 'data' => 'Ocurrio un error al modificar la pregunta ' . $request->titulo];
+            return response()->json($result);
+        }
+        
     }
 }

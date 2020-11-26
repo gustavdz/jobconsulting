@@ -44,6 +44,7 @@ Route::middleware(['verified'])->group(function () {
     Route::post('/ofertas/habilidad', 'OfertasController@habilidad')->name('ofertas.habilidad');
     Route::get('/ofertas/{id}/preguntas', 'PreguntasController@index')->name('ofertas.preguntas');
     Route::post('/ofertas/preguntas', 'PreguntasController@data')->name('ofertas.preguntas.data');
+    Route::post('/preguntas', 'PreguntasController@store')->name('ofertas.preguntas.store');
 
     #categorias
     Route::get('/categoria/{id}', 'OfertasController@ofertaCategoria')->name('oferta.categoria');
