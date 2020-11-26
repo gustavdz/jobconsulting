@@ -441,7 +441,7 @@ function loadHabilidades() {
             for (var i = 0 ;  i < d.length; i++) {
                 option += "<option value='"+d[i].id+"'>"+d[i].nombre+"</option>"
             }
-            console.log(option)
+            //console.log(option)
             $("#habilidades").html('');
             $("#habilidades").html(option);
             $('#habilidades').select2({

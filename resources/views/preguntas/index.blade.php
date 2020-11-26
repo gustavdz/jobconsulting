@@ -75,7 +75,7 @@ div.dataTables_wrapper div.dataTables_processing {
 
 <!-- Modal -->
 <div class="modal fade modal-example" tabindex="-1" id="myModal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">Pregunta</h5>
@@ -110,35 +110,20 @@ div.dataTables_wrapper div.dataTables_processing {
                                 <label tipo="error" id="tipo-error"></label>
                             </div>
                         </div>
+                    </div>
+                    <div class="row" id="nopciones" style="display: none;">
                         <div class="col">
                             <div class="form-group">
-                                <label for="validez" class="col-form-label">Validez hasta</label>
-                                <input type="text" id="validez" name="validez" class="form-control">
-                                <label tipo="error" id="validez-error"></label>
+                                <label for="opciones" class="col-form-label">Número de Opciones</label>
+                                <input type="text" id="opciones" name="opciones" class="form-control" value="">
+                                <label tipo="error" id="opciones-error"></label>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="ciudad" class="col-form-label">Ciudad</label>
-                                <input type="text" id="ciudad" name="ciudad" class="form-control">
-                                <label tipo="error" id="ciudad-error"></label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="provincia" class="col-form-label">Provincia</label>
-                                <input type="text" id="provincia" name="provincia" class="form-control">
-                                <label tipo="error" id="provincia-error"></label>
-                            </div>
-                        </div>
+                    <div id="cantidad" style="display: none;">
+                        
                     </div>
-                    <div class="form-group">
-                      <label for="descripcion" class="col-form-label">Descripción</label>
-                        <textarea id="descripcion" name="descripcion" class="form-control"  maxlength="999999" rows="5"></textarea>
-                        <label tipo="error" id="descripcion-error"></label>
-                    </div>
+                    
 
                 </div>
                 <div class="modal-footer">
