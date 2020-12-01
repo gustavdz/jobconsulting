@@ -90,6 +90,33 @@ function editar(id,texto,campo,respuestas){
     $("#id").val(id);
     $("#titulo").val(texto);
     $("#tipo").val(campo);
+    if (campo == 'select') {
+        $("#nopciones").show();
+        $("#cantidad").show();
+        $("#cantidad").html('');
+        var datos = respuestas.split(',');
+        $("#opciones").val(datos.length);
+        var j = 0;
+        var opcion = '';
+        for (var i = 0; i < datos.length; i++) {
+            j = j + 1;
+            console.log(j)
+            opcion += '<div class="row">'+
+                            '<div class="col">'+
+                                '<div class="form-group">'+
+                                    '<label for="opcion" class="col-form-label">Opciones N° '+j+'</label>'+
+                                    '<input type="text" id="opcion'+j+'" name="opcion[]" class="form-control" value="'+datos[i]+'">'+
+                                    '<label tipo="error" id="opcion-error"></label>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>';
+        } 
+        $("#cantidad").append(opcion);
+    }else{
+         $("#cantidad").html('');
+        $("#nopciones").hide();
+        $("#cantidad").hide();
+    }
 }
 function view_table() {
 
