@@ -27,7 +27,7 @@ class PreguntasController extends Controller
     }
 
     public function data(Request $request){
-        $results = Preguntas::where('oferta_id',$request->oferta_id)->get();
+        $results = Preguntas::where('oferta_id',$request->oferta_id)->where('estado','A')->get();
         return view('preguntas.table',compact('results'));
     }
 
@@ -54,5 +54,14 @@ class PreguntasController extends Controller
             return response()->json($result);
         }
         
+    }
+
+    public function delete(Request $request){
+        $pregunta = Preguntas::find($request->id);
+        $pregunta->estado = 'E';
+        $pregunta->save();
+
+        $result = $pregunta ? ['msg' => 'success', 'data' => 'Pregunta eliminada '] : ['msg' => 'error', 'data' => 'Ocurrio un error al eliminar la pregunta '];
+            return response()->json($result);
     }
 }

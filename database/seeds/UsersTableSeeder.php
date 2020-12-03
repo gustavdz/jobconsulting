@@ -9,6 +9,7 @@ use App\Categorias;
 use App\Ofertas;
 use App\CategoriasOfertas;
 use App\HabilidadesOfertas;
+use App\OfertaAcademica;
 use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
@@ -72,7 +73,7 @@ class UsersTableSeeder extends Seeder
             Ofertas::create($oferta);
         }*/
 
-        $ofertas_estados = [
+        /*$ofertas_estados = [
             ['nombre'=>'Enviada','estado'=>'A'],
             ['nombre'=>'Recibida','estado'=>'A'],
             ['nombre'=>'Leída','estado'=>'A'],
@@ -83,6 +84,17 @@ class UsersTableSeeder extends Seeder
 
         foreach($ofertas_estados as $ofertas_estado){
             EstadoOferta::create($ofertas_estado);
+        }*/
+
+        $ofertas_academnica = [
+            ['nombre'=>'Bachillerato'],
+            ['nombre'=>'Grado'],
+            ['nombre'=>'Postgrado'],
+            ['nombre'=>'PHD']
+        ];
+
+        foreach($ofertas_academnica as $acad){
+            OfertaAcademica::create($acad);
         }
 
         /*$habilidades_ofertas = [

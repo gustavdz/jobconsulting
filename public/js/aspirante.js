@@ -396,7 +396,8 @@ $(document).ready(function () {
         rules: {
           'institucion'          : {required: true},
           'titulo'            : {required: true,},
-          'inicio_formacion'          : {required: true,}
+          'inicio_formacion'          : {required: true,},
+          'grado'          : {required: true,}
         },
           errorPlacement: function (error, element) {
             var er=error[0].innerHTML;
@@ -604,12 +605,13 @@ function limpiar_postulacion(){
     $("#formulario_postulacion")[0].reset();
 }
 
-function editar_formacion(id,institucion,titulo,inicio,fin){
+function editar_formacion(id,institucion,titulo,inicio,fin,grado){
     $("#formacion_id").val(id);
     $("#institucion").val(institucion);
     $("#titulo").val(titulo);
     $("#inicio_formacion").val(inicio);
     $("#fin_formacion").val(fin);
+    $("#grado").val(grado);
     $('#formacionModal').modal('toggle');
 }
 

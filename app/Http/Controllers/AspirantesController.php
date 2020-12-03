@@ -11,6 +11,7 @@ use App\AspiranteIdioma;
 use App\AspiranteReferencia;
 use App\AspiranteExperiencia;
 use App\Aplicaciones;
+use App\OfertaAcademica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -30,6 +31,7 @@ class AspirantesController extends Controller
             return redirect()->route('home');
         }
     	$aspirante = Aspirantes::with('user')->with('aspirante_experiencia')->with('aspirante_formacion')->with('aspirante_idioma')->with('aspirante_referencia')->where('user_id',Auth::user()->id)->first();
+        
     	//return $aspirante;
     	return view('aspirante.index',compact('aspirante'));
     }
@@ -55,8 +57,8 @@ class AspirantesController extends Controller
             if ($cv->getSize()>5000000) {
                 return response()->json(['msg' => 'error', 'data' => 'La hoja de vida no puede pesar más de 5MB']);
             }
-            if ($cv->extension()=='pdf') {
-    		    $cv->storeAs('public/cv',Auth::user()->id.'.pdf');
+            if ($cv->extension()=='pdf' || $cv->extension()=='docx' || $cv->extension()=='dotx') {
+    		    $cv->storeAs('public/cv',Auth::user()->id.'.'.$cv->extension());
             }else{
                 return response()->json(['msg' => 'error', 'data' => 'La hoja de vida debe ser en formato PDF']);
             }
@@ -77,7 +79,8 @@ class AspirantesController extends Controller
     		$aspirante->provincia = $request->provincia;
     		$aspirante->ciudad = $request->ciudad;
     		$aspirante->remuneracion_actual = $request->remuneracion_actual;
-    		$aspirante->espectativa_salarial = $request->espectativa_salarial;
+            $aspirante->espectativa_salarial = $request->espectativa_salarial;
+    		$aspirante->extension = $cv->extension();
     		$aspirante->save();
 
     	}else{
@@ -90,6 +93,7 @@ class AspirantesController extends Controller
     		$aspirante->ciudad = $request->ciudad;
     		$aspirante->remuneracion_actual = $request->remuneracion_actual;
     		$aspirante->espectativa_salarial = $request->espectativa_salarial;
+            $aspirante->extension = $cv->extension();
     		$aspirante->save();
     	}
     		$user = User::find(Auth::user()->id);
@@ -109,9 +113,8 @@ class AspirantesController extends Controller
         $formaciones = [];
         $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
         if (!empty($aspirante)) {
-    	   $formaciones = AspiranteFormacion::where('aspirante_id',$aspirante->id)->get();
+    	   $formaciones = AspiranteFormacion::with('oferta_academica')->where('aspirante_id',$aspirante->id)->get();
         }
-
     	return view('aspirante.academica',compact('formaciones'));
     }
 
@@ -132,13 +135,15 @@ class AspirantesController extends Controller
     		$formacion->institucion_educativa = $request->institucion;
     		$formacion->titulo = $request->titulo;
     		$formacion->inicio = $request->inicio_formacion;
-    		$formacion->fin = $request->fin_formacion;
+            $formacion->fin = $request->fin_formacion;
+    		$formacion->oferta_academica_id = $request->grado;
     		$formacion->save();
     	}else{
     		$formacion->institucion_educativa = $request->institucion;
     		$formacion->titulo = $request->titulo;
     		$formacion->inicio = $request->inicio_formacion;
     		$formacion->fin = $request->fin_formacion;
+            $formacion->oferta_academica_id = $request->grado;
     		$formacion->save();
     	}
 

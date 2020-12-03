@@ -7,6 +7,7 @@
     </thead>
     <tbody>
     @foreach($aspirantes as $rst)
+
         <tr>
             <td>
                 <div class="widget-content p-0">
@@ -22,7 +23,7 @@
 	                        <div class="widget-subheading opacity-7">{{ $formacion->titulo }}</div>
                             @endforeach
                             <div class="widget-subheading opacity-7"><a href="#" data-toggle="modal" data-target=".modal-aspirante" onclick="viewProfile({{ $rst->id }})">Ver Perfil</a></div>
-                            <div class="widget-subheading opacity-7"><a href="/storage/cv/{{ $rst->user->id }}.pdf" target="_blank">Descargar Currículum</a></div>
+                            <div class="widget-subheading opacity-7"><a href="/storage/cv/{{ $rst->user->id }}.{{ $rst->extension ?? 'pdf' }}" target="_blank">Descargar Currículum</a></div>
                             
                             @if($rst->resume_old != '' || $rst->resume_old != null)
                             <div class="widget-subheading opacity-7"><a href="{!! str_replace('http://www.human.ec/wp-content/uploads','/storage/old_resumes',$rst->resume_old) !!}" target="_blank">Descargar Currículum (Migrado)</a></div>

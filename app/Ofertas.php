@@ -30,7 +30,7 @@ class Ofertas extends Model
 
 	//uno a muchos
     public function preguntas() {
-		return $this->hasMany(Preguntas::class, 'oferta_id');
+		return $this->hasMany(Preguntas::class, 'oferta_id')->where('estado','A');
 	}
 
 }

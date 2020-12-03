@@ -11,6 +11,7 @@ use App\Aplicaciones;
 use App\CategoriasOfertas;
 use App\HabilidadesOfertas;
 use App\EstadoOferta;
+use App\OfertaAcademica;
 use App\Respuestas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -295,13 +296,20 @@ class OfertasController extends Controller
             return redirect()->route('home');
         }
         $oferta = Ofertas::with('user')->with('preguntas')->where('id',$id)->first();
-        return view('aplicaciones.index',compact('oferta'));
+        $grado_academico = OfertaAcademica::all();
+        return view('aplicaciones.index',compact('oferta','grado_academico'));
     }
 
     public function aplicaciones(Request $request)
     {
-        if ($request->oferta_id > 0) {
-            $aplicaciones = Aplicaciones::with('aspirante')->with('aspirante.user')->with('aspirante.aspirante_formacion')->with('oferta')->with('estado_oferta')->where('oferta_id',$request->oferta_id)->get();
+        if ($request->oferta_id > 0) { #filtro
+            $aplicaciones = Aplicaciones::with('aspirante')
+                            ->with('aspirante.user')
+                            ->with('aspirante.aspirante_formacion')
+                            ->with('oferta')
+                            ->with('estado_oferta')
+                            ->where('oferta_id',$request->oferta_id)->get();
+
             $estados = EstadoOferta::where('estado','A')->get();
             return view('aplicaciones.table',compact('aplicaciones','estados'));
         } else {
@@ -313,7 +321,7 @@ class OfertasController extends Controller
 
     public function profile(Request $request)
     {
-        $aspirante = Aspirantes::with('user')->with('aspirante_experiencia')->with('aspirante_formacion')->with('aspirante_idioma')->with('aspirante_referencia')->where('id',$request->aspirante_id)->first();
+        $aspirante = Aspirantes::with('user')->with('aspirante_experiencia')->with('aspirante_formacion')->with('aspirante_formacion.oferta_academica')->with('aspirante_idioma')->with('aspirante_referencia')->where('id',$request->aspirante_id)->first();
         //return $aspirante;
         return view('aplicaciones.profile',compact('aspirante'));
     }

@@ -110,14 +110,15 @@ function editar(id){
 }
 
 function view_table() {
-
+    var data = $("#form_search").serialize();
     $.ajax({
         type: 'POST',
         url: '/ofertas/aplicaciones',
-        data: {
+        /*data: {
             "_token": $('meta[name="csrf-token"]').attr('content'),
             "oferta_id": $('#oferta_id').val()
-        },
+        },*/
+        data:data,
         beforeSend: function () {
              Swal.fire({
 	                title: '¡Espere, Por favor!',

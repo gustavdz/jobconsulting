@@ -61,6 +61,7 @@
 		                    <div class="card-body">
 		                        <div class="row">
 		                        	<div class="col-md-6">
+		                        		<p class="line"><b>Grado Academico:</b> {{ $academica->oferta_academica->nombre ?? '' }}</p>
 		                        		<p class="line"><b>Institución Educativa:</b> {{ $academica->institucion_educativa }}</p>
 		                        		<p class="line"><b>Inicio:</b> {{\Carbon\Carbon::parse($academica->inicio)->format('j F, Y')}}</p>
 		                        	</div>

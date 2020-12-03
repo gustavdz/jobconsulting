@@ -47,14 +47,13 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="{{ asset('../js/aspirante.js') }}"></script>
 @endsection
-
 @section('title')
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
                 <img id="img_aspirante" src="/storage/perfil/{{ Auth::user()->id  }}.jpg?{{ time() }}" alt="" class="img-thumbnail" onerror="imgError(this);" style="width: 60px;margin-right: 5px;">
                 <div>{{ Auth::user()->name }}
-                    <div class="page-title-subheading"><a href="/storage/cv/{{ Auth::user()->id  }}.pdf" target="_blank">Descargar Currículum</a>
+                    <div class="page-title-subheading"><a href="/storage/cv/{{ Auth::user()->id  }}.{{ Auth::user()->aspirante->extension ?? 'pdf' }}" target="_blank">Descargar Currículum</a>
                     </div>
 
                 </div>
@@ -203,15 +202,29 @@
             <form id="formulario_academia" class="form-horizontal">
 			     {{ csrf_field() }}
 			     <div class="modal-body">
-				     <div class="row">
-				     	<div class="col">
-				     		<div class="form-group">
-							    <label for="institucion">Institución Educativa</label>
-							    <input type="hidden" class="form-control" id="formacion_id" name="formacion_id">
-							    <input type="text" class="form-control" id="institucion" name="institucion">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="grado">Grado Academico</label>
+                                <select name="grado" id="grado" class="form-control">
+                                    @foreach($grado_academico as $grado) 
+                                    <option value="{{ $grado->id }}">{{ $grado->nombre }}</option>
+                                    @endforeach
+                                </select>
+                                <label tipo="error" id="grado-error"></label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="institucion">Institución Educativa</label>
+                                <input type="hidden" class="form-control" id="formacion_id" name="formacion_id">
+                                <input type="text" class="form-control" id="institucion" name="institucion">
                                 <label tipo="error" id="institucion-error"></label>
-							</div>
-				     	</div>
+                            </div>
+                        </div>
+                    </div>
+				     <div class="row">
+				     	
 				     	<div class="col">
 				     		<div class="form-group">
 							    <label for="titulo">Titulo</label>
@@ -219,22 +232,25 @@
                                 <label tipo="error" id="titulo-error"></label>
 							</div>
 				     	</div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="inicio_formacion">Inicio</label>
+                                <input type="date" class="form-control" id="inicio_formacion" name="inicio_formacion" max="{{ date('Y-m-d') }}">
+                                <label tipo="error" id="inicio_formacion-error"></label>
+                            </div>
+                        </div>
 				     </div>
 
 				     <div class="row">
-				     	<div class="col">
-				     		<div class="form-group">
-							    <label for="inicio_formacion">Inicio</label>
-							    <input type="date" class="form-control" id="inicio_formacion" name="inicio_formacion" max="{{ date('Y-m-d') }}">
-                                <label tipo="error" id="inicio_formacion-error"></label>
-							</div>
-				     	</div>
 				     	<div class="col">
 				     		<div class="form-group">
 							    <label for="fin_formacion">Fin</label>
 							    <input type="date" class="form-control" id="fin_formacion" name="fin_formacion" max="{{ date('Y-m-d') }}">
 							</div>
 				     	</div>
+                        <div class="col">
+                            
+                        </div>
 				     </div>
 			     </div>
                 <div class="modal-footer">

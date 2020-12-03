@@ -11,8 +11,11 @@ $(document).ready(function () {
 
     $("#tipo").change(function(){
     	if ($(this).val()=="select") {
-    		$("#nopciones").show()
-    	}
+            $("#nopciones").show()
+        }else{
+    		$("#nopciones").hide()
+            $("#cantidad").html('')
+        }
     });
 
 	$("#opciones").keyup(function(){
@@ -84,6 +87,53 @@ $(document).ready(function () {
     });
 
 });
+
+function eliminar(data,name){
+    $.confirm({
+        title: '¡Eliminar!',
+        content: '¿Desea eliminar la pregunta '+name+'?',
+        buttons: {
+            confirm: function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '/pregunta/delete',
+                    data: {
+                        "_token": $('meta[name="csrf-token"]').attr('content'),
+                        "id": data
+                    },
+                    beforeSend: function () {
+                        Swal.fire({
+                            title: '¡Espere, Por favor!',
+                            html: 'Cargando informacion...',
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                                Swal.showLoading()
+                            }
+                        });
+                    },
+                    success: function (d) {
+                        if (d['msg'] == 'error') {
+                            toastr.error(d['data']);
+                        } else {
+                            toastr.success(d['data']);
+                            view_table();
+                        }
+                    },
+                    error: function (xhr) {
+                        toastr.error('Error: '+xhr.statusText + xhr.responseText);
+                    },
+                    complete: function () {
+                        swal.close();
+                    },
+                });
+            },
+            cancel: function () {
+                $.alert('Se ha cancelado la acción!');
+            }
+        }
+    });
+}
+
 
 function editar(id,texto,campo,respuestas){
     $('#myModal').modal('toggle');
