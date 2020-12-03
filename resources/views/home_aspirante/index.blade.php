@@ -28,7 +28,7 @@
 
                             <div class="card-body">
                                 <p class="line">{!! $oferta->descripcion !!} </p>
-                               <footer class="blockquote-footer text-right">Publicado {{\Carbon\Carbon::parse($oferta->created_at)->format('j F, Y')}}</footer>
+                               <footer class="blockquote-footer text-right">Publicado {{\Carbon\Carbon::parse($oferta->created_at)->diffForHumans()}}</footer>
                             </div>
                         </div>
                     </div>
@@ -84,10 +84,13 @@
                               <label tipo="error" id="salario-error"></label>
                             </div>
                         </div>
+                        <div id="preguntas">
+                            
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiar_postulacion()">Cerrar</button>
-                    <button type="button" class="btn btn-primary"  data-dismiss="modal" id="btn_aplicar">Aplicar</button>
+                    <button type="button" class="btn btn-primary"  id="btn_aplicar">Aplicar</button>
                 </div>
             </form>
         </div>

@@ -115,7 +115,7 @@ $(document).ready(function () {
             return false;
         }
         var data = $('#formulario_postulacion').serialize();
-        $('#formacionModal').modal('toggle');
+        
         $.ajax({
             type: 'POST',
             url: '/postulacion',
@@ -138,6 +138,7 @@ $(document).ready(function () {
                 if (d['msg'] == 'error') {
                     toastr.error(d['data']);
                 } else {
+                    $('#detalleModal').modal('toggle');
                     //aspirante_formacion();
                     toastr.success(d['data'])
                     limpiar_postulacion();
@@ -796,6 +797,7 @@ function detalle(id){
             $('#detalleModal').modal('toggle');
             console.log(data)
             var html_text="";
+            var html_rspta="";
             if (data != "") {
                 console.log(data)
                 html_text+=  "<h5>"+data.titulo+"</h5>";
@@ -808,6 +810,29 @@ function detalle(id){
                 html_text+="<p>Salario $"+data.salario+"</p>";
                 $("#detalle_oferta").html(html_text);
                 $("#oferta_id").val(data.id);
+
+                $("#preguntas").html('');
+                for (var i = 0; i < data.preguntas.length; i++) {
+                    html_rspta += '<div class="form-group row">'+
+                            '<label for="campo_'+data.preguntas[i].id+'" class="col-sm-4 col-form-label">'+data.preguntas[i].texto+'</label>'+
+                            '<div class="col-sm-8">';
+                            if (data.preguntas[i].campo == 'select') {
+                                html_rspta += '<select class="form-control" id="campo_'+data.preguntas[i].id+'" name="campo_'+data.preguntas[i].id+'">';
+                                var opt = data.preguntas[i].respuestas.split(',');
+                                for (var j = 0; j < opt.length; j++) {
+                                    html_rspta += '<option value="'+opt[j]+'">'+opt[j]+'</option>';
+                                }
+                                html_rspta += '</select>';
+                            }else{
+                                html_rspta +=  '<input type="text" class="form-control" id="campo_'+data.preguntas[i].id+'" name="campo_'+data.preguntas[i].id+'">';
+                            }
+                    
+                        html_rspta +=  '</div>'+
+                        '</div>';
+                }
+
+                $("#preguntas").html(html_rspta);
+
             }else{
                 toastr.warning("No se encontraron resultados");
             }

@@ -27,4 +27,10 @@ class Ofertas extends Model
     public function habilidadesOfertas() {
 		return $this->hasMany(HabilidadesOfertas::class, 'oferta_id');
 	}
+
+	//uno a muchos
+    public function preguntas() {
+		return $this->hasMany(Preguntas::class, 'oferta_id');
+	}
+
 }

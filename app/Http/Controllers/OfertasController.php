@@ -11,6 +11,7 @@ use App\Aplicaciones;
 use App\CategoriasOfertas;
 use App\HabilidadesOfertas;
 use App\EstadoOferta;
+use App\Respuestas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -195,7 +196,7 @@ class OfertasController extends Controller
 
     public function show(Request $request)
     {
-        return Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.id',$request->id)->first();
+        return Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->with('preguntas')->where('ofertas.id',$request->id)->first();
     }
 
     public function detalle(Request $request)
@@ -230,32 +231,62 @@ class OfertasController extends Controller
 
     public function postulacion(Request $request)
     {
-        $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
-        if (empty($aspirante)) {
-            return response()->json(['msg' => 'error', 'data' => 'Debe actualizar su Currículum, para realizar la postulación']);
+        try {
+            DB::beginTransaction();
+            $aspirante = Aspirantes::where('user_id',Auth::user()->id)->first();
+            if (empty($aspirante)) {
+                return response()->json(['msg' => 'error', 'data' => 'Debe actualizar su Currículum, para realizar la postulación']);
+            }
+
+            $verificarOferta = Ofertas::with('preguntas')->find($request->oferta_id);
+            //'2020-10-24' < '2020-10-24'
+            if ($verificarOferta->validez < date('Y-m-d') || $verificarOferta->estado != 'A') {
+                return response()->json(['msg' => 'error', 'data' => 'La oferta se encuentra expirada']);
+            }
+
+            $oferta = Aplicaciones::where('aspirante_id',$aspirante->id)->where('oferta_id',$request->oferta_id)->first();
+            if (empty($oferta)) {
+                if (!empty($verificarOferta->preguntas)) { #verificar si existen preguntas en la oferta
+                    foreach ($verificarOferta->preguntas as $key => $pregunta) {
+                        $campo = 'campo_'.$pregunta->id;
+                        if (empty($request[$campo])) {
+                            return response()->json(['msg' => 'error', 'data' => 'La pregunta '.$pregunta->texto. ' es obligatoria']); 
+                        }
+                    }
+                }
+                $postulacion = new Aplicaciones;
+                $postulacion->oferta_id = $request->oferta_id;
+                $postulacion->aspirante_id = $aspirante->id;
+                $postulacion->estado_oferta_id = 1;
+                $postulacion->salario_aspirado = $request->salario;
+                $postulacion->save();
+
+                if (!empty($verificarOferta->preguntas)) { #verificar si existen preguntas en la oferta
+                    foreach ($verificarOferta->preguntas as $key => $pregunta) {
+                        $campo = 'campo_'.$pregunta->id;
+                        $respuesta = new Respuestas;
+                        $respuesta->aplicaciones_id = $postulacion->id;
+                        $respuesta->pregunta_id = $pregunta->id;
+                        $respuesta->respuesta = $request[$campo];
+                        $respuesta->save();
+                    }
+                }
+
+                
+                DB::commit();
+
+                $result = $postulacion ? ['msg' => 'success', 'data' => 'Se ha postulado correctamente a la oferta ' ] : ['msg' => 'error', 'data' => 'Ocurrio un error al postular la Oferta '];
+
+                return response()->json($result);
+            }else{
+                return response()->json(['msg' => 'error', 'data' => 'Ya se encuentra una postulación registrada con sus datos']);
+            }
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json(['msg' => 'error', 'data' => $e->getMessage()]);
         }
-
-        $verificarOferta = Ofertas::find($request->oferta_id);
-        //'2020-10-24' < '2020-10-24'
-        if ($verificarOferta->validez < date('Y-m-d') || $verificarOferta->estado != 'A') {
-            return response()->json(['msg' => 'error', 'data' => 'La oferta se encuentra expirada']);
-        }
-
-        $oferta = Aplicaciones::where('aspirante_id',$aspirante->id)->where('oferta_id',$request->oferta_id)->first();
-        if (empty($oferta)) {
-            $postulacion = new Aplicaciones;
-            $postulacion->oferta_id = $request->oferta_id;
-            $postulacion->aspirante_id = $aspirante->id;
-            $postulacion->estado_oferta_id = 1;
-            $postulacion->salario_aspirado = $request->salario;
-            $postulacion->save();
-
-            $result = $postulacion ? ['msg' => 'success', 'data' => 'Se ha postulado correctamente a la oferta'] : ['msg' => 'error', 'data' => 'Ocurrio un error al postular la Oferta '];
-
-            return response()->json($result);
-        }else{
-            return response()->json(['msg' => 'error', 'data' => 'Ya se encuentra una postulación registrada con sus datos']);
-        }
+        
     }
 
     public function ofertaDetalle($id)
@@ -263,7 +294,7 @@ class OfertasController extends Controller
         if (Auth::user()->role == 'aspirante') {
             return redirect()->route('home');
         }
-        $oferta = Ofertas::with('user')->where('id',$id)->first();
+        $oferta = Ofertas::with('user')->with('preguntas')->where('id',$id)->first();
         return view('aplicaciones.index',compact('oferta'));
     }
 
