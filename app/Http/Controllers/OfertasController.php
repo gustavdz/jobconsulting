@@ -297,7 +297,10 @@ class OfertasController extends Controller
         }
         $oferta = Ofertas::with('user')->with('preguntas')->where('id',$id)->first();
         $grado_academico = OfertaAcademica::all();
-        return view('aplicaciones.index',compact('oferta','grado_academico'));
+        $paises = Aspirantes::select('pais')->distinct()->get();
+        $provincias = Aspirantes::select('provincia')->distinct()->get();
+        $ciudades = Aspirantes::select('ciudad')->distinct()->get();
+        return view('aplicaciones.index',compact('oferta','grado_academico','paises','provincias','ciudades'));
     }
 
     public function aplicaciones(Request $request)
@@ -313,6 +316,27 @@ class OfertasController extends Controller
                             ->whereHas('aspirante', function ($query) use ($request) {
                                     if ($request->edad) {
                                         $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-12-31']);   
+                                    }else{
+                                        $query;
+                                    }
+                                })
+                            ->whereHas('aspirante', function ($query) use ($request) {
+                                    if ($request->pais) {
+                                        $query->where('pais',$request->pais);   
+                                    }else{
+                                        $query;
+                                    }
+                                })
+                            ->whereHas('aspirante', function ($query) use ($request) {
+                                    if ($request->provincia) {
+                                        $query->where('provincia',$request->provincia);   
+                                    }else{
+                                        $query;
+                                    }
+                                })
+                            ->whereHas('aspirante', function ($query) use ($request) {
+                                    if ($request->ciudad) {
+                                        $query->where('ciudad',$request->ciudad);   
                                     }else{
                                         $query;
                                     }
@@ -363,6 +387,27 @@ class OfertasController extends Controller
                                         $query;
                                     }
                                 })
+                            ->whereHas('aspirante', function ($query) use ($request) {
+                                    if ($request->pais) {
+                                        $query->where('pais',$request->pais);   
+                                    }else{
+                                        $query;
+                                    }
+                                })
+                            ->whereHas('aspirante', function ($query) use ($request) {
+                                    if ($request->provincia) {
+                                        $query->where('provincia',$request->provincia);   
+                                    }else{
+                                        $query;
+                                    }
+                                })
+                            ->whereHas('aspirante', function ($query) use ($request) {
+                                    if ($request->ciudad) {
+                                        $query->where('ciudad',$request->ciudad);   
+                                    }else{
+                                        $query;
+                                    }
+                                })
                             ->with('aspirante.user')
                             ->with('aspirante.aspirante_formacion')
                             ->whereHas('aspirante.aspirante_formacion', function ($query) use ($request) {
@@ -403,6 +448,18 @@ class OfertasController extends Controller
 
             if ($request->salario) {
                 $aspirantes = $aspirantes->whereBetween('espectativa_salarial',[$request->salario,$request->salario_max]);   
+            }
+
+            if ($request->pais) {
+                $aspirantes = $aspirantes->where('pais',$request->pais);   
+            }
+
+            if ($request->provincia) {
+                $aspirantes = $aspirantes->where('provincia',$request->provincia);   
+            }
+
+            if ($request->ciudad) {
+                $aspirantes = $aspirantes->where('ciudad',$request->ciudad);   
             }
 
             $aspirantes = $aspirantes->get();

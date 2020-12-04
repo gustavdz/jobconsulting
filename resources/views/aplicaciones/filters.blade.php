@@ -33,6 +33,35 @@
           <button style="margin-top: 30px;" type="button" class="btn btn-success" onclick="view_table()">Buscar</button>
         </div>
       </div>
+       <div class="form-row">
+        <div class="col-md-3 mb-3">
+          <label for="pais">País</label>
+            <select class="form-control" id="pais" name="pais">
+                <option value="">Todos</option>
+                @foreach($paises as $pais)
+                <option value="{{ $pais->pais }}">{{ $pais->pais }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="provincia">Provincia</label>
+            <select class="form-control" id="provincia" name="provincia">
+                <option value="">Todos</option>
+                @foreach($provincias as $provincia)
+                <option value="{{ $provincia->provincia }}">{{ $provincia->provincia }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="ciudad">Ciudades</label>
+            <select class="form-control" id="ciudad" name="ciudad">
+                <option value="">Todos</option>
+                @foreach($ciudades as $ciudad)
+                <option value="{{ $ciudad->ciudad }}">{{ $ciudad->ciudad }}</option>
+                @endforeach
+            </select>
+        </div>
+      </div>
       @if($vista == 'oferta')
       <div class="form-row">
           @foreach ($oferta->preguntas as $pregunta)

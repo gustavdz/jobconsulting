@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\OfertaAcademica;
 use App\Ofertas;
+use App\Aspirantes;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -40,7 +41,10 @@ class UserController extends Controller
             return redirect()->route('home');
         }
         $grado_academico = OfertaAcademica::all();
-        return view('user-aspirante.index',compact('grado_academico'));
+        $paises = Aspirantes::select('pais')->distinct()->get();
+        $provincias = Aspirantes::select('provincia')->distinct()->get();
+        $ciudades = Aspirantes::select('ciudad')->distinct()->get();
+        return view('user-aspirante.index',compact('grado_academico','paises','provincias','ciudades'));
     }
 
     public function data()
