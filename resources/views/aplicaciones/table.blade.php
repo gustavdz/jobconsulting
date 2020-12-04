@@ -42,6 +42,12 @@
                 <b>Salario Aspirado: </b>${{$rst->salario_aspirado ? $rst->salario_aspirado : '0.00'}}<br>
                 <b>Fecha: </b>{{\Carbon\Carbon::parse($rst->created_at)->format('j F, Y')}}<br>
                 <b>Estado: </b>{{ $rst->estado_oferta->nombre }}<br>
+                @if($rst->respuesta)
+                @foreach($rst->respuesta as $respuesta)
+                    <b>{{ $respuesta->pregunta->texto ?? '' }}: </b>{{ $respuesta->respuesta ?? '' }}<br>
+                @endforeach
+
+                @endif
             </td>
             <td>
                 @foreach ($estados as $key => $estado)

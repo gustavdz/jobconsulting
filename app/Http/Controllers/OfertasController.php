@@ -306,8 +306,10 @@ class OfertasController extends Controller
             
             $preguntas = Ofertas::with('preguntas')->find($request->oferta_id);
             //return date("Y-m-d",strtotime(date("Y-m-d")."- $request->edad year"));
-
-            $aplicaciones = Aplicaciones::with('aspirante')
+               // return $preguntas->preguntas;
+            $aplicaciones = '';
+            if (count($preguntas->preguntas) > 0) { #si la oferta tiene preguntas
+                $aplicaciones = Aplicaciones::with('aspirante')
                             ->whereHas('aspirante', function ($query) use ($request) {
                                     if ($request->edad) {
                                         $query->whereYear('fecha_nacimiento',date("Y-m-d",strtotime(date("Y-m-d")."- $request->edad year")));   
@@ -315,9 +317,48 @@ class OfertasController extends Controller
                                         $query;
                                     }
                                 })
+                            ->with('aspirante.user')
+                            ->with('aspirante.aspirante_formacion')
+                            ->whereHas('aspirante.aspirante_formacion', function ($query) use ($request) {
+                                    if ($request->grado != -1) {
+                                        $query->where('oferta_academica_id',$request->grado);   
+                                    }else{
+                                        $query;
+                                    }
+                                })
+                            ->with('respuesta')
+                            ->with('respuesta.pregunta')
+                            ->WhereHas('respuesta', function ($query) use ($request,$preguntas) {
+                                    if ($preguntas->preguntas) {
+                                        foreach ($preguntas->preguntas as $key => $value) {
+                                            $campo = 'campo_'.$value->id;
+                                            if ($request[$campo]) {
+                                                if ($value->campo=='select') {
+                                                    $query->where('respuesta',$request[$campo]); 
+                                                }else{
+                                                    $query->where('respuesta','like','%'.$request[$campo].'%'); 
+                                                }
+                                            }else{
+                                                $query;
+                                            }
+                                        }
+                                          
+                                    }else{
+                                        $query;
+                                    }
+                                })
+                            ->with('oferta')
+                            ->with('estado_oferta')
+                            ->where('oferta_id',$request->oferta_id)->get();
+                    if ($request->salario) {
+                        $aplicaciones = $aplicaciones->where('salario_aspirado',$request->salario);   
+                    }
+
+            }else{
+                $aplicaciones = Aplicaciones::with('aspirante')
                             ->whereHas('aspirante', function ($query) use ($request) {
-                                    if ($request->salario) {
-                                        $query->where('espectativa_salarial',$request->salario);   
+                                    if ($request->edad) {
+                                        $query->whereYear('fecha_nacimiento',date("Y-m-d",strtotime(date("Y-m-d")."- $request->edad year")));   
                                     }else{
                                         $query;
                                     }
@@ -325,16 +366,8 @@ class OfertasController extends Controller
                             ->with('aspirante.user')
                             ->with('aspirante.aspirante_formacion')
                             ->whereHas('aspirante.aspirante_formacion', function ($query) use ($request) {
-                                    if ($request->grado) {
+                                    if ($request->grado != -1) {
                                         $query->where('oferta_academica_id',$request->grado);   
-                                    }else{
-                                        $query;
-                                    }
-                                })
-                            ->with('respuesta')
-                            ->whereHas('respuesta', function ($query) use ($request) {
-                                    if ($request->edad) {
-                                        $query->where('respuesta','ASDAS');   
                                     }else{
                                         $query;
                                     }
@@ -343,10 +376,37 @@ class OfertasController extends Controller
                             ->with('estado_oferta')
                             ->where('oferta_id',$request->oferta_id)->get();
 
+                            if ($request->salario) {
+                                $aplicaciones = $aplicaciones->where('salario_aspirado',$request->salario);   
+                            }
+
+            }
+
             $estados = EstadoOferta::where('estado','A')->get();
             return view('aplicaciones.table',compact('aplicaciones','estados'));
         } else {
-            $aspirantes = Aspirantes::with('user')->with('aspirante_experiencia')->with('aspirante_experiencia')->with('aspirante_idioma')->with('aspirante_referencia')->get();
+            $aspirantes = Aspirantes::with('user')
+                            ->with('aspirante_formacion')
+                            ->whereHas('aspirante_formacion', function ($query) use ($request) {
+                                    if ($request->grado != -1) {
+                                        $query->where('oferta_academica_id',$request->grado);   
+                                    }else{
+                                        $query;
+                                    }
+                                })
+                            ->with('aspirante_experiencia')
+                            ->with('aspirante_idioma')
+                            ->with('aspirante_referencia');
+            if ($request->edad) {
+                $aspirantes = $aspirantes->whereYear('fecha_nacimiento',date("Y-m-d",strtotime(date("Y-m-d")."- $request->edad year")));   
+            }
+
+            if ($request->salario) {
+                $aspirantes = $aspirantes->where('espectativa_salarial',$request->salario);   
+            }
+
+            $aspirantes = $aspirantes->get();
+
             return view('user-aspirante.table',compact('aspirantes'));
         }
         

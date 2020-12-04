@@ -1,12 +1,12 @@
 <div>
 	 <form class="needs-validation" novalidate id="form_search">
         {{ csrf_field() }}
-        <input type="hidden" id="oferta_id" name="oferta_id" value="{{ $oferta->id }}">
+        <input type="hidden" id="oferta_id" name="oferta_id" value="{{ $oferta->id ?? '' }}">
       <div class="form-row">
         <div class="col-md-3 mb-3">
           <label for="grado">Grado Academico</label>
             <select class="form-control" id="grado" name="grado">
-                <option value="">Todos</option>
+                <option value="-1">Todos</option>
                 @foreach($grado_academico as $grado)
                 <option value="{{ $grado->id }}">{{ $grado->nombre }}</option>
                 @endforeach
@@ -25,12 +25,14 @@
           <button style="margin-top: 30px;" type="button" class="btn btn-success" onclick="view_table()">Buscar</button>
         </div>
       </div>
+      @if($vista == 'oferta')
       <div class="form-row">
           @foreach ($oferta->preguntas as $pregunta)
             <div class="col-md-3 mb-3">
                 <label for="edad">{{ $pregunta->texto }}</label>
                 @if ($pregunta->campo=='select')
                 <select class="form-control" id="campo_{{ $pregunta->id }}" name="campo_{{ $pregunta->id }}">
+                  <option value="">Todos</option>
                     @php
                         $datos = explode(",", $pregunta->respuestas)
                     @endphp
@@ -44,5 +46,6 @@
             </div>
           @endforeach
       </div>
+      @endif
     </form>
 </div>

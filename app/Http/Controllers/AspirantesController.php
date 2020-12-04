@@ -31,9 +31,9 @@ class AspirantesController extends Controller
             return redirect()->route('home');
         }
     	$aspirante = Aspirantes::with('user')->with('aspirante_experiencia')->with('aspirante_formacion')->with('aspirante_idioma')->with('aspirante_referencia')->where('user_id',Auth::user()->id)->first();
-        
+        $grado_academico = OfertaAcademica::all();
     	//return $aspirante;
-    	return view('aspirante.index',compact('aspirante'));
+    	return view('aspirante.index',compact('aspirante','grado_academico'));
     }
 
     public function perfil(Request $request)
@@ -80,7 +80,7 @@ class AspirantesController extends Controller
     		$aspirante->ciudad = $request->ciudad;
     		$aspirante->remuneracion_actual = $request->remuneracion_actual;
             $aspirante->espectativa_salarial = $request->espectativa_salarial;
-    		$aspirante->extension = $cv->extension();
+    		$aspirante->extension = !empty($cv) ?  $cv->extension() : '' ;
     		$aspirante->save();
 
     	}else{
@@ -93,7 +93,7 @@ class AspirantesController extends Controller
     		$aspirante->ciudad = $request->ciudad;
     		$aspirante->remuneracion_actual = $request->remuneracion_actual;
     		$aspirante->espectativa_salarial = $request->espectativa_salarial;
-            $aspirante->extension = $cv->extension();
+            $aspirante->extension =  !empty($cv) ?  $cv->extension() : '' ;
     		$aspirante->save();
     	}
     		$user = User::find(Auth::user()->id);

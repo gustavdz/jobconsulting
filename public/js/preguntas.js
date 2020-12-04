@@ -72,7 +72,7 @@ $(document).ready(function () {
                 } else {
                     toastr.success(d['data']);
                     view_table();
-                   // limpiar();
+                    limpiar();
                 }
             },
             error: function (xhr) { // if error occured
@@ -88,6 +88,19 @@ $(document).ready(function () {
 
 });
 
+function soloNumeros(e){
+  var key = window.event ? e.which : e.keyCode;
+  if (key < 48 || key > 57) {
+    e.preventDefault();
+  }
+}
+
+function limpiar(){
+    $("#id").val('');
+    $("#formulario")[0].reset();
+    $("#nopciones").hide()
+    $("#cantidad").html('')
+}
 function eliminar(data,name){
     $.confirm({
         title: '¡Eliminar!',

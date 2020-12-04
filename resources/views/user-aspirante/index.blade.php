@@ -71,7 +71,7 @@
         <div class="col-md-12">
             <div class="main-card mb-12 card">
                 <div class="card-body">
-                    
+                    @include('aplicaciones.filters',['vista'=>'user-aspirante'])
                     <div id="div_table">
                         
                     </div>

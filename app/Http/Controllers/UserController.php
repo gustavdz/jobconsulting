@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use App\OfertaAcademica;
 use App\Ofertas;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\DB;
@@ -38,7 +39,8 @@ class UserController extends Controller
         if (Auth::user()->role == 'aspirante') {
             return redirect()->route('home');
         }
-        return view('user-aspirante.index');
+        $grado_academico = OfertaAcademica::all();
+        return view('user-aspirante.index',compact('grado_academico'));
     }
 
     public function data()

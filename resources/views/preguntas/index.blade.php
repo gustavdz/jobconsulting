@@ -115,7 +115,7 @@ div.dataTables_wrapper div.dataTables_processing {
                         <div class="col">
                             <div class="form-group">
                                 <label for="opciones" class="col-form-label">Número de Opciones</label>
-                                <input type="text" id="opciones" name="opciones" class="form-control" value="">
+                                <input type="text" id="opciones" name="opciones" onkeypress="soloNumeros(event)" class="form-control" value="" placeholder="Digite el número de opciones que el aspirante puede responder">
                                 <label tipo="error" id="opciones-error"></label>
                             </div>
                         </div>
