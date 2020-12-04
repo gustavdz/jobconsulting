@@ -14,12 +14,20 @@
         </div>
         <div class="col-md-3 mb-3">
           <label for="edad">Edad</label>
-            <input type="text" name="edad" id="edad" class="form-control">
+           {{-- <input type="text" name="edad" id="edad" class="form-control"> --}}
+          <div class="input-group">
+            <input name="edad" id="edad" type="text" required class="form-control" placeholder="Mínima">
+            <input name="edad_max" id="edad_max" type="text" required class="form-control" placeholder="Máxima">
+          </div>
         </div>
 
         <div class="col-md-3 mb-3">
             <label for="salario">Salario aspirado</label>
-            <input type="text" class="form-control" id="salario" name="salario">
+            {{--<input type="text" class="form-control" id="salario" name="salario">--}}
+            <div class="input-group">
+              <input name="salario" id="salario" type="text" required class="form-control" placeholder="Mínimo">
+              <input name="salario_max" id="salario_max" type="text" required class="form-control" placeholder="Máximo">
+            </div>
         </div>
         <div class="col-md-2 mb-3">
           <button style="margin-top: 30px;" type="button" class="btn btn-success" onclick="view_table()">Buscar</button>

@@ -53,7 +53,7 @@
             <div class="page-title-heading">
                 <img id="img_aspirante" src="/storage/perfil/{{ Auth::user()->id  }}.jpg?{{ time() }}" alt="" class="img-thumbnail" onerror="imgError(this);" style="width: 60px;margin-right: 5px;">
                 <div>{{ Auth::user()->name }}
-                    <div class="page-title-subheading"><a href="/storage/cv/{{ Auth::user()->id  }}.{{ Auth::user()->aspirante->extension ?? 'pdf' }}" target="_blank">Descargar Currículum</a>
+                    <div class="page-title-subheading"><a id="cv_aspirante" href="/storage/cv/{{ Auth::user()->id  }}.{{ Auth::user()->aspirante->extension ?? 'pdf' }}" target="_blank">Descargar Currículum</a>
                     </div>
 
                 </div>

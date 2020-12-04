@@ -52,7 +52,10 @@ $(document).ready(function () {
                     toastr.error(d['data']);
                 } else {
                     var src = '/storage/perfil/'+$("#aspirante_user_id").val()+ '.jpg?'+new Date().getTime();
-                    $("#img_aspirante").prop('src',src)
+                    var ext = $('#cv')[0].files[0].name.split('.')[1] ? $('#cv')[0].files[0].name.split('.')[1] : 'pdf';
+                    var src_cv = '/storage/cv/'+$("#aspirante_user_id").val()+ '.' + ext +'?'+ new Date().getTime();
+                    $("#img_aspirante").prop('src',src);
+                    $("#cv_aspirante").prop('href',src_cv);
                     toastr.success(d['data'])
                 }
             },

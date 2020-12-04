@@ -60,7 +60,7 @@ class AspirantesController extends Controller
             if ($cv->extension()=='pdf' || $cv->extension()=='docx' || $cv->extension()=='dotx') {
     		    $cv->storeAs('public/cv',Auth::user()->id.'.'.$cv->extension());
             }else{
-                return response()->json(['msg' => 'error', 'data' => 'La hoja de vida debe ser en formato PDF']);
+                return response()->json(['msg' => 'error', 'data' => 'La hoja de vida debe ser en formato PDF,docx,dotx']);
             }
     	}
 
