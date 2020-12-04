@@ -4,8 +4,8 @@
         <input type="hidden" id="oferta_id" name="oferta_id" value="{{ $oferta->id }}">
       <div class="form-row">
         <div class="col-md-3 mb-3">
-          <label for="validationCustom02">Grado Academico</label>
-            <select class="form-control" id="estado_search" name="estado_search">
+          <label for="grado">Grado Academico</label>
+            <select class="form-control" id="grado" name="grado">
                 <option value="">Todos</option>
                 @foreach($grado_academico as $grado)
                 <option value="{{ $grado->id }}">{{ $grado->nombre }}</option>

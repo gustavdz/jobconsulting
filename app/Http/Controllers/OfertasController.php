@@ -303,9 +303,42 @@ class OfertasController extends Controller
     public function aplicaciones(Request $request)
     {
         if ($request->oferta_id > 0) { #filtro
+            
+            $preguntas = Ofertas::with('preguntas')->find($request->oferta_id);
+            //return date("Y-m-d",strtotime(date("Y-m-d")."- $request->edad year"));
+
             $aplicaciones = Aplicaciones::with('aspirante')
+                            ->whereHas('aspirante', function ($query) use ($request) {
+                                    if ($request->edad) {
+                                        $query->whereYear('fecha_nacimiento',date("Y-m-d",strtotime(date("Y-m-d")."- $request->edad year")));   
+                                    }else{
+                                        $query;
+                                    }
+                                })
+                            ->whereHas('aspirante', function ($query) use ($request) {
+                                    if ($request->salario) {
+                                        $query->where('espectativa_salarial',$request->salario);   
+                                    }else{
+                                        $query;
+                                    }
+                                })
                             ->with('aspirante.user')
                             ->with('aspirante.aspirante_formacion')
+                            ->whereHas('aspirante.aspirante_formacion', function ($query) use ($request) {
+                                    if ($request->grado) {
+                                        $query->where('oferta_academica_id',$request->grado);   
+                                    }else{
+                                        $query;
+                                    }
+                                })
+                            ->with('respuesta')
+                            ->whereHas('respuesta', function ($query) use ($request) {
+                                    if ($request->edad) {
+                                        $query->where('respuesta','ASDAS');   
+                                    }else{
+                                        $query;
+                                    }
+                                })
                             ->with('oferta')
                             ->with('estado_oferta')
                             ->where('oferta_id',$request->oferta_id)->get();

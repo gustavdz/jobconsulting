@@ -22,4 +22,9 @@ class Aplicaciones extends Model
     {
     	return $this->belongsTo(EstadoOferta::class);
     }
+
+    public function respuesta()
+    {
+        return $this->hasMany(Respuestas::class,'aplicaciones_id');
+    }
 }
