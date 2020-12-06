@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="col-md-2 mb-3">
-          <button style="margin-top: 30px;" type="button" class="btn btn-success" onclick="view_table()">Buscar</button>
+          <button style="margin-top: 30px;" type="button" class="btn btn-primary" onclick="view_table()"><i class="fas fa-search"></i> Buscar</button>
         </div>
       </div>
        <div class="form-row">
@@ -61,6 +61,9 @@
                 @endforeach
             </select>
         </div>
+        <div class="col-md-3 mb-3">
+          <label for="cargo">Cargos Anteriores</label>
+          <input type="text" name="cargo" id="cargo" class="form-control" placeholder="Cargo">
       </div>
       @if($vista == 'oferta')
       <div class="form-row">

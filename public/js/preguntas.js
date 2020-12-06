@@ -31,7 +31,7 @@ $(document).ready(function () {
     	 	opcion += '<div class="row">'+
                             '<div class="col">'+
                                 '<div class="form-group">'+
-                                    '<label for="opcion" class="col-form-label">Opciones N° '+j+'</label>'+
+                                    '<label for="opcion" class="col-form-label">Opción N° '+j+'</label>'+
                                     '<input type="text" id="opcion'+j+'" name="opcion[]" class="form-control">'+
                                     '<label tipo="error" id="opcion-error"></label>'+
                                 '</div>'+

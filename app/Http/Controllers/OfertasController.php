@@ -350,6 +350,14 @@ class OfertasController extends Controller
                                         $query;
                                     }
                                 })
+                            ->with('aspirante.aspirante_experiencia')
+                            ->whereHas('aspirante.aspirante_experiencia', function ($query) use ($request) {
+                                    if ($request->cargo) {
+                                        $query->where('cargo','like','%'.$request->cargo.'%');   
+                                    }else{
+                                        $query;
+                                    }
+                                })
                             ->with('respuesta')
                             ->with('respuesta.pregunta')
                             ->WhereHas('respuesta', function ($query) use ($request,$preguntas) {
@@ -417,6 +425,14 @@ class OfertasController extends Controller
                                         $query;
                                     }
                                 })
+                            ->with('aspirante.aspirante_experiencia')
+                            ->whereHas('aspirante.aspirante_experiencia', function ($query) use ($request) {
+                                    if ($request->cargo) {
+                                        $query->where('cargo','like','%'.$request->cargo.'%');   
+                                    }else{
+                                        $query;
+                                    }
+                                })
                             ->with('oferta')
                             ->with('estado_oferta')
                             ->where('oferta_id',$request->oferta_id)->get();
@@ -440,6 +456,13 @@ class OfertasController extends Controller
                                     }
                                 })
                             ->with('aspirante_experiencia')
+                            ->whereHas('aspirante_experiencia', function ($query) use ($request) {
+                                    if ($request->cargo) {
+                                        $query->where('cargo','like','%'.$request->cargo.'%');   
+                                    }else{
+                                        $query;
+                                    }
+                                })
                             ->with('aspirante_idioma')
                             ->with('aspirante_referencia');
             if ($request->edad) {
