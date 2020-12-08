@@ -311,11 +311,15 @@ class OfertasController extends Controller
 
             $aplicaciones = '';
             if (count($preguntas->preguntas) > 0) { #si la oferta tiene preguntas
-               // DB::enableQueryLog();
+               //DB::enableQueryLog();
                 $aplicaciones = Aplicaciones::with('aspirante')
                             ->whereHas('aspirante', function ($query) use ($request) {
-                                    if ($request->edad) {
-                                        $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-12-31']);   
+                                    if ($request->edad || $request->edad_max) {
+                                        if (empty($request->edad) || $request->edad == 0) {
+                                            $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y") .'-12-31']);         
+                                        }else{
+                                            $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-12-31']);   
+                                        }
                                     }else{
                                         $query;
                                     }
@@ -381,16 +385,22 @@ class OfertasController extends Controller
                                 })
                             ->with('oferta')
                             ->with('estado_oferta')
-                            ->where('oferta_id',$request->oferta_id)->get();
-                    if ($request->salario) {
-                        $aplicaciones = $aplicaciones->whereBetween('salario_aspirado',[$request->salario,$request->salario_max]); 
+                            ->where('oferta_id',$request->oferta_id);
+                    if ($request->salario || $request->salario_max) {
+                        $aplicaciones = $aplicaciones->whereBetween('salario_aspirado',[$request->salario ?? 0,$request->salario_max]); 
                     }
-                    //return DB::getQueryLog();
+
+                    $aplicaciones = $aplicaciones->get();
+                  // return DB::getQueryLog();
             }else{
                 $aplicaciones = Aplicaciones::with('aspirante')
                             ->whereHas('aspirante', function ($query) use ($request) {
-                                    if ($request->edad) {
-                                        $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-12-31']);  
+                                    if ($request->edad || $request->edad_max) {
+                                        if (empty($request->edad) || $request->edad == 0) {
+                                            $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y") .'-12-31']);         
+                                        }else{
+                                            $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-12-31']);   
+                                        }
                                     }else{
                                         $query;
                                     }
@@ -435,17 +445,20 @@ class OfertasController extends Controller
                                 })
                             ->with('oferta')
                             ->with('estado_oferta')
-                            ->where('oferta_id',$request->oferta_id)->get();
+                            ->where('oferta_id',$request->oferta_id);
 
-                            if ($request->salario) {
-                                $aplicaciones = $aplicaciones->where('salario_aspirado',$request->salario);   
+                            if ($request->salario || $request->salario_max) {
+                                $aplicaciones = $aplicaciones->whereBetween('salario_aspirado',[$request->salario ?? 0,$request->salario_max]); 
                             }
+
+                            $aplicaciones = $aplicaciones->get();
 
             }
 
             $estados = EstadoOferta::where('estado','A')->get();
             return view('aplicaciones.table',compact('aplicaciones','estados'));
         } else {
+            // DB::enableQueryLog();
             $aspirantes = Aspirantes::with('user')
                             ->with('aspirante_formacion')
                             ->whereHas('aspirante_formacion', function ($query) use ($request) {
@@ -465,12 +478,16 @@ class OfertasController extends Controller
                                 })
                             ->with('aspirante_idioma')
                             ->with('aspirante_referencia');
-            if ($request->edad) {
-                $aspirantes = $aspirantes->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-12-31']);  
+            if ($request->edad || $request->edad_max) {
+                if (empty($request->edad) || $request->edad == 0) {        
+                    $aspirantes = $aspirantes->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y") .'-12-31']); 
+                }else{ 
+                    $aspirantes = $aspirantes->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-12-31']); 
+                }
             }
 
             if ($request->salario) {
-                $aspirantes = $aspirantes->whereBetween('espectativa_salarial',[$request->salario,$request->salario_max]);   
+                $aspirantes = $aspirantes->whereBetween('espectativa_salarial',[$request->salario ?? 0,$request->salario_max]);   
             }
 
             if ($request->pais) {
@@ -486,7 +503,7 @@ class OfertasController extends Controller
             }
 
             $aspirantes = $aspirantes->get();
-
+           //  return DB::getQueryLog();
             return view('user-aspirante.table',compact('aspirantes'));
         }
         

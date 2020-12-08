@@ -65,6 +65,7 @@
           <label for="cargo">Cargos Anteriores</label>
           <input type="text" name="cargo" id="cargo" class="form-control" placeholder="Cargo">
       </div>
+      </div>
       @if($vista == 'oferta')
       <div class="form-row">
           @foreach ($oferta->preguntas as $pregunta)
