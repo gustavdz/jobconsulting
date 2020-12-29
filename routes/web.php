@@ -83,5 +83,6 @@ Route::middleware(['verified'])->group(function () {
     Route::post('/habilidades', 'HabilidadesController@post')->name('habilidades.post');
     Route::post('/habilidades/delete', 'HabilidadesController@delete')->name('habilidades.delete');
     
+    #Route::get('/prueba', 'OfertasController@publicPostFB');
 
 });

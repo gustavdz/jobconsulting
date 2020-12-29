@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use PHPUnit\Util\Json;
 use function MongoDB\BSON\toJSON;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class OfertasController extends Controller
 {
@@ -142,6 +145,8 @@ class OfertasController extends Controller
                 }
 
                 DB::commit();
+
+                $this->publicPostFB($request,$ofertas->id);
 
                 $result = $ofertas ? ['msg' => 'success', 'data' => 'Se ha creado correctamente la Oferta ' . $request->titulo] : ['msg' => 'error', 'data' => 'Ocurrio un error al crear la Oferta ' . $request->titulo];
 
@@ -557,5 +562,21 @@ class OfertasController extends Controller
     public function habilidad(Request $request)
     {
         return Habilidades::where('estado','A')->get();
+    }
+
+    public function publicPostFB(Request $request,$id)
+    {
+        $baseUrl = env('API_ENDPOINT_FB');
+        $descripcion = strip_tags(str_replace('&nbsp;',' ',$request->descripcion));
+        $texto = $request->titulo."\n".$descripcion."\nAplica en ".env('APP_URL').'/ofertas/'.$id .'/aplicar/';
+        $body = [
+            'access_token'=>env('ACCESS_TOKEN_FB'),
+            'message'=>$texto,
+            'attachments'=>env('APP_URL'),
+            'url'=>env('IMG_URL')
+        ];
+
+        return $response = Http::post($baseUrl, $body);
+
     }
 }
