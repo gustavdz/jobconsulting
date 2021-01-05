@@ -147,6 +147,7 @@ class OfertasController extends Controller
                 DB::commit();
 
                 $this->publicPostFB($request,$ofertas->id);
+                $this->publicPostTW($request,$ofertas->id);
 
                 $result = $ofertas ? ['msg' => 'success', 'data' => 'Se ha creado correctamente la Oferta ' . $request->titulo] : ['msg' => 'error', 'data' => 'Ocurrio un error al crear la Oferta ' . $request->titulo];
 
@@ -578,5 +579,15 @@ class OfertasController extends Controller
 
         return $response = Http::post($baseUrl, $body);
 
+    }
+
+    public function publicPostTW(Request $request,$id)
+    {
+        $descripcion = strip_tags(str_replace('&nbsp;',' ',$request->descripcion));
+        $texto = $request->titulo."\n".$descripcion."\nAplica en \n".env('APP_URL').'/ofertas/'.$id .'/aplicar';
+        $texto = Str::substr($texto, 0,140);
+        $uploaded_media = \Twitter::uploadMedia(['media' => \File::get(public_path('images/upload.jpg'))]);
+        $datos =  \Twitter::postTweet(['status' => $texto, 'media_ids' => $uploaded_media->media_id_string]);
+        return json_encode($datos);
     }
 }
