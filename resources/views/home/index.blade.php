@@ -15,6 +15,12 @@
 
                 </div>
             </div>
+            <div class="page-title-actions">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="activar" value="A" @if($activar->social_media == 'A') checked @endif>
+                  <label class="form-check-label" for="activar">Activar Publicación en Redes Sociales</label>
+                </div>
+            </div>
         </div>
         <div id="div_mensajes" class="d-none">
             <p id="mensajes"></p>
@@ -62,8 +68,47 @@
 @endsection
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>  
 <script type="text/javascript">
     $(document).ready(function() {
+
+        $("#activar").change(function(){
+            $.ajax({
+                type: 'POST',
+                url: '/activar',
+                data: {
+                    "_token": $('meta[name="csrf-token"]').attr('content'),
+                    "activar": $("#activar").is(':checked') ? 'A':'D'
+                },
+                beforeSend: function () {
+                    Swal.fire({
+                        title: '¡Espere, Por favor!',
+                        html: 'Cargando informacion...',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                            Swal.showLoading()
+                        }
+                    });
+                },
+                success: function (data) {
+                  //  $('#formregisterdiv').html(data);
+                    var d = JSON.parse(data);
+                    //$('#div_mensajes').removeClass('d-none text-center')
+                    if (d['msg'] == 'error') {
+                        toastr.error(d['data']);
+                    } else {
+                        toastr.success(d['data']);
+                    }
+                },
+                error: function (xhr) { // if error occured
+                    toastr.error('Error: '+xhr.statusText + xhr.responseText);
+                },
+                complete: function () {
+                   swal.close();
+                },
+                dataType: 'html'
+            });
+        });
         var ctx = document.getElementById('myChartOfertas');
         var myChart = new Chart(ctx, {
             type: 'bar', //pieCHART - productos mas vendidos  

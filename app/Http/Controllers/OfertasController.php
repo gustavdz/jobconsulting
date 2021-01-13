@@ -13,6 +13,7 @@ use App\HabilidadesOfertas;
 use App\EstadoOferta;
 use App\OfertaAcademica;
 use App\Respuestas;
+use App\Configuracion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -144,10 +145,12 @@ class OfertasController extends Controller
                     }
                 }
 
+                $activar = Configuracion::find(1);
+                if ($activar->social_media == 'A') { #debe estar activa para publicar
+                    $this->publicPostFB($request,$ofertas->id);
+                    $this->publicPostTW($request,$ofertas->id);
+                }
                 DB::commit();
-
-                $this->publicPostFB($request,$ofertas->id);
-                $this->publicPostTW($request,$ofertas->id);
 
                 $result = $ofertas ? ['msg' => 'success', 'data' => 'Se ha creado correctamente la Oferta ' . $request->titulo] : ['msg' => 'error', 'data' => 'Ocurrio un error al crear la Oferta ' . $request->titulo];
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Ofertas;
 use App\Categorias;
+use App\Configuracion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -31,6 +32,7 @@ class HomeController extends Controller
     {
 
         //dd(Auth::user()->role);
+        $activar = Configuracion::find(1);
         if (Auth::user()->role == 'admin'){
             $ofertas = DB::select("SELECT count(*) as total,u.name from ofertas o join users u on o.empresa_id = u.id group by o.empresa_id  having total > 0 order by total desc limit 5");
             $labels = [];
@@ -55,7 +57,7 @@ class HomeController extends Controller
             $data_aplicaciones = json_encode($data_aplicaciones);
 
 
-            return view('home.index',compact('labels','data','labels_aplicaciones','data_aplicaciones'));
+            return view('home.index',compact('labels','data','labels_aplicaciones','data_aplicaciones','activar'));
         }
 
         if (Auth::user()->role == 'aspirante'){
@@ -96,5 +98,13 @@ class HomeController extends Controller
 
             return view('home_empresa.index',compact('labels','data','labels_aplicaciones','data_aplicaciones'));
         }
+    }
+
+    public function activar(Request $request){
+        $activar = Configuracion::find(1);
+        $activar->social_media = $request->activar;
+        $activar->save();
+
+        return $activar->social_media == 'A' ? ['msg' => 'success', 'data' => 'Se ha Activado la publicación en redes sociales'] : ['msg' => 'success', 'data' => 'Se ha Desactivado la publicación en redes sociales']; 
     }
 }
