@@ -322,8 +322,8 @@ class OfertasController extends Controller
             if (count($preguntas->preguntas) > 0) { #si la oferta tiene preguntas
                //DB::enableQueryLog();
                 $aplicaciones = Aplicaciones::with('aspirante')
-                            ->whereHas('aspirante', function ($query) use ($request) {
-                                    if ($request->edad || $request->edad_max) {
+                            ->with(['aspirante' => function($query) use ($request){
+                                 if ($request->edad || $request->edad_max) {
                                         if (empty($request->edad_max)) {
                                            $query->where('fecha_nacimiento','>=',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-01-01'); 
                                         }else{
@@ -336,66 +336,66 @@ class OfertasController extends Controller
                                     }else{
                                         $query;
                                     }
-                                })
-                            ->whereHas('aspirante', function ($query) use ($request) {
-                                    if ($request->pais) {
-                                        $query->where('pais',$request->pais);   
-                                    }else{
-                                        $query;
-                                    }
-                                })
-                            ->whereHas('aspirante', function ($query) use ($request) {
-                                    if ($request->provincia) {
-                                        $query->where('provincia',$request->provincia);   
-                                    }else{
-                                        $query;
-                                    }
-                                })
-                            ->whereHas('aspirante', function ($query) use ($request) {
-                                    if ($request->ciudad) {
-                                        $query->where('ciudad',$request->ciudad);   
-                                    }else{
-                                        $query;
-                                    }
-                                })
+                            }])
+                            ->with(['aspirante'=> function ($query) use ($request) {
+                                                                if ($request->pais) {
+                                                                    $query->where('pais',$request->pais);   
+                                                                }else{
+                                                                    $query;
+                                                                }
+                                                            }])
+                            ->with(['aspirante'=> function ($query) use ($request) {
+                                                                if ($request->provincia) {
+                                                                    $query->where('provincia',$request->provincia);   
+                                                                }else{
+                                                                    $query;
+                                                                }
+                                                            }])
+                            ->with(['aspirante'=> function ($query) use ($request) {
+                                                                if ($request->ciudad) {
+                                                                    $query->where('ciudad',$request->ciudad);   
+                                                                }else{
+                                                                    $query;
+                                                                }
+                                                            }])
                             ->with('aspirante.user')
                             ->with('aspirante.aspirante_formacion')
-                            ->whereHas('aspirante.aspirante_formacion', function ($query) use ($request) {
-                                    if ($request->grado != -1) {
-                                        $query->where('oferta_academica_id',$request->grado);   
-                                    }else{
-                                        $query;
-                                    }
-                                })
+                            ->with(['aspirante.aspirante_formacion'=> function ($query) use ($request) {
+                                                                if ($request->grado != -1) {
+                                                                    $query->where('oferta_academica_id',$request->grado);   
+                                                                }else{
+                                                                    $query;
+                                                                }
+                                                            }])
                             ->with('aspirante.aspirante_experiencia')
-                            ->whereHas('aspirante.aspirante_experiencia', function ($query) use ($request) {
-                                    if ($request->cargo) {
-                                        $query->where('cargo','like','%'.$request->cargo.'%');   
-                                    }else{
-                                        $query;
-                                    }
-                                })
+                            ->with(['aspirante.aspirante_experiencia'=> function ($query) use ($request) {
+                                                                if ($request->cargo) {
+                                                                    $query->where('cargo','like','%'.$request->cargo.'%');   
+                                                                }else{
+                                                                    $query;
+                                                                }
+                                                            }])
                             ->with('respuesta')
                             ->with('respuesta.pregunta')
-                            ->WhereHas('respuesta', function ($query) use ($request,$preguntas) {
-                                    if ($preguntas->preguntas) {
-                                        foreach ($preguntas->preguntas as $key => $value) {
-                                            $campo = 'campo_'.$value->id;
-                                            if ($request[$campo]) {
-                                                if ($value->campo=='select') {
-                                                    $query->where('respuesta',$request[$campo]); 
-                                                }else{
-                                                    $query->where('respuesta','like','%'.$request[$campo].'%'); 
-                                                }
-                                            }else{
-                                                $query;
-                                            }
-                                        }
-                                          
-                                    }else{
-                                        $query;
-                                    }
-                                })
+                            ->with(['respuesta'=> function ($query) use ($request,$preguntas) {
+                                                                if ($preguntas->preguntas) {
+                                                                    foreach ($preguntas->preguntas as $key => $value) {
+                                                                        $campo = 'campo_'.$value->id;
+                                                                        if ($request[$campo]) {
+                                                                            if ($value->campo=='select') {
+                                                                                $query->where('respuesta',$request[$campo]); 
+                                                                            }else{
+                                                                                $query->where('respuesta','like','%'.$request[$campo].'%'); 
+                                                                            }
+                                                                        }else{
+                                                                            $query;
+                                                                        }
+                                                                    }
+                                                                      
+                                                                }else{
+                                                                    $query;
+                                                                }
+                                                            }])
                             ->with('oferta')
                             ->with('estado_oferta')
                             ->where('oferta_id',$request->oferta_id);
@@ -412,8 +412,9 @@ class OfertasController extends Controller
             }else{
                  // DB::enableQueryLog();
                 $aplicaciones = Aplicaciones::with('aspirante')
-                            ->whereHas('aspirante', function ($query) use ($request) {
-                                    if ($request->edad || $request->edad_max) {
+                            ->with('aspirante')
+                            ->with(['aspirante' => function($query) use ($request){
+                                 if ($request->edad || $request->edad_max) {
                                         if (empty($request->edad_max)) {
                                            $query->where('fecha_nacimiento','>=',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-01-01'); 
                                         }else{
@@ -426,45 +427,62 @@ class OfertasController extends Controller
                                     }else{
                                         $query;
                                     }
-                                })
-                            ->whereHas('aspirante', function ($query) use ($request) {
+                            }])
+                            /*->whereHas('aspirante', function ($query) use ($request) {
+                                    
+                                })*/
+                            ->with(['aspirante' => function($query) use ($request){
+                                 if ($request->pais) {
+                                        $query->where('pais',$request->pais);   
+                                    }else{
+                                        $query;
+                                    }
+                            }])
+                            /*->whereHas('aspirante', function ($query) use ($request) {
                                     if ($request->pais) {
                                         $query->where('pais',$request->pais);   
                                     }else{
                                         $query;
                                     }
-                                })
-                            ->whereHas('aspirante', function ($query) use ($request) {
+                                })*/
+                            ->with(['aspirante' => function($query) use ($request){
+                                  if ($request->provincia) {
+                                        $query->where('provincia',$request->provincia);   
+                                    }else{
+                                        $query;
+                                    }
+                            }])
+                            /*->whereHas('aspirante', function ($query) use ($request) {
                                     if ($request->provincia) {
                                         $query->where('provincia',$request->provincia);   
                                     }else{
                                         $query;
                                     }
-                                })
-                            ->whereHas('aspirante', function ($query) use ($request) {
-                                    if ($request->ciudad) {
-                                        $query->where('ciudad',$request->ciudad);   
-                                    }else{
-                                        $query;
-                                    }
-                                })
+                                })*/
+                            ->with(['aspirante'=> function ($query) use ($request) {
+                                                                if ($request->ciudad) {
+                                                                    $query->where('ciudad',$request->ciudad);   
+                                                                }else{
+                                                                    $query;
+                                                                }
+                                                            }])
                             ->with('aspirante.user')
-                            ->with('aspirante.aspirante_formacion')
-                            ->whereHas('aspirante.aspirante_formacion', function ($query) use ($request) {
-                                    if ($request->grado != -1) {
-                                        $query->where('oferta_academica_id',$request->grado);   
-                                    }else{
-                                        $query;
-                                    }
-                                })
-                            ->with('aspirante.aspirante_experiencia')
-                            ->whereHas('aspirante.aspirante_experiencia', function ($query) use ($request) {
-                                    if ($request->cargo) {
-                                        $query->where('cargo','like','%'.$request->cargo.'%');   
-                                    }else{
-                                        $query;
-                                    }
-                                })
+                            //->with('aspirante.aspirante_formacion')
+                            ->with(['aspirante.aspirante_formacion'=> function ($query) use ($request) {
+                                                                if ($request->grado != -1) {
+                                                                    $query->where('oferta_academica_id',$request->grado);   
+                                                                }else{
+                                                                    $query;
+                                                                }
+                                                            }])
+                            //->with('aspirante.aspirante_experiencia')
+                            ->with(['aspirante.aspirante_experiencia'=> function ($query) use ($request) {
+                                                                if ($request->cargo) {
+                                                                    $query->where('cargo','like','%'.$request->cargo.'%');   
+                                                                }else{
+                                                                    $query;
+                                                                }
+                                                            }])
                             ->with('oferta')
                             ->with('estado_oferta')
                             ->where('oferta_id',$request->oferta_id);
@@ -485,24 +503,38 @@ class OfertasController extends Controller
             $estados = EstadoOferta::where('estado','A')->get();
             return view('aplicaciones.table',compact('aplicaciones','estados'));
         } else {
-            // DB::enableQueryLog();
+            //DB::enableQueryLog();
             $aspirantes = Aspirantes::with('user')
-                            ->with('aspirante_formacion')
-                            ->whereHas('aspirante_formacion', function ($query) use ($request) {
+                            ->with(['aspirante_formacion' => function($query) use ($request){
+                                if ($request->grado != -1) {
+                                        $query->where('oferta_academica_id',$request->grado);   
+                                    }else{
+                                        $query;
+                                    }
+
+                            }])
+                            /*->orWhereHas('aspirante_formacion', function ($query) use ($request) {
                                     if ($request->grado != -1) {
                                         $query->where('oferta_academica_id',$request->grado);   
                                     }else{
                                         $query;
                                     }
-                                })
-                            ->with('aspirante_experiencia')
-                            ->whereHas('aspirante_experiencia', function ($query) use ($request) {
+                                })*/
+                            ->with(['aspirante_experiencia' => function($query) use ($request){
+                                if ($request->cargo) {
+                                        $query->where('cargo','like','%'.$request->cargo.'%');   
+                                    }else{
+                                        $query;
+                                    }
+
+                            }])
+                            /*->orWhereHas('aspirante_experiencia', function ($query) use ($request) {
                                     if ($request->cargo) {
                                         $query->where('cargo','like','%'.$request->cargo.'%');   
                                     }else{
                                         $query;
                                     }
-                                })
+                                })*/
                             ->with('aspirante_idioma')
                             ->with('aspirante_referencia');
             if ($request->edad || $request->edad_max) {
@@ -540,7 +572,7 @@ class OfertasController extends Controller
             }
 
             $aspirantes = $aspirantes->get();
-           // return DB::getQueryLog();
+           //return DB::getQueryLog();
             return view('user-aspirante.table',compact('aspirantes'));
         }
         
