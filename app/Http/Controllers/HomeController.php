@@ -56,8 +56,38 @@ class HomeController extends Controller
             $labels_aplicaciones = json_encode($labels_aplicaciones);
             $data_aplicaciones = json_encode($data_aplicaciones);
 
+        
+            //postulantes/registros x mes
+            $actualYear = date("Y");
+            $postulacionesxMes = DB::select("SELECT  COUNT(*) as count, YEAR(created_at) year, MONTHNAME(created_at) month from aspirantes where YEAR(created_at) = $actualYear group by year, month");
+            //$registrosxMes = PREGUNTAR
+            $labels_postulaciones = [];
+            $data_postulaciones = [];
 
-            return view('home.index',compact('labels','data','labels_aplicaciones','data_aplicaciones','activar'));
+            foreach ($postulacionesxMes as $value) {
+                $labels_postulaciones[] = $value->month;
+                $data_postulaciones[] = $value->count;
+            }
+            $labels_postulaciones = json_encode($labels_postulaciones);
+            $data_postulaciones = json_encode($data_postulaciones);
+
+
+            //POSTULANTES X OFERTA
+            $actualDay = now();
+            $postulacionesxOferta = DB::select("SELECT COUNT(*) as total, o.titulo as ofertaNombre from aplicaciones a join ofertas o on a.oferta_id = o.id where estado = 'A' and validez >= '$actualDay' group by ofertaNombre having total > 0");
+            $labels_pOfertas = [];
+            $data_pOfertas = [];
+
+            foreach ($postulacionesxOferta as $value) {
+                $labels_pOfertas[] = $value->ofertaNombre;
+                $data_pOfertas[] = $value->total;
+            }
+            $labels_pOfertas = json_encode($labels_pOfertas);
+            $data_pOfertas = json_encode($data_pOfertas);
+
+
+
+            return view('home.index',compact('labels','data','labels_aplicaciones','data_aplicaciones', 'labels_postulaciones','data_postulaciones', 'labels_pOfertas','data_pOfertas','activar'));
         }
 
         if (Auth::user()->role == 'aspirante'){
