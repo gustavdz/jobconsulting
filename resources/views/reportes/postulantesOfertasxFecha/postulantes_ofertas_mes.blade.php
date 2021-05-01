@@ -33,7 +33,11 @@
     <script src="../../vendor/datatables/js/dataTables.bootstrap4.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script rel="stylesheet" href="../../vendor/select2/js/select2.min.js"></script>
-    <script src="{{ asset('../js/reporte-postulante-registro-mes.js') }}"></script>
+    <script src="{{ asset('../js/reporte-postulantes-ofertas.js') }}"></script>
+    
+
+
+
     
 @stop
 
@@ -46,7 +50,7 @@
                     </i>
                 </div>
                 <div>Reportes
-                    <div class="page-title-subheading">Postulaciones por Mes
+                    <div class="page-title-subheading">Postulaciones Oferta por Mes
                     </div>
                 </div>
             </div>
@@ -106,7 +110,9 @@
     </div>
 @endsection
 
-<script>
+<script rel="javascript" type="text/javascript">
+
+
     function filtrarData(){
 
         //get filtros values
@@ -146,7 +152,7 @@
 
         $.ajax({
         type: 'POST',
-        url: '/reportes/dataPostulanteRegistro?desdeFiltro='+desdeFiltro+' 00:00:00'+'&hastaFiltro='+hastaFiltro+' 23:59:59',
+        url: '/reportes/dataPostulantesOfertasRegistro?desdeFiltro='+desdeFiltro+' 00:00:00'+'&hastaFiltro='+hastaFiltro+' 23:59:59',
         data: {
             "_token": $('meta[name="csrf-token"]').attr('content')
         },

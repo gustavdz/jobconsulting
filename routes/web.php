@@ -88,7 +88,10 @@ Route::middleware(['verified'])->group(function () {
     Route::get('/reportes', 'ReportesController@index')->name('reportes');
     Route::get('/reportes/postulantes-registros-mes', 'ReportesController@postulantes_registros_mes')->name('postulantes-registros-mes');
     Route::post('/reportes/dataPostulanteRegistro{desde?}{hasta?}', 'ReportesController@dataPostulanteRegistro')->name('dataPostulanteRegistro');
-
+    Route::get('/reportes/aplicaciones-mes', 'ReportesController@aplicaciones_mes')->name('aplicaciones-mes');
+    Route::post('/reportes/dataAplicacionesRegistro{desde?}{hasta?}', 'ReportesController@dataAplicacionesRegistro')->name('dataAplicacionesRegistro');
+    Route::get('/reportes/postulantes-ofertas', 'ReportesController@postulantes_ofertas')->name('postulantes-ofertas');
+    Route::post('/reportes/dataPostulantesOfertasRegistro{desde?}{hasta?}', 'ReportesController@dataPostulantesOfertasRegistro')->name('dataPostulantesOfertasRegistro');
     #Route::get('/prueba', 'OfertasController@publicPostFB');
 
 });
