@@ -40,7 +40,7 @@
                             <div class="col">
                                 <div class="card border-info">
                                     <div class="card-header">
-                                        Top 5 de Consultores con más ofertas 
+                                        Top 5 de Consultores con más ofertas
                                     </div>
                                     <div class="card-body">
                                         <canvas id="myChartOfertas" width="300" height="300"></canvas>
@@ -54,11 +54,50 @@
                                     </div>
                                     <div class="card-body">
                                         <canvas id="myChartPostulaciones" width="300" height="300"></canvas>
-                                        
+
                                     </div>
                                 </div>
                             </div>
+
                         </div>
+                            <br>
+                        <div class="row">
+                            <div class="col">
+                               <div class="card border-info">
+                                  <div class="card-header">
+                                      Postulantes/Registros por Mes
+                                  </div>
+                                  <hr>
+                                  <div class="form-inline">
+                                    
+                                        <select class="custom-select custom-select-sm  form-control-sm" id="filterYear">
+                                            <option value="" selected disabled> Select Year </option>
+                                            <option value="2021"> 2021 </option>
+                                            <option value="2020"> 2020 </option>
+                                        </select>
+                                        <button type="button"  class="btn btn-sm btn-primary" onClick=""> Buscar </button>
+                                    
+                                  </div>
+                                  
+                                  <div class="card-body">
+                                     <canvas id="myChartPostulacionesMes" width="300" height="300"></canvas>
+                                  </div>
+                               </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="card border-info">
+                                    <div class="card-header">
+                                            Postulantes por Oferta
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="myChartPostulacionesXOfertas" width="300" height="300"></canvas>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
 
                     </div>
                 </div>
@@ -68,7 +107,7 @@
 @endsection
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>  
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script type="text/javascript">
     $(document).ready(function() {
 
@@ -111,12 +150,12 @@
         });
         var ctx = document.getElementById('myChartOfertas');
         var myChart = new Chart(ctx, {
-            type: 'bar', //pieCHART - productos mas vendidos  
+            type: 'bar', //pieCHART - productos mas vendidos
             data: {
-                labels: {!! $labels !!},// ['hola','mundo'], //para q lo imprima de esa manera     
+                labels: {!! $labels !!},// ['hola','mundo'], //para q lo imprima de esa manera
                 datasets: [{
                     label: '# ofertas',
-                    data: {!! $data !!}, 
+                    data: {!! $data !!},
                     backgroundColor: [
                         'rgba(255, 206, 86, 0.2)',
                         'rgba(255, 99, 132, 0.2)',
@@ -148,12 +187,12 @@
 
         var ctx = document.getElementById('myChartPostulaciones');
         var myChart = new Chart(ctx, {
-            type: 'doughnut', //pieCHART - productos mas vendidos  
+            type: 'doughnut', //pieCHART - productos mas vendidos
             data: {
-                labels: {!! $labels_aplicaciones !!},// ['hola','mundo'], //para q lo imprima de esa manera     
+                labels: {!! $labels_aplicaciones !!},// ['hola','mundo'], //para q lo imprima de esa manera
                 datasets: [{
                     label: '# Postulación',
-                    data: {!! $data_aplicaciones !!}, 
+                    data: {!! $data_aplicaciones !!},
                     backgroundColor: [
                         'rgba(54, 162, 235, 0.2)',
                         'rgba(255, 206, 86, 0.2)',
@@ -181,6 +220,112 @@
                 }
             }
         });
+
+
+        //postulaciones/registros x mes
+        var dataregistros = {!! $data_registrosxMes !!};
+        console.log(dataregistros);
+        var ctx = document.getElementById('myChartPostulacionesMes');
+        var myChart = new Chart(ctx, {
+            type: 'line', //line - productos mas vendidos
+            data: {
+                labels: {!! $labels_postulaciones !!},// ['hola','mundo'], //para q lo imprima de esa manera
+                datasets: [{
+                    fill: false,
+                    label: '# Postulación al mes',
+                    data: {!! $data_postulaciones !!},
+                    /*backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                    ],*/
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(54, 162, 235, 1)'
+
+                    ],
+                    borderWidth: 3
+                },
+                {
+                    fill: false,
+                    label: '# Registros al mes',
+                    data: {!! $data_registrosxMes !!},
+                    /*backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                    ],*/
+                    borderColor: [
+                        'rgba(150, 40, 27, 1)',
+                        'rgba(150, 40, 27, 1)',
+                        'rgba(150, 40, 27, 1)',
+                        'rgba(150, 40, 27, 1)',
+                        'rgba(150, 40, 27, 1)'
+
+                    ],
+                    borderWidth: 3
+                }
+              ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                }
+                }
+            },
+        });
+
+
+        //Postulantes x Oferta
+        var ctx = document.getElementById('myChartPostulacionesXOfertas');
+        var myChart = new Chart(ctx, {
+            type: 'bar', //pieCHART - productos mas vendidos
+            data: {
+                labels: {!! $labels_pOfertas !!},// ['hola','mundo'], //para q lo imprima de esa manera
+                datasets: [{
+                    label: '# Postulantes ',
+                    data: {!! $data_pOfertas !!},
+                    backgroundColor: [
+                        'rgba(150, 40, 27, 0.2)',
+                        'rgba(226, 106, 106, 0.2)',
+                        'rgba(226, 106, 106, 0.2)',
+                        'rgba(224, 130, 131, 0.2)',
+                        'rgba(241, 169, 160, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(150, 40, 27, 1)',
+                        'rgba(240, 52, 52, 1)',
+                        'rgba(226, 106, 106, 1)',
+                        'rgba(224, 130, 131, 1)',
+                        'rgba(241, 169, 160, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+
     });
 </script>
 @stop

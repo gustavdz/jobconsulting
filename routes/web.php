@@ -19,7 +19,7 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::middleware(['verified'])->group(function () {
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home/{param?}', 'HomeController@index')->name('home');
     Route::post('/activar', 'HomeController@activar')->name('activar');
 
     #user - empresas
@@ -63,7 +63,7 @@ Route::middleware(['verified'])->group(function () {
     Route::post('/aspirante/referencia', 'AspirantesController@referencia')->name('aspirante.referencia.post');
     Route::post('/aspirante/experiencia/view', 'AspirantesController@viewExperencia')->name('aspirante.experencia');
     Route::post('/aspirante/experiencia', 'AspirantesController@experencia')->name('aspirante.experencia.post');
-    
+
     Route::post('/aspirante/formacion/delete', 'AspirantesController@formacion_delete')->name('aspirante.formacion.delete');
     Route::post('/aspirante/experiencia/delete', 'AspirantesController@experiencia_delete')->name('aspirante.experiencia.delete');
     Route::post('/aspirante/idioma/delete', 'AspirantesController@idioma_delete')->name('aspirante.idioma.delete');
@@ -83,7 +83,15 @@ Route::middleware(['verified'])->group(function () {
     Route::post('/habilidades/data', 'HabilidadesController@data')->name('habilidades.data');
     Route::post('/habilidades', 'HabilidadesController@post')->name('habilidades.post');
     Route::post('/habilidades/delete', 'HabilidadesController@delete')->name('habilidades.delete');
-    
+
+    #reportes
+    Route::get('/reportes', 'ReportesController@index')->name('reportes');
+    Route::get('/reportes/postulantes-registros-mes', 'ReportesController@postulantes_registros_mes')->name('postulantes-registros-mes');
+    Route::post('/reportes/dataPostulanteRegistro{desde?}{hasta?}', 'ReportesController@dataPostulanteRegistro')->name('dataPostulanteRegistro');
+    Route::get('/reportes/aplicaciones-mes', 'ReportesController@aplicaciones_mes')->name('aplicaciones-mes');
+    Route::post('/reportes/dataAplicacionesRegistro{desde?}{hasta?}', 'ReportesController@dataAplicacionesRegistro')->name('dataAplicacionesRegistro');
+    Route::get('/reportes/postulantes-ofertas', 'ReportesController@postulantes_ofertas')->name('postulantes-ofertas');
+    Route::post('/reportes/dataPostulantesOfertasRegistro{desde?}{hasta?}', 'ReportesController@dataPostulantesOfertasRegistro')->name('dataPostulantesOfertasRegistro');
     #Route::get('/prueba', 'OfertasController@publicPostFB');
 
 });

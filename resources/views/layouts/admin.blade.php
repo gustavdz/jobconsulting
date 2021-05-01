@@ -255,6 +255,14 @@
                             Habilidades
                            </a>
                         </li>
+
+                        <li>
+                           <a href="{{ route('reportes')}}" class="{{ Route::is('reportes') ? 'active' : '' }}">
+                            <i class="metismenu-icon pe-7s-display2"></i>
+                            Reportes
+                           </a>
+                        </li>
+
                         @endif
 
                     </ul>
