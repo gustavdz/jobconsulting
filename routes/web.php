@@ -84,6 +84,11 @@ Route::middleware(['verified'])->group(function () {
     Route::post('/habilidades', 'HabilidadesController@post')->name('habilidades.post');
     Route::post('/habilidades/delete', 'HabilidadesController@delete')->name('habilidades.delete');
 
+    #reportes
+    Route::get('/reportes', 'ReportesController@index')->name('reportes');
+    Route::get('/reportes/postulantes-registros-mes', 'ReportesController@postulantes_registros_mes')->name('postulantes-registros-mes');
+    Route::post('/reportes/dataPostulanteRegistro{desde?}{hasta?}', 'ReportesController@dataPostulanteRegistro')->name('dataPostulanteRegistro');
+
     #Route::get('/prueba', 'OfertasController@publicPostFB');
 
 });

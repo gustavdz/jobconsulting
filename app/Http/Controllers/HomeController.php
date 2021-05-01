@@ -59,10 +59,12 @@ class HomeController extends Controller
         
             //postulantes/registros x mes
             $actualYear = date("Y");
-            $postulacionesxMes = DB::select("SELECT  COUNT(*) as count, YEAR(created_at) year, MONTHNAME(created_at) month from aspirantes where YEAR(created_at) = $actualYear group by year, month");
-            //$registrosxMes = PREGUNTAR
+            $postulacionesxMes = DB::select("SELECT  COUNT(*) as count, YEAR(created_at) year, MONTHNAME(created_at) month from aspirantes where YEAR(created_at) = 2020 group by year, month");
+            $registrosxMes = DB::select("SELECT COUNT(*) as total, YEAR(created_at) year, MONTHNAME(created_at) month from aplicaciones where YEAR(created_at) = 2020 group by year, month");
             $labels_postulaciones = [];
             $data_postulaciones = [];
+            $labels_registrosxMes = [];
+            $data_registrosxMes = [];
 
             foreach ($postulacionesxMes as $value) {
                 $labels_postulaciones[] = $value->month;
@@ -70,6 +72,13 @@ class HomeController extends Controller
             }
             $labels_postulaciones = json_encode($labels_postulaciones);
             $data_postulaciones = json_encode($data_postulaciones);
+
+            foreach ($registrosxMes as $value) {
+                $labels_registrosxMes[] = $value->month;
+                $data_registrosxMes[] = $value->total;
+            }
+            $labels_registrosxMes = json_encode($labels_registrosxMes);
+            $data_registrosxMes = json_encode($data_registrosxMes);
 
 
             //POSTULANTES X OFERTA
@@ -87,7 +96,7 @@ class HomeController extends Controller
 
 
 
-            return view('home.index',compact('labels','data','labels_aplicaciones','data_aplicaciones', 'labels_postulaciones','data_postulaciones', 'labels_pOfertas','data_pOfertas','activar'));
+            return view('home.index',compact('labels','data','labels_aplicaciones','data_aplicaciones', 'labels_postulaciones','data_postulaciones', 'data_registrosxMes', 'labels_registrosxMes', 'labels_pOfertas','data_pOfertas','activar'));
         }
 
         if (Auth::user()->role == 'aspirante'){

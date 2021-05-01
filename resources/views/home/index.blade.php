@@ -67,6 +67,18 @@
                                   <div class="card-header">
                                       Postulantes/Registros por Mes
                                   </div>
+                                  <hr>
+                                  <div class="form-inline">
+                                    
+                                        <select class="custom-select custom-select-sm  form-control-sm" id="filterYear">
+                                            <option value="" selected disabled> Select Year </option>
+                                            <option value="2021"> 2021 </option>
+                                            <option value="2020"> 2020 </option>
+                                        </select>
+                                        <button type="button"  class="btn btn-sm btn-primary" onClick=""> Buscar </button>
+                                    
+                                  </div>
+                                  
                                   <div class="card-body">
                                      <canvas id="myChartPostulacionesMes" width="300" height="300"></canvas>
                                   </div>
@@ -211,6 +223,8 @@
 
 
         //postulaciones/registros x mes
+        var dataregistros = {!! $data_registrosxMes !!};
+        console.log(dataregistros);
         var ctx = document.getElementById('myChartPostulacionesMes');
         var myChart = new Chart(ctx, {
             type: 'line', //line - productos mas vendidos
@@ -236,7 +250,29 @@
 
                     ],
                     borderWidth: 3
-                }]
+                },
+                {
+                    fill: false,
+                    label: '# Registros al mes',
+                    data: {!! $data_registrosxMes !!},
+                    /*backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                    ],*/
+                    borderColor: [
+                        'rgba(150, 40, 27, 1)',
+                        'rgba(150, 40, 27, 1)',
+                        'rgba(150, 40, 27, 1)',
+                        'rgba(150, 40, 27, 1)',
+                        'rgba(150, 40, 27, 1)'
+
+                    ],
+                    borderWidth: 3
+                }
+              ]
             },
             options: {
                 responsive: true,
