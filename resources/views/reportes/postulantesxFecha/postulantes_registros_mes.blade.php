@@ -34,7 +34,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script rel="stylesheet" href="../../vendor/select2/js/select2.min.js"></script>
     <script src="{{ asset('../js/reporte-postulante-registro-mes.js') }}"></script>
-    
+
 @stop
 
 @section('title')
@@ -51,7 +51,7 @@
                 </div>
             </div>
 
-            
+
         </div>
         <div id="div_mensajes" class="d-none">
             <p id="mensajes"></p>
@@ -66,8 +66,8 @@
     <div class="col-md-12">
         <div class="">
             <div class="">
-                
-                   
+
+
                     <div class="form-row">
                         <div class="form-group col-md-5">
                           <label for="desdeFiltro">Desde: &nbsp; </label>
@@ -79,15 +79,15 @@
                         </div>
                         <div class="form-group col-md-2" style="align-self: flex-end;">
                             <button type="button" class="btn btn-primary" onclick="filtrarData()">Filtrar</button>
-                            
+
                         </div>
-                        
+
 
                       </div>
 
-               
-                
-                
+
+
+
             </div>
         </div>
     </div>
@@ -98,7 +98,7 @@
             <div class="main-card mb-12 card">
                 <div class="card-body">
                     <div id="div_table">
-                        
+
                     </div>
                 </div>
             </div>
@@ -158,7 +158,7 @@
 	                onBeforeOpen: () => {
 	                    Swal.showLoading()
 	                }
-	            });  
+	            });
         },
         success: function (data) {
             $('#div_table').html(data);
@@ -187,13 +187,12 @@
                         "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                     },
                 },
-                "buttons": [ 'copy', 'excel', 'pdf', 'colvis' ],
                 "paging": true,
                 "lengthChange": true,
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
-                "order": [[0, "desc"]]
+                "order": [[0, "asc"]]
             });
             // acciones();
         },

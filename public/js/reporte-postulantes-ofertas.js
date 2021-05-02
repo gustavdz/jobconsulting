@@ -27,7 +27,7 @@ function view_table() {
 	                onBeforeOpen: () => {
 	                    Swal.showLoading()
 	                }
-	            });  
+	            });
         },
         success: function (data) {
             $('#div_table').html(data);
@@ -56,7 +56,6 @@ function view_table() {
                         "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                     },
                 },
-                "buttons": [ 'copy', 'excel', 'pdf', 'colvis' ],
                 "paging": true,
                 "lengthChange": true,
                 "ordering": true,
