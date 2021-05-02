@@ -198,7 +198,7 @@
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
-                "order": [[0, "desc"]]
+                "order": [[0, "asc"]]
             });
             // acciones();
         },

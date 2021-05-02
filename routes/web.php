@@ -92,6 +92,8 @@ Route::middleware(['verified'])->group(function () {
     Route::post('/reportes/dataAplicacionesRegistro{desde?}{hasta?}', 'ReportesController@dataAplicacionesRegistro')->name('dataAplicacionesRegistro');
     Route::get('/reportes/postulantes-ofertas', 'ReportesController@postulantes_ofertas')->name('postulantes-ofertas');
     Route::post('/reportes/dataPostulantesOfertasRegistro{desde?}{hasta?}', 'ReportesController@dataPostulantesOfertasRegistro')->name('dataPostulantesOfertasRegistro');
-    #Route::get('/prueba', 'OfertasController@publicPostFB');
+    #exports a excel
+    Route::get('export/postulantes-registros-mes/', 'ReportesController@exportDataPostulanteRegistro')->name('exportDataPostulanteRegistro');
+
 
 });

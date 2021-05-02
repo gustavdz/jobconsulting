@@ -4,25 +4,30 @@
     <tr>
         <th>Usuario</th>
         <th>Cedula</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Celular</th>
         <th>País</th>
         <th>Provincia</th>
         <th>Ciudad</th>
         <th>Ingreso</th>
         <th>Espectativa</th>
-        <th>Fecha Postulación</th>
+        <th>Fecha de Registro</th>
     </tr>
     </thead>
     <tbody>
-        
+
     @foreach($results as $rst)
         <tr>
             <td>
                 {{$rst->user->name}}
             </td>
             <td>
-                {{$rst->user->cedula}}
+                {{$rst->cedula}}
             </td>
-
+            <td>{{$rst->user->email}}</td>
+            <td>{{$rst->telefono}}</td>
+            <td>{{$rst->celular}}</td>
             <td>
                 {{$rst->pais}}
             </td>

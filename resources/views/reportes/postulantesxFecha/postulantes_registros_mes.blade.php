@@ -77,17 +77,13 @@
                             <label for="hastaFiltro">Hasta: &nbsp; </label>
                             <input type="date" class="form-control" id="hastaFiltro" name="hastaFiltro" />
                         </div>
-                        <div class="form-group col-md-2" style="align-self: flex-end;">
+                        <div class="form-group col-md-1" style="align-self: flex-end;">
                             <button type="button" class="btn btn-primary" onclick="filtrarData()">Filtrar</button>
-
                         </div>
-
-
+                        <div class="form-group col-md-1" style="align-self: flex-end;">
+                            <button type="button" id="excel" class="btn btn-success excel">Exportar</button>
+                        </div>
                       </div>
-
-
-
-
             </div>
         </div>
     </div>
@@ -105,14 +101,58 @@
         </div>
     </div>
 @endsection
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 
 <script>
+
+    $( document ).ready(function() {
+        $('.excel').on('click',function(){
+            var desdeFiltro = document.getElementById("desdeFiltro").value;
+            var hastaFiltro = document.getElementById("hastaFiltro").value;
+            if(desdeFiltro !== '' && hastaFiltro === ''){
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Por favor usar ambos filtros',
+                    icon: 'error',
+                    confirmButtonText: 'ok'
+                });
+                return;
+            }
+
+            if(desdeFiltro === '' && hastaFiltro !== ''){
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Por favor usar ambos filtros',
+                    icon: 'error',
+                    confirmButtonText: 'ok'
+                });
+                return;
+            }
+
+            if(desdeFiltro > hastaFiltro ){
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Por favor ingresar fechas validas',
+                    icon: 'error',
+                    confirmButtonText: 'ok'
+                });
+                return;
+            }
+
+            var query = {
+                desdeFiltro: $('#desdeFiltro').val(),
+                hastaFiltro: $('#hastaFiltro').val()
+            };
+            var url = "{{URL::to('export/postulantes-registros-mes')}}?" + $.param(query);
+            window.location = url;
+            toastr.success('Listo, su descarga comenzará pronto.');
+        });
+    });
     function filtrarData(){
 
         //get filtros values
         var desdeFiltro = document.getElementById("desdeFiltro").value;
         var hastaFiltro = document.getElementById("hastaFiltro").value;
-        console.log(hastaFiltro);
         if(desdeFiltro !== '' && hastaFiltro === ''){
             Swal.fire({
                 title: 'Error!',
