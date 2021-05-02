@@ -3,8 +3,6 @@
 @section('css')
     <link rel="stylesheet" href="../vendor/datatables/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="./vendor/select2/css/select2.min.css">
-    <!--<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="./vendor/select2/select2-bootstrap.css">-->
     <style type="text/css">
 div.dataTables_wrapper div.dataTables_processing {
     position: absolute;
@@ -76,6 +74,7 @@ div.dataTables_wrapper div.dataTables_processing {
                                     <th>Detalle de la Oferta</th>
                                     <th>Categorías</th>
                                     <th>Habilidades</th>
+                                    <th>Aplicantes</th>
                                     <th>Opciónes</th>
                                 </tr>
                             </thead>

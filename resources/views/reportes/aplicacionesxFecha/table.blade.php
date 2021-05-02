@@ -2,7 +2,7 @@
     <table id="tbl_reporte" class="table table-bordered ">
         <thead>
         <tr>
-            <th>Empresa</th>
+            <th>Consultor</th>
             <th>Oferta</th>
             <th>Salario de Oferta</th>
             <th>Provincia de Oferta</th>
@@ -12,14 +12,16 @@
             <th>Aspirante</th>
             <th>Remuneración Actual de Aspirante</th>
             <th>Correo de Aspirante</th>
-            <th>Fecha Aplicacion</th>
+            <th>Celular de Aspirante</th>
+            <th>Teléfono de Aspirante</th>
+            <th>Fecha Aplicación</th>
         </tr>
         </thead>
         <tbody>
-            
+
         @foreach($results as $rst)
             <tr>
-    
+
                 <td>
                     {{$rst->empresa}}
                 </td>
@@ -50,11 +52,16 @@
                 <td>
                     {{$rst->correoaspirante}}
                 </td>
-    
+                <td>
+                    {{$rst->celular}}
+                </td>
+                <td>
+                    {{$rst->telefono}}
+                </td>
                 <td>
                     {{$rst->created_at}}
                 </td>
-    
+
             </tr>
         @endforeach
         </tbody>

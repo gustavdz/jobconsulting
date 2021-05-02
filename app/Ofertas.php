@@ -33,4 +33,9 @@ class Ofertas extends Model
 		return $this->hasMany(Preguntas::class, 'oferta_id')->where('estado','A');
 	}
 
+    //uno a muchos
+    public function aplicaciones() {
+        return $this->hasMany(Aplicaciones::class, 'oferta_id');
+    }
+
 }

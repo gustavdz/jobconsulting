@@ -46,7 +46,7 @@
                     </i>
                 </div>
                 <div>Reportes
-                    <div class="page-title-subheading">Postulaciones por Mes
+                    <div class="page-title-subheading">Aspirantes que se registraron en el rango de fecha
                     </div>
                 </div>
             </div>
@@ -232,7 +232,7 @@
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
-                "order": [[0, "asc"]]
+                "order": [[10, "desc"]]
             });
             // acciones();
         },

@@ -83,10 +83,18 @@ class OfertasController extends Controller
         ##$results = [];
         if (Auth::user()->role == 'admin' || Auth::user()->role == 'aspirante'){
             return datatables()
-            ->eloquent(Ofertas::with('user')->with('categoriasOfertas.categoria')->with('habilidadesOfertas.habilidad')->where('ofertas.estado','<>','E')->orderBy('ofertas.validez', 'DESC')->orderBy('ofertas.id', 'DESC'))
+            ->eloquent(Ofertas::with('user')
+                ->with('categoriasOfertas.categoria')
+                ->with('habilidadesOfertas.habilidad')
+                ->withCount('aplicaciones')
+                ->where('ofertas.estado','<>','E')
+                ->orderBy('ofertas.validez', 'DESC')
+                ->orderBy('ofertas.id', 'DESC')
+            )
             ->addColumn('detalle','ofertas.detalle') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('categorias','ofertas.categorias') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('habilidades','ofertas.habilidades') #detalle o llave a recibir en el JS y segundo campo la vista
+            ->addColumn('aplicaciones','aplicaciones') #detalle o llave a recibir en el JS y segundo campo la vista
             ->addColumn('opciones','ofertas.opciones') #detalle o llave a recibir en el JS y segundo campo la vista
             ->rawColumns(['detalle','categorias','habilidades','opciones']) #opcion para que presente el HTML
             ->toJson();
@@ -260,7 +268,7 @@ class OfertasController extends Controller
                     foreach ($verificarOferta->preguntas as $key => $pregunta) {
                         $campo = 'campo_'.$pregunta->id;
                         if (empty($request[$campo])) {
-                            return response()->json(['msg' => 'error', 'data' => 'La pregunta '.$pregunta->texto. ' es obligatoria']); 
+                            return response()->json(['msg' => 'error', 'data' => 'La pregunta '.$pregunta->texto. ' es obligatoria']);
                         }
                     }
                 }
@@ -282,7 +290,7 @@ class OfertasController extends Controller
                     }
                 }
 
-                
+
                 DB::commit();
 
                 $result = $postulacion ? ['msg' => 'success', 'data' => 'Se ha postulado correctamente a la oferta ' ] : ['msg' => 'error', 'data' => 'Ocurrio un error al postular la Oferta '];
@@ -296,7 +304,7 @@ class OfertasController extends Controller
             DB::rollBack();
             return response()->json(['msg' => 'error', 'data' => $e->getMessage()]);
         }
-        
+
     }
 
     public function ofertaDetalle($id)
@@ -315,7 +323,7 @@ class OfertasController extends Controller
     public function aplicaciones(Request $request)
     {
         if ($request->oferta_id > 0) { #filtro
-            
+
             $preguntas = Ofertas::with('preguntas')->find($request->oferta_id);
 
             $aplicaciones = '';
@@ -325,12 +333,12 @@ class OfertasController extends Controller
                             ->with(['aspirante' => function($query) use ($request){
                                  if ($request->edad || $request->edad_max) {
                                         if (empty($request->edad_max)) {
-                                           $query->where('fecha_nacimiento','>=',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-01-01'); 
+                                           $query->where('fecha_nacimiento','>=',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-01-01');
                                         }else{
                                             if (empty($request->edad) || $request->edad == 0) {
-                                                $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y") .'-12-31']);         
+                                                $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y") .'-12-31']);
                                             }else{
-                                                $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-12-31']);   
+                                                $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-12-31']);
                                             }
                                         }
                                     }else{
@@ -339,21 +347,21 @@ class OfertasController extends Controller
                             }])
                             ->with(['aspirante'=> function ($query) use ($request) {
                                                                 if ($request->pais) {
-                                                                    $query->where('pais',$request->pais);   
+                                                                    $query->where('pais',$request->pais);
                                                                 }else{
                                                                     $query;
                                                                 }
                                                             }])
                             ->with(['aspirante'=> function ($query) use ($request) {
                                                                 if ($request->provincia) {
-                                                                    $query->where('provincia',$request->provincia);   
+                                                                    $query->where('provincia',$request->provincia);
                                                                 }else{
                                                                     $query;
                                                                 }
                                                             }])
                             ->with(['aspirante'=> function ($query) use ($request) {
                                                                 if ($request->ciudad) {
-                                                                    $query->where('ciudad',$request->ciudad);   
+                                                                    $query->where('ciudad',$request->ciudad);
                                                                 }else{
                                                                     $query;
                                                                 }
@@ -362,7 +370,7 @@ class OfertasController extends Controller
                             ->with('aspirante.aspirante_formacion')
                             ->with(['aspirante.aspirante_formacion'=> function ($query) use ($request) {
                                                                 if ($request->grado != -1) {
-                                                                    $query->where('oferta_academica_id',$request->grado);   
+                                                                    $query->where('oferta_academica_id',$request->grado);
                                                                 }else{
                                                                     $query;
                                                                 }
@@ -370,7 +378,7 @@ class OfertasController extends Controller
                             ->with('aspirante.aspirante_experiencia')
                             ->with(['aspirante.aspirante_experiencia'=> function ($query) use ($request) {
                                                                 if ($request->cargo) {
-                                                                    $query->where('cargo','like','%'.$request->cargo.'%');   
+                                                                    $query->where('cargo','like','%'.$request->cargo.'%');
                                                                 }else{
                                                                     $query;
                                                                 }
@@ -383,15 +391,15 @@ class OfertasController extends Controller
                                                                         $campo = 'campo_'.$value->id;
                                                                         if ($request[$campo]) {
                                                                             if ($value->campo=='select') {
-                                                                                $query->where('respuesta',$request[$campo]); 
+                                                                                $query->where('respuesta',$request[$campo]);
                                                                             }else{
-                                                                                $query->where('respuesta','like','%'.$request[$campo].'%'); 
+                                                                                $query->where('respuesta','like','%'.$request[$campo].'%');
                                                                             }
                                                                         }else{
                                                                             $query;
                                                                         }
                                                                     }
-                                                                      
+
                                                                 }else{
                                                                     $query;
                                                                 }
@@ -401,9 +409,9 @@ class OfertasController extends Controller
                             ->where('oferta_id',$request->oferta_id);
                             if ($request->salario || $request->salario_max) {
                                 if (empty($request->salario_max)) {
-                                    $aplicaciones = $aplicaciones->where('salario_aspirado','>=',$request->salario); 
+                                    $aplicaciones = $aplicaciones->where('salario_aspirado','>=',$request->salario);
                                 }else{
-                                    $aplicaciones = $aplicaciones->whereBetween('salario_aspirado',[$request->salario ?? 0,$request->salario_max]); 
+                                    $aplicaciones = $aplicaciones->whereBetween('salario_aspirado',[$request->salario ?? 0,$request->salario_max]);
                                 }
                             }
 
@@ -416,12 +424,12 @@ class OfertasController extends Controller
                             ->with(['aspirante' => function($query) use ($request){
                                  if ($request->edad || $request->edad_max) {
                                         if (empty($request->edad_max)) {
-                                           $query->where('fecha_nacimiento','>=',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-01-01'); 
+                                           $query->where('fecha_nacimiento','>=',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-01-01');
                                         }else{
                                             if (empty($request->edad) || $request->edad == 0) {
-                                                $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y") .'-12-31']);         
+                                                $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y") .'-12-31']);
                                             }else{
-                                                $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-12-31']);   
+                                                $query->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-12-31']);
                                             }
                                         }
                                     }else{
@@ -429,39 +437,39 @@ class OfertasController extends Controller
                                     }
                             }])
                             /*->whereHas('aspirante', function ($query) use ($request) {
-                                    
+
                                 })*/
                             ->with(['aspirante' => function($query) use ($request){
                                  if ($request->pais) {
-                                        $query->where('pais',$request->pais);   
+                                        $query->where('pais',$request->pais);
                                     }else{
                                         $query;
                                     }
                             }])
                             /*->whereHas('aspirante', function ($query) use ($request) {
                                     if ($request->pais) {
-                                        $query->where('pais',$request->pais);   
+                                        $query->where('pais',$request->pais);
                                     }else{
                                         $query;
                                     }
                                 })*/
                             ->with(['aspirante' => function($query) use ($request){
                                   if ($request->provincia) {
-                                        $query->where('provincia',$request->provincia);   
+                                        $query->where('provincia',$request->provincia);
                                     }else{
                                         $query;
                                     }
                             }])
                             /*->whereHas('aspirante', function ($query) use ($request) {
                                     if ($request->provincia) {
-                                        $query->where('provincia',$request->provincia);   
+                                        $query->where('provincia',$request->provincia);
                                     }else{
                                         $query;
                                     }
                                 })*/
                             ->with(['aspirante'=> function ($query) use ($request) {
                                                                 if ($request->ciudad) {
-                                                                    $query->where('ciudad',$request->ciudad);   
+                                                                    $query->where('ciudad',$request->ciudad);
                                                                 }else{
                                                                     $query;
                                                                 }
@@ -470,7 +478,7 @@ class OfertasController extends Controller
                             //->with('aspirante.aspirante_formacion')
                             ->with(['aspirante.aspirante_formacion'=> function ($query) use ($request) {
                                                                 if ($request->grado != -1) {
-                                                                    $query->where('oferta_academica_id',$request->grado);   
+                                                                    $query->where('oferta_academica_id',$request->grado);
                                                                 }else{
                                                                     $query;
                                                                 }
@@ -478,7 +486,7 @@ class OfertasController extends Controller
                             //->with('aspirante.aspirante_experiencia')
                             ->with(['aspirante.aspirante_experiencia'=> function ($query) use ($request) {
                                                                 if ($request->cargo) {
-                                                                    $query->where('cargo','like','%'.$request->cargo.'%');   
+                                                                    $query->where('cargo','like','%'.$request->cargo.'%');
                                                                 }else{
                                                                     $query;
                                                                 }
@@ -489,9 +497,9 @@ class OfertasController extends Controller
 
                             if ($request->salario || $request->salario_max) {
                                 if (!empty($request->salario_max)) {
-                                    $aplicaciones = $aplicaciones->whereBetween('salario_aspirado',[$request->salario ?? 0,$request->salario_max]); 
+                                    $aplicaciones = $aplicaciones->whereBetween('salario_aspirado',[$request->salario ?? 0,$request->salario_max]);
                                 }else{
-                                    $aplicaciones = $aplicaciones->where('salario_aspirado','>=',$request->salario); 
+                                    $aplicaciones = $aplicaciones->where('salario_aspirado','>=',$request->salario);
                                 }
                             }
 
@@ -507,7 +515,7 @@ class OfertasController extends Controller
             $aspirantes = Aspirantes::with('user')
                             ->with(['aspirante_formacion' => function($query) use ($request){
                                 if ($request->grado != -1) {
-                                        $query->where('oferta_academica_id',$request->grado);   
+                                        $query->where('oferta_academica_id',$request->grado);
                                     }else{
                                         $query;
                                     }
@@ -515,14 +523,14 @@ class OfertasController extends Controller
                             }])
                             /*->orWhereHas('aspirante_formacion', function ($query) use ($request) {
                                     if ($request->grado != -1) {
-                                        $query->where('oferta_academica_id',$request->grado);   
+                                        $query->where('oferta_academica_id',$request->grado);
                                     }else{
                                         $query;
                                     }
                                 })*/
                             ->with(['aspirante_experiencia' => function($query) use ($request){
                                 if ($request->cargo) {
-                                        $query->where('cargo','like','%'.$request->cargo.'%');   
+                                        $query->where('cargo','like','%'.$request->cargo.'%');
                                     }else{
                                         $query;
                                     }
@@ -530,7 +538,7 @@ class OfertasController extends Controller
                             }])
                             /*->orWhereHas('aspirante_experiencia', function ($query) use ($request) {
                                     if ($request->cargo) {
-                                        $query->where('cargo','like','%'.$request->cargo.'%');   
+                                        $query->where('cargo','like','%'.$request->cargo.'%');
                                     }else{
                                         $query;
                                     }
@@ -541,13 +549,13 @@ class OfertasController extends Controller
                 if (empty($request->edad_max)) {
                     $aspirantes = $aspirantes->where('fecha_nacimiento','>=',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-01-01');
                 }else{
-                    if (empty($request->edad) || $request->edad == 0) {        
-                        $aspirantes = $aspirantes->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y") .'-12-31']); 
-                    }else{ 
-                        $aspirantes = $aspirantes->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-12-31']); 
+                    if (empty($request->edad) || $request->edad == 0) {
+                        $aspirantes = $aspirantes->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y") .'-12-31']);
+                    }else{
+                        $aspirantes = $aspirantes->whereBetween('fecha_nacimiento',[date("Y",strtotime(date("Y-m-d")."- $request->edad_max year")) .'-01-01',date("Y",strtotime(date("Y-m-d")."- $request->edad year")) .'-12-31']);
                     }
                 }
-                
+
             }
 
             if ($request->salario || $request->salario_max) {
@@ -556,26 +564,26 @@ class OfertasController extends Controller
                 }else{
                     $aspirantes = $aspirantes->where('espectativa_salarial','>=',$request->salario);
                 }
-                
+
             }
 
             if ($request->pais) {
-                $aspirantes = $aspirantes->where('pais',$request->pais);   
+                $aspirantes = $aspirantes->where('pais',$request->pais);
             }
 
             if ($request->provincia) {
-                $aspirantes = $aspirantes->where('provincia',$request->provincia);   
+                $aspirantes = $aspirantes->where('provincia',$request->provincia);
             }
 
             if ($request->ciudad) {
-                $aspirantes = $aspirantes->where('ciudad',$request->ciudad);   
+                $aspirantes = $aspirantes->where('ciudad',$request->ciudad);
             }
 
             $aspirantes = $aspirantes->get();
            //return DB::getQueryLog();
             return view('user-aspirante.table',compact('aspirantes'));
         }
-        
+
     }
 
     public function profile(Request $request)

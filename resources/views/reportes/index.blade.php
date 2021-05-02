@@ -68,7 +68,7 @@
                             <tbody>
                                 <tr>
                                     <td class="middle">
-                                        Postulantes por Mes
+                                        Registros de aspirantes
                                     </td>
 
                                     <td class="middle">
@@ -79,7 +79,7 @@
 
                                 <tr>
                                     <td class="middle">
-                                        Registros/Aplicaciones por Mes
+                                        Aplicaciones a ofertas
                                     </td>
 
                                     <td class="middle">
@@ -88,16 +88,7 @@
 
                                 </tr>
 
-                                <tr>
-                                    <td class="middle">
-                                        Postulantes por Oferta
-                                    </td>
 
-                                    <td class="middle">
-                                        <a  href="/reportes/postulantes-ofertas" class="btn btn-secondary btn_show"><i class="fas fa-info-circle"></i> Consultar</a>
-                                    </td>
-
-                                </tr>
 
                             </tbody>
                         </table>

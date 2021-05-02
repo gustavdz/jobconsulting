@@ -61,7 +61,7 @@ function view_table() {
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
-                "order": [[0, "asc"]]
+                "order": [[10, "desc"]]
             });
             // acciones();
         },

@@ -23,6 +23,7 @@ loadHabilidades();
             {data:'detalle'},
             {data:'categorias'},
             {data:'habilidades'},
+            {data:'aplicaciones_count'},
             {data:'opciones'}
         ],
         "columnDefs": [

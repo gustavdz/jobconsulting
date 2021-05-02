@@ -4,6 +4,7 @@
         <th>Detalle de la Oferta</th>
         <th>Categorías</th>
         <th>Habilidades</th>
+        <th>Aplicaciones</th>
         <th>Opciónes</th>
     </tr>
     </thead>
@@ -36,6 +37,9 @@
                         <li>{{$habilidad->habilidad->nombre}}</li>
                     @endforeach
                 </ul>
+            </td>
+            <td>
+                {{$habilidad->habilidad->nombre}}
             </td>
             <td>
                 <button onclick="editar({{ $rst->id }})" title="Editar" type="button" class="btn btn-success btn_show"><i class="fas fa-edit"></i> Editar</button>
