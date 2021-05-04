@@ -34,6 +34,7 @@ class HomeController extends Controller
         //dd(Auth::user()->role);
         $activar = Configuracion::find(1);
         if (Auth::user()->role == 'admin'){
+            $empresas = User::where('role','empresa')->get();
             $ofertas = DB::select("SELECT count(*) as total,u.name from ofertas o join users u on o.empresa_id = u.id group by o.empresa_id  having total > 0 order by total desc limit 5");
             $labels = [];
             $data = [];
@@ -56,29 +57,7 @@ class HomeController extends Controller
             $labels_aplicaciones = json_encode($labels_aplicaciones);
             $data_aplicaciones = json_encode($data_aplicaciones);
 
-        
-            //postulantes/registros x mes
-            $actualYear = date("Y");
-            $postulacionesxMes = DB::select("SELECT  COUNT(*) as count, YEAR(created_at) year, MONTHNAME(created_at) month from aspirantes where YEAR(created_at) = 2020 group by year, month");
-            $registrosxMes = DB::select("SELECT COUNT(*) as total, YEAR(created_at) year, MONTHNAME(created_at) month from aplicaciones where YEAR(created_at) = 2020 group by year, month");
-            $labels_postulaciones = [];
-            $data_postulaciones = [];
-            $labels_registrosxMes = [];
-            $data_registrosxMes = [];
-
-            foreach ($postulacionesxMes as $value) {
-                $labels_postulaciones[] = $value->month;
-                $data_postulaciones[] = $value->count;
-            }
-            $labels_postulaciones = json_encode($labels_postulaciones);
-            $data_postulaciones = json_encode($data_postulaciones);
-
-            foreach ($registrosxMes as $value) {
-                $labels_registrosxMes[] = $value->month;
-                $data_registrosxMes[] = $value->total;
-            }
-            $labels_registrosxMes = json_encode($labels_registrosxMes);
-            $data_registrosxMes = json_encode($data_registrosxMes);
+    
 
 
             //POSTULANTES X OFERTA
@@ -96,7 +75,7 @@ class HomeController extends Controller
 
 
 
-            return view('home.index',compact('labels','data','labels_aplicaciones','data_aplicaciones', 'labels_postulaciones','data_postulaciones', 'data_registrosxMes', 'labels_registrosxMes', 'labels_pOfertas','data_pOfertas','activar'));
+            return view('home.index',compact('labels','data','labels_aplicaciones','data_aplicaciones', 'labels_pOfertas','data_pOfertas','activar','empresas'));
         }
 
         if (Auth::user()->role == 'aspirante'){
@@ -145,5 +124,76 @@ class HomeController extends Controller
         $activar->save();
 
         return $activar->social_media == 'A' ? ['msg' => 'success', 'data' => 'Se ha Activado la publicación en redes sociales'] : ['msg' => 'success', 'data' => 'Se ha Desactivado la publicación en redes sociales']; 
+    }
+
+    public function postualanteMes(Request $request)
+    {
+        //postulantes/registros x mes
+        $actualYear = date("Y");
+        $postulacionesxMes = DB::select("SELECT  COUNT(*) as count, YEAR(created_at) year, MONTHNAME(created_at) month from aspirantes where YEAR(created_at) = $request->filterYear group by year, month");
+        $registrosxMes = DB::select("SELECT COUNT(*) as total, YEAR(created_at) year, MONTHNAME(created_at) month from aplicaciones where YEAR(created_at) = $request->filterYear group by year, month");
+        $labels_postulaciones = [];
+        $data_postulaciones = [];
+        $labels_registrosxMes = [];
+        $data_registrosxMes = [];
+
+        foreach ($postulacionesxMes as $value) {
+            $labels_postulaciones[] = $value->month;
+            $data_postulaciones[] = $value->count;
+        }
+        $labels_postulaciones = ($labels_postulaciones);
+        $data_postulaciones = ($data_postulaciones);
+
+        foreach ($registrosxMes as $value) {
+            $labels_registrosxMes[] = $value->month;
+            $data_registrosxMes[] = $value->total;
+        }
+        $labels_registrosxMes = ($labels_registrosxMes);
+        $data_registrosxMes = ($data_registrosxMes);
+
+        $data['labels_registrosxMes'] =$labels_registrosxMes;
+        $data['data_registrosxMes'] =$data_registrosxMes;
+        $data['data_postulaciones'] =$data_postulaciones;
+        $data['data_registrosxMes'] =$data_registrosxMes;
+
+        return $data;
+    }
+
+    public function ofertasPorEmpresas(Request $request)
+    {
+        $empresas = isset($request->empresas) ? implode(',',$request->empresas) : 0;
+        $sql = "SELECT u.id, u.name as nombre,
+                sum(ifnull(offers.ene, 0)) as ene,
+                sum(ifnull(offers.feb, 0)) as feb,
+                sum(ifnull(offers.mar, 0)) as mar,
+                sum(ifnull(offers.abr, 0)) as abr,
+                sum(ifnull(offers.may, 0)) as may,
+                sum(ifnull(offers.jun, 0)) as jun,
+                sum(ifnull(offers.jul, 0)) as jul,
+                sum(ifnull(offers.ago, 0)) as ago,
+                sum(ifnull(offers.sep, 0)) as sep,
+                sum(ifnull(offers.oct, 0)) as oct,
+                sum(ifnull(offers.nov, 0)) as nov,
+                sum(ifnull(offers.dic, 0)) as dic
+                from ofertas
+                join ( SELECT  ofs.id,ofs.empresa_id,
+                (case when MONTH(ofs.created_at) = 1 then 1 else 0 end)  as ene,
+                (case when MONTH(ofs.created_at) = 2 then 1 else 0 end)  as feb,
+                (case when MONTH(ofs.created_at) = 3 then 1 else 0 end)  as mar,
+                (case when MONTH(ofs.created_at) = 4 then 1 else 0 end)  as abr,
+                (case when MONTH(ofs.created_at) = 5 then 1 else 0 end)  as may,
+                (case when MONTH(ofs.created_at) = 6 then 1 else 0 end)  as jun,
+                (case when MONTH(ofs.created_at) = 7 then 1 else 0 end)  as jul,
+                (case when MONTH(ofs.created_at) = 8 then 1 else 0 end)  as ago,
+                (case when MONTH(ofs.created_at) = 9 then 1 else 0 end)  as sep,
+                (case when MONTH(ofs.created_at) = 10 then 1 else 0 end) as oct,
+                (case when MONTH(ofs.created_at) = 11 then 1 else 0 end) as nov,
+                (case when MONTH(ofs.created_at) = 12 then 1 else 0 end) as dic
+                from ofertas as ofs where estado <> 'E' and YEAR(created_at) = $request->anio and empresa_id in ($empresas)
+                    )  offers on ofertas.id = offers.id 
+                join users u on offers.empresa_id = u.id
+                group by u.id, u.name";
+
+        return DB::select($sql);
     }
 }

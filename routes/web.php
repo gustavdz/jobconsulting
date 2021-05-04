@@ -20,6 +20,8 @@ Auth::routes(['verify' => true]);
 
 Route::middleware(['verified'])->group(function () {
     Route::get('/home/{param?}', 'HomeController@index')->name('home');
+    Route::post('/home/postualanteMes', 'HomeController@postualanteMes')->name('home.postualanteMes');
+    Route::post('/home/ofertasPorEmpresas', 'HomeController@ofertasPorEmpresas')->name('home.ofertasPorEmpresas');
     Route::post('/activar', 'HomeController@activar')->name('activar');
 
     #user - empresas
