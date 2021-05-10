@@ -368,21 +368,14 @@ class OfertasController extends Controller
                                                             }])
                             ->with('aspirante.user')
                             ->with('aspirante.aspirante_formacion')
-                            ->with(['aspirante.aspirante_formacion'=> function ($query) use ($request) {
+                            /* ->with(['aspirante.aspirante_formacion'=> function ($query) use ($request) {
                                                                 if ($request->grado != -1) {
                                                                     $query->where('oferta_academica_id',$request->grado);
                                                                 }else{
                                                                     $query;
                                                                 }
-                                                            }])
+                                                            }]) */
                             ->with('aspirante.aspirante_experiencia')
-                            ->with(['aspirante.aspirante_experiencia'=> function ($query) use ($request) {
-                                                                if ($request->cargo) {
-                                                                    $query->where('cargo','like','%'.$request->cargo.'%');
-                                                                }else{
-                                                                    $query;
-                                                                }
-                                                            }])
                             ->with('respuesta')
                             ->with('respuesta.pregunta')
                             ->with(['respuesta'=> function ($query) use ($request,$preguntas) {
@@ -413,6 +406,18 @@ class OfertasController extends Controller
                                 }else{
                                     $aplicaciones = $aplicaciones->whereBetween('salario_aspirado',[$request->salario ?? 0,$request->salario_max]);
                                 }
+                            }
+
+                            if(!empty($request->cargo)){
+                                $aplicaciones = $aplicaciones->whereHas('aspirante.aspirante_experiencia', function ($query) use ($request) {
+                                    $query->where('cargo','like','%'.$request->cargo.'%');
+                                });
+                            }
+
+                            if ($request->grado != -1) {
+                                $aplicaciones = $aplicaciones->whereHas('aspirante.aspirante_formacion', function ($query) use ($request) {
+                                    $query->where('oferta_academica_id',$request->grado);
+                                });
                             }
 
                     $aplicaciones = $aplicaciones->get();
@@ -446,13 +451,6 @@ class OfertasController extends Controller
                                         $query;
                                     }
                             }])
-                            /*->whereHas('aspirante', function ($query) use ($request) {
-                                    if ($request->pais) {
-                                        $query->where('pais',$request->pais);
-                                    }else{
-                                        $query;
-                                    }
-                                })*/
                             ->with(['aspirante' => function($query) use ($request){
                                   if ($request->provincia) {
                                         $query->where('provincia',$request->provincia);
@@ -460,13 +458,6 @@ class OfertasController extends Controller
                                         $query;
                                     }
                             }])
-                            /*->whereHas('aspirante', function ($query) use ($request) {
-                                    if ($request->provincia) {
-                                        $query->where('provincia',$request->provincia);
-                                    }else{
-                                        $query;
-                                    }
-                                })*/
                             ->with(['aspirante'=> function ($query) use ($request) {
                                                                 if ($request->ciudad) {
                                                                     $query->where('ciudad',$request->ciudad);
@@ -476,21 +467,13 @@ class OfertasController extends Controller
                                                             }])
                             ->with('aspirante.user')
                             //->with('aspirante.aspirante_formacion')
-                            ->with(['aspirante.aspirante_formacion'=> function ($query) use ($request) {
+                            /* ->with(['aspirante.aspirante_formacion'=> function ($query) use ($request) {
                                                                 if ($request->grado != -1) {
                                                                     $query->where('oferta_academica_id',$request->grado);
                                                                 }else{
                                                                     $query;
                                                                 }
-                                                            }])
-                            //->with('aspirante.aspirante_experiencia')
-                            ->with(['aspirante.aspirante_experiencia'=> function ($query) use ($request) {
-                                                                if ($request->cargo) {
-                                                                    $query->where('cargo','like','%'.$request->cargo.'%');
-                                                                }else{
-                                                                    $query;
-                                                                }
-                                                            }])
+                                                            }]) */
                             ->with('oferta')
                             ->with('estado_oferta')
                             ->where('oferta_id',$request->oferta_id);
@@ -503,6 +486,18 @@ class OfertasController extends Controller
                                 }
                             }
 
+                            if(!empty($request->cargo)){
+                                $aplicaciones = $aplicaciones->whereHas('aspirante.aspirante_experiencia', function ($query) use ($request) {
+                                    $query->where('cargo','like','%'.$request->cargo.'%');
+                                });
+                            }
+
+                            if ($request->grado != -1) {
+                                $aplicaciones = $aplicaciones->whereHas('aspirante.aspirante_formacion', function ($query) use ($request) {
+                                    $query->where('oferta_academica_id',$request->grado);
+                                });
+                            }
+
                             $aplicaciones = $aplicaciones->get();
                             // return DB::getQueryLog();
 
@@ -513,36 +508,6 @@ class OfertasController extends Controller
         } else {
             //DB::enableQueryLog();
             $aspirantes = Aspirantes::with('user')
-                            ->with(['aspirante_formacion' => function($query) use ($request){
-                                if ($request->grado != -1) {
-                                        $query->where('oferta_academica_id',$request->grado);
-                                    }else{
-                                        $query;
-                                    }
-
-                            }])
-                            /*->orWhereHas('aspirante_formacion', function ($query) use ($request) {
-                                    if ($request->grado != -1) {
-                                        $query->where('oferta_academica_id',$request->grado);
-                                    }else{
-                                        $query;
-                                    }
-                                })*/
-                            ->with(['aspirante_experiencia' => function($query) use ($request){
-                                if ($request->cargo) {
-                                        $query->where('cargo','like','%'.$request->cargo.'%');
-                                    }else{
-                                        $query;
-                                    }
-
-                            }])
-                            /*->orWhereHas('aspirante_experiencia', function ($query) use ($request) {
-                                    if ($request->cargo) {
-                                        $query->where('cargo','like','%'.$request->cargo.'%');
-                                    }else{
-                                        $query;
-                                    }
-                                })*/
                             ->with('aspirante_idioma')
                             ->with('aspirante_referencia');
             if ($request->edad || $request->edad_max) {
@@ -577,6 +542,18 @@ class OfertasController extends Controller
 
             if ($request->ciudad) {
                 $aspirantes = $aspirantes->where('ciudad',$request->ciudad);
+            }
+
+            if (!empty($request->cargo)) {
+                $aspirantes = $aspirantes->whereHas('aspirante_experiencia', function ($query) use ($request) {
+                    $query->where('cargo','like','%'.$request->cargo.'%');
+                });
+            }
+
+            if ($request->grado != -1) {
+                $aspirantes = $aspirantes->whereHas('aspirante_formacion', function ($query) use ($request) {
+                    $query->where('oferta_academica_id',$request->grado);
+                });
             }
 
             $aspirantes = $aspirantes->get();
