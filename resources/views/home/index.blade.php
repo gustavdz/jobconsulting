@@ -3,6 +3,12 @@
 @section('css')
     <link rel="stylesheet" href="../vendor/datatables/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="./vendor/select2/css/select2.min.css">
+    <style>
+        .select2-selection--multiple{
+            overflow-y: auto;
+            
+        }
+    </style>
 @stop
 
 @section('title')
@@ -110,37 +116,47 @@
                 
                 <br>
                 <div class="mb-3 card">
-                    <div class="card-header-tab card-header">
+                    <div class="card-header">
                         <div class="card-header-title">
                             Número de avisos publicados por mes/anual por usuario
                         </div>
-                        <div class="btn-actions-pane-right">
-                            <div class="row">
-                                <div class="col">
-                                    <select name="filter_year" id="filter_year" class="custom-select custom-select-sm  form-control-sm">
-                                        @for ($i = $anio_actual; $i >= $anio_min; $i--)
-                                        <option value="{{ $i }}" @if($anio_actual == $i) selected @endif>{{ $i }}</option>
-                                       @endfor
-                                    </select>
-                                </div>
-                                <div class="col">
-                                    <select name="filter_empresa[]" id="filter_empresa" multiple="multiple" class="form-control" style="width: 100%">
-                                        @foreach ($empresas as $key => $empresa)
-                                            <option value="{{ $empresa->id }}" @if($key == 1) selected @endif>{{ $empresa->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col">
-                                    <button class="btn btn-primary btn-sm" id="visualizar">Visualizar</button>
-                                </div>
-                            </div>
+                        {{-- <div class="btn-actions-pane-right">
                             
                             
-                        </div>
+                            
+                            
+                        </div> --}}
+                        
+
                     </div>
                     <div class="">
                         <div class="" id="tab-eg-55">
                             <div class="card-body">
+
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <select name="filter_year" id="filter_year" class="custom-select custom-select-sm  form-control-sm">
+                                            @for ($i = $anio_actual; $i >= $anio_min; $i--)
+                                            <option value="{{ $i }}" @if($anio_actual == $i) selected @endif>{{ $i }}</option>
+                                           @endfor
+                                        </select>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <select name="filter_empresa[]" id="filter_empresa" multiple="multiple" class="form-control" style="width: 100%">
+                                            @foreach ($empresas as $key => $empresa)
+                                                <option value="{{ $empresa->id }}" @if($key == 1) selected @endif>{{ $empresa->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-primary btn-sm" id="visualizar">Visualizar</button>
+                                    </div>
+                                </div>
+                                <hr>
+
+
+
                                 <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0">
                                     <div>
                                         <div id="oferta_view">
@@ -177,7 +193,7 @@
     $(document).ready(function() {
         $('#filter_empresa').select2({
             placeholder: "Seleccione",
-            allowClear: true
+            //allowClear: true
         });
         $("#visualizar").click(function(){
             ofertasEmpresas();

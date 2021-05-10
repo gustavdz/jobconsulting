@@ -154,7 +154,7 @@ class HomeController extends Controller
         $data['labels_registrosxMes'] =$labels_registrosxMes;
         $data['data_registrosxMes'] =$data_registrosxMes;
         $data['data_postulaciones'] =$data_postulaciones;
-        $data['data_registrosxMes'] =$data_registrosxMes;
+        $data['labels_postulaciones'] =$labels_postulaciones;
 
         return $data;
     }
