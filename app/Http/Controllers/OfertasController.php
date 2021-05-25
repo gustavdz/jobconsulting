@@ -43,6 +43,7 @@ class OfertasController extends Controller
             ->with('categoriasOfertas.categoria')
             ->with('habilidadesOfertas.habilidad')
             ->where('ofertas.estado','A')
+            ->whereDate('ofertas.validez', '>', Carbon::today('America/Guayaquil'))
             ->where(function ($query) use ($search) {
                 $query->where('titulo', 'LIKE', '%'.$search.'%');
                     //->orWhere('content', 'LIKE', '%'.$search.'%');
