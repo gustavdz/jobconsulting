@@ -9,13 +9,13 @@ $(document).ready(function () {
     view_table();
 
 
- 
+
 
     $("#btn_guardar").click(function () {
         if (!$("#formulario").valid()) {
             return false;
         }
-        
+
         var data = new $('#formulario').serialize();
         $('#myModal').modal('toggle');
         $.ajax({
@@ -127,7 +127,7 @@ function view_table() {
 	                onBeforeOpen: () => {
 	                    Swal.showLoading()
 	                }
-	            });  
+	            });
         },
         success: function (data) {
             $('#div_table').html(data);
@@ -188,7 +188,7 @@ function imgError(image, image_old) {
         image.onerror = "";
         image.src = "/images/avatar.jpg";
     }
-    
+
     return true;
 }
 
@@ -202,10 +202,10 @@ function viewProfile(aspirante_id) {
             "aspirante_id": aspirante_id
         },
         beforeSend: function () {
-            $('#perfil_postulante').html('<img src="/images/load.gif" width="10%" height="10%" />'); 
+            $('#perfil_postulante').html('<img src="/images/load.gif" width="10%" height="10%" />');
         },
         success: function (data) {
-            
+
             $('#perfil_postulante').html(data)
         },
         error: function (xhr) { // if error occured
@@ -231,15 +231,15 @@ function changeStatus(id_postulacion,id_estado) {
                     onBeforeOpen: () => {
                         Swal.showLoading()
                     }
-                }); 
+                });
         },
         success: function (d) {
-            
+
             if (d['msg'] == 'error') {
                     toastr.error(d['data']);
                 } else {
                     toastr.success(d['data']);
-                    view_table();
+                    // view_table();
                 }
         },
         error: function (xhr) { // if error occured
