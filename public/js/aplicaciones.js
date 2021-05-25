@@ -162,7 +162,7 @@ function view_table() {
                 },
                 "paging": true,
                 "lengthChange": true,
-                "ordering": true,
+                "ordering": false,
                 "info": true,
                 "autoWidth": false,
                 // "order": [[0, "desc"]]

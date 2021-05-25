@@ -400,7 +400,8 @@ class OfertasController extends Controller
                             ->with('oferta')
                             ->with('estado_oferta')
                             ->where('oferta_id',$request->oferta_id)
-                            ->orderBy('created_at','DESC');
+                            ->orderByDesc('created_at');
+
                             if ($request->salario || $request->salario_max) {
                                 if (empty($request->salario_max)) {
                                     $aplicaciones = $aplicaciones->where('salario_aspirado','>=',$request->salario);
